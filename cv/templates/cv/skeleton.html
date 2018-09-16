@@ -1,0 +1,126 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<title>
+{% block title %}
+Django CV
+{% endblock %}
+</title>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+
+<style type="text/css">
+/*label {
+	width:20%;
+}
+
+input {
+	width:60%;
+}
+.form-group>p{
+	padding-left: 10%;
+	display:block;
+	width:100%;
+}
+
+*/
+.editable {
+	display: none;
+}
+{% block styles %}
+{% endblock styles %}
+</style>
+
+{% block scripts %}
+<script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+<script src="https://use.fontawesome.com/b7e617b38a.js"></script>
+{% endblock scripts %}
+
+{% block userstyles %}
+<link rel="stylesheet" type="text/css" href="{% static 'cv/cv-main.css' %}" />	
+{% endblock userstyles %}
+
+</head>
+
+<body>
+	<div class="container">
+{% block centerbar %}
+{% endblock %}
+	</div> 
+{% block endscripts %}
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		var addRe = /(\w+?)\-add/;
+		var editRe = /(\w+?)\-edit/;
+
+		function cancelButton(orig,editable){
+			// Function to add cancel button to forms
+			return $("<button>").attr("type","button").attr("class","cv-edit btn btn-detail").text("Cancel").click(function(event){
+						orig.toggle();
+						editable.toggle();
+						event.preventDefault();
+					});
+		}
+
+		// ADD FORM ON CLICK TO ADD NEW INSTANCE 
+		$(".cv-add").click(function(event){
+			var modelName = addRe.exec(this.className)[1];
+			var attrib = $(this).parent();
+
+			var orig = attrib.find("a");
+			var editable = $("<div>").attr("id",modelName+"-add").addClass("editable");
+			attrib.append(editable);
+
+			orig.toggle();
+			editable.toggle();
+
+			if(!editable.data("subMenuPopulated") && editable.is(":visible")){
+				$.get("/cv/forms/"+modelName+"/add/",function(data){
+					cancel = cancelButton(orig,editable);
+					editable.html(data).attr("class","alert alert-primary").data("subMenuPopulated",true);
+					editable.find(".cv-delete").hide();
+					editable.find(".save-group").append(cancel);
+
+				});
+			}
+		});
+
+
+		// ADD FORM ON CLICK TO EVERY DIV WITH CLASS .cv-edit
+		$(".cv-edit").on("click",function() {
+			var modelName = editRe.exec(this.className)[1];
+			var attrib = $(this).closest("li");
+			var pk = attrib.attr("id").substring(modelName.length+1);
+			console.log(pk)
+
+			var $attrib = $("#"+attrib.attr("id"));
+
+			var orig = $attrib.find("div.noneditable");
+
+			var editable = $attrib.find("div.editable");
+
+			orig.toggle();
+			editable.toggle();
+
+			if(!editable.data("subMenuPopulated") && editable.is(":visible")){
+				$.get("/cv/forms/"+modelName+"/"+pk+"/edit/",function(data){
+					cancel = cancelButton(orig,editable);
+					console.log(cancel.html());
+					editable.html(data).attr("class","alert alert-primary editable").data("subMenuPopulated",true);
+					editable.find(".save-group").append(cancel);
+				});
+			}
+		});
+	</script>
+{% endblock %}
+</body>
+</html>

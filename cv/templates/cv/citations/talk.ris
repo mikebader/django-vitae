@@ -1,0 +1,12 @@
+TY  - SLIDE
+TI  - {{talk.title}}
+{% spaceless %}{% for author in talk.collaborator.all %}
+AU  - {{author}}{% endfor %}{% endspaceless %}
+AB  - {{talk.abstract}} {% with talk.get_latest_presentation as presentation %}
+CY  - {{presentation.city}}, {{presentation.state}}
+DA  - {{presentation.presentation_date|date:"Y/m/d"}}
+PY  - {{presentation.presentation_date.year}}
+T2  - {{presentation.event}}
+UR  - {{site}}{{talk.get_absolute_url}} {% endwith %}
+ER  - 
+

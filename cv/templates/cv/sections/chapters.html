@@ -1,0 +1,61 @@
+{% load cvtags %}
+
+{% if total_chapters or user.is_authenticated %} 
+<h2 class="col-xs-12">Chapter{{total_chapters|pluralize}}</h2>
+{% if chapter_published_list %}
+{% if chapter_revise_list or chapter_inprep_list %}<h3 class="col-xs-12">Published</h3>{% endif %}
+<ul class="cv-entry">
+{% for chapter in chapter_published_list %}
+<li class="row">
+<span class="cv-entry-date col-xs-2 col-sm-1">{{chapter.pub_date|date:"Y"}}</span>
+<span class="cv-entry-text col-xs-9 col-sm-10">{{chapter.chapterauthorship_set.all|print_authors}}. &#8220;{{chapter.title}}.&#8221; <cite>{{chapter.book_title}}</cite>. {% if chapter.editors %}{{chapter|editors}}, ed{{chapter.editors.count|pluralize}}. {% endif %} {{chapter.place}}:{{chapter.publisher}}. pp. {{chapter.start_page}}-{{chapter.end_page}}.
+	    {% if user.is_authenticated %}
+			<a class="ml-4 chapter-edit cv-edit" href="{% url 'cv:cv_edit' model_name='chapter' pk=chapter.pk %}"><i class="far fa-edit"></i></a>
+		{% endif %}
+</span>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if chapter_revise_list %}
+<h3 class="col-xs-12">Under Review</h3>
+<ul class="cv-entry">
+{% for chapter in chapter_revise_list %}
+<li class="row">
+<span class="cv-entry-date col-xs-2 col-sm-1"></span>
+<span class="cv-entry-text col-xs-9 col-sm-10">{{chapter.chapterauthorship_set.all|print_authors}}. &#8220;{{chapter.title}}.&#8221; <cite>{{chapter.book_title}}</cite>{% if chapter.edition%}, {{chapter.edition}}{% endif %}. {{chapter.place}}:{{chapter.publisher}}.
+	    {% if user.is_authenticated %}
+			<a class="ml-4 chapter-edit cv-edit" href="{% url 'cv:cv_edit' model_name='chapter' pk=chapter.pk %}"><i class="far fa-edit"></i></a>
+		{% endif %}
+</span>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if chapter_inprep_list %}
+<h3 class="col-xs-12">In Preparation</h3>
+<ul class="cv-entry">
+{% for chapter in chapter_inprep_list %}
+<li class="row">
+<span class="cv-entry-date col-xs-2 col-sm-1"></span>
+<span class="cv-entry-text col xs-9 col-sm-10">{{chapter.chapterauthorship_set.all|print_authors}}. &#8220;{{chapter.title}}.&#8221; <cite>{{chapter.book_title}}</cite>. 
+	    {% if user.is_authenticated %}
+			<a class="ml-4 chapter-edit cv-edit" href="{% url 'cv:cv_edit' model_name='chapter' pk=chapter.pk %}"><i class="far fa-edit"></i></a>
+		{% endif %}
+</span>
+</li> 
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if user.is_authenticated %}
+<ul class="cv-entry">
+<li class="row">
+	<a class="col-12 col-sm-12 chapter-add cv-add" alt="Add new chapter" href="{% url 'cv:cv_add' model_name='chapter' %}"><i class="far fa-plus-square"></i> Add new chapter</a>	
+</li>
+</ul>
+{% endif %}
+
+{% endif %}

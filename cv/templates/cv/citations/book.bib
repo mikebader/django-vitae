@@ -1,0 +1,20 @@
+{% load cvtags %}
+@book{bader_{{book.slug}}_{{book.pub_date.year}},
+  author    = { {{ book.authorship.all|print_authors_bib_format }} }, 
+  title     = { {{book.title}} },
+  abstract  = { {{book.summary}} },
+  {% if book.editions %}{% with book.editions.all|first as edition %}{% if edition.publisher %}publisher = { {{edition.publisher}} },{% endif %}
+  {% if edition.edition %}edition   = { {{edition.edition}} },{% endif %}
+  {% if edition.edition_date %}year      = {{edition.edition_date.year}},{% endif %}
+  {% if edition.edition_date %}month     = {{edition.date|date:"b"}},{% endif %}
+  {% if edition.place %}address   = { {{edition.place}} },{% endif %}
+  {% if edition.isbn %}isbn      = { {{edition.isbn}} }{% endif %}
+  {% endwith %}
+  {% else %}
+  {% if book.publisher %}publisher = { {{book.publisher}} },{% endif %}
+  {% if book.pub_date %}year      = {{book.pub_date.year}}{% endif %},
+  {% if book.pub_cate %}month     = {{book.pub_date|date:"b"}},{% endif %},
+  {% if book.place %}address   = { {{book.place}} },{% endif %}
+  {% if book.isbn %}isbn      = { {{book.isbn}} }{% endif %}
+  {% endif %} 
+}

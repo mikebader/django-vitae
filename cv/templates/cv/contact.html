@@ -1,0 +1,19 @@
+{% with cv_personal_info as info %}
+<div class="row">
+	<h1 class="col-12 name-add add">{{info.name}}</h1>
+	{% block currentposition %}
+		{% if primary_positions %}
+		<ul id="cv-primary-positions" class="col-12 list-unstyled">
+			{% for position in primary_positions %}
+			<li class="cv-primary-positions">{{position.title}}, {{position.department}}, {{position.institution}}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+	{% endblock %}
+
+	<address id="cv-contact" class="col-12 cv-contact">{{info.email}}<br />
+	{{info.address}}<br />
+	{{info.phone}}
+	</address>
+	{% endwith %}
+</div>

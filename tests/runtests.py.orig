@@ -1,0 +1,69 @@
+import os 
+import sys
+
+import django
+from django.conf import settings
+from django.test.utils import get_runner
+
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+sys.path.append(os.path.dirname(BASE_DIR))
+
+if __name__ == "__main__":
+	# 	os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.test_settings'
+
+	## Get list of tags to include
+	def get_flags(flag_list):
+		"""Return dictionary of pluralized flag names associated with list of values
+		
+		>>> import sys
+		>>> sys.argv = ["tests/runtests.py","--tag","new","--exclude_tag","old"]
+		>>> get_flags(["tag","exclude_tag"])
+		{'exclude_tags': ['old'], 'tags': ['new']}
+		"""
+		d = dict()
+		for flag in flag_list:
+			idx = [i for i,j in enumerate(sys.argv) if j=="--%s" % flag]
+			vals = [sys.argv[i+1] for i in idx]
+			d.update({"%ss"%flag:vals})
+		return d
+	
+	flags = get_flags(["tag","exclude_tag"])
+
+	settings.configure(DEBUG=True,
+			   DATABASES={
+					'default': {
+						'ENGINE': 'django.db.backends.sqlite3',
+					}
+				},
+			   ROOT_URLCONF='cv.tests.test_urls',
+			   INSTALLED_APPS=('django.contrib.auth',
+							  'django.contrib.contenttypes',
+							  'django.contrib.sessions',
+							  'django.contrib.admin',
+							  'django_nose',
+							  'cv',),
+				TEST_RUNNER = 'django_nose.NoseTestSuiteRunner',
+
+				NOSE_ARGS = [
+					# '--with-doctest',
+					'--with-coverage',
+					'--cover-package=cv',
+					# '--cover-inclusive',
+					# '--cover-html',
+					# '--cover-html-dir=tests/'
+					],
+				
+				CV_KEY_CONTRIBUTOR_LIST =['fake_einstein@someNJschool.edu'],
+)
+
+	django.setup()
+	
+	from cv import tests
+	import coverage
+	cov = coverage.coverage(source=['cv'], omit=['*/tests/*','*/migrations/*'])
+	TestRunner = get_runner(settings)
+	test_runner = TestRunner(**flags)
+	failures = test_runner.run_tests(["cv"])
+	sys.exit(bool(failures))

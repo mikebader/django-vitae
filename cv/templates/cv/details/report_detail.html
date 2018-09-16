@@ -1,0 +1,33 @@
+{% extends "cv/details/_cv_detail_base.html" %}
+{% load cvtags %}
+
+{% with report as object %}
+
+{% block object-list-url %}{% url 'cv:report_object_list' %}{% endblock %}
+
+{% block next-previous %}
+{% with "report" as section_name %}
+{{block.super}}
+{% endwith %}
+{% endblock next-previous %}
+
+{% block formatted-citation %}
+<p>{{report.reportauthorship_set.all|print_authors}}. ({{report.pub_date.year}}). <cite>{{report.title}}</cite>{% if report.institution %}. {{report.institution}}{% if report.place %}:{{report:place}}{% endif %}{% endif %}.</p>
+{% endblock formatted-citation %}
+
+{% block object-citation-url-ris %}
+{% url 'cv:report_citation' report.slug 'ris' %}
+{% endblock %}
+
+{% block object-citation-url-bib %}
+{% url 'cv:report_citation' report.slug 'bib' %}
+{% endblock %}
+
+{% block object_type_and_location %}{% endblock %}
+
+
+{% block media_mentions %}
+{{ block.super }}
+{% endblock %}
+
+{% endwith %}

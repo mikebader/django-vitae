@@ -1,0 +1,74 @@
+html {
+	margin:0px 2.5%;
+	}
+	
+body {
+	margin:40px auto;
+	font-family: Helvetica, sans-serif;
+	line-height: 1.32;
+	}
+h1 {
+	margin:0px;
+	}
+	
+h2,h3 {
+	margin:0px;
+	padding:0px;
+	}
+h2 {
+	padding-top: 1rem;
+	font-size: 20px;
+	font-weight: 600;
+	}
+
+h3 {
+	padding-left: .25%;
+	font-size: 16px;
+	font-weight: 500;
+	font-style:italic;
+	}
+ul.cv-primary-positions, ul.cv-entry, ul.cv-sublist {
+	list-style-type:none;
+	}
+
+ul.cv-primary-positions {
+	padding-left:0px;
+	}
+.cv-sublist li {
+	display: inline;
+	}
+	
+li {
+	padding-top: 1rem;
+	}
+
+li.cv-primary-positions {
+	margin:0px; 
+	padding:0px;
+	font-size: 1.5rem;
+/*	font-style:italic;	
+*/	}
+	
+.cv-entry-date {
+	text-align:right;
+	}
+
+.cv-entry-text > .author-emphasis {
+	font-weight: 600;
+	}
+
+ul.presentations {
+	padding-bottom:12px;
+	}
+
+ul.presentations > li {
+		padding:0px;	
+		list-style-type:none;	
+		}
+		
+ul.presentations > li:before {
+		content: "\f105\00A0\00A0"; /* FontAwesome Unicode */
+		font-family: FontAwesome;
+		display: inline-block;
+		}
+	}

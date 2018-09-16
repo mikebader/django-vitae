@@ -1,0 +1,48 @@
+{% load cvtags %}
+
+{% if total_books or user.is_authenticated %} 
+<h2 class='col-xs-12'>Book{{total_books|pluralize}}</h2>
+{% if book_published_list %}
+{% if book_revise_list or book_inprep_list %}<h3 class='col-xs-12'>Published</h3>{% endif %}
+<ul class="cv-entry">
+{% for book in book_published_list %}
+<li class="row">
+<span class="cv-entry-date col-xs-2 col-sm-1">{{book.pub_date|date:"Y"}}</span>
+<span class="cv-entry-text col-xs-9 col-sm-10">{{book.authorship.all|print_authors}}. <cite>{{book.title}}</cite>. {% if book.editions.all %}{% with book.editions.all|first as edition %}{{edition.edition}} ed. {% if edition.publisher %}{% if edition.place %}{{edition.place}}:{% endif %} {{edition.publisher}}. {% endif %}{% if edition.isbn %} ISBN:{% if book.url %}<a href="{{book.url}}" rel="external">{{edition.isbn}}</a>{% else %}{{edition.isbn}}{% endif %}{% endif %}{% endwith %}{% else %}{% if book.publisher %}{%if book.place %}{{book.place}}:{% endif %} {{book.publisher}}.{% endif %} {% if book.isbn %}ISBN:{% if book.url %}<a href="{{book.url}}" rel="external">{{book.isbn}}</a>{% endif %}{% else %}{{book.isbn}}.{% endif %}{% endif %} <a href="{{book.get_absolute_url}}" title="Details for {{book.short_title}}"><span class='fa  fa-chevron-circle-right' aria-hidden="true"></span></a>
+</span>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if book_revise_list %}
+<h3 class="col-xs-12">Under Review</h3>
+<ul class="cv-entry">
+{% for book in book_revise_list %}
+<li class="row">
+<span class="cv-entry-date col-xs-2 col-sm-1"></span>
+<span class="cv-entry-text">{{book.authorship.all|print_authors}}. <cite>{{book.title}}</cite>. {{book.get_status_display}} {% if book.publisher %}with {{book.publisher}}.{% endif %}
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if book_inprep_list %}
+<h3 class="col-xs-12">In Preparation</h3>
+<ul class="cv-entry">
+{% for book in book_inprep_list %}
+<li class="row">
+<span class="cv-entry-date col-xs-2 col-sm-1"></span>
+<span class="cv-entry-text  col-xs-9 col-sm-10">{{book.authorship.all|print_authors}}. <cite>{{book.title}}</cite>. 
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% if user.is_authenticated %}
+<ul class="cv-entry">
+<li class="row">
+    <a class="col-12 col-sm-12 book-add cv-add" alt="Add new book" href="{% url 'cv:cv_add' model_name='book' %}"><i class="far fa-plus-square"></i> Add new book</a>  
+</li>
+</ul>
+{% endif %}
+{% endif %}

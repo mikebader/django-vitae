@@ -1,0 +1,29 @@
+{% load cvtags %}
+
+{% if otherwriting_list or user.is_authenticated %}
+<h2 class="col-xs-12">Op-Eds, Book Reviews, and Other Writing</h2>
+<ul class="cv-entry">
+{% for piece in otherwriting_list %}
+<li id="otherwriting-{{piece.pk}}" class="row">
+<div class="noneditable">
+<span class="cv-entry-date col-xs-2 col-sm-1">{{piece.date|date:"Y"}}</span>
+<span class="cv-entry-text col-xs-9 col-sm-10">{% if piece.url %}<a href="{{piece.url}}">{{piece.title}}</a>{% else %}{{piece.title}}{% endif %}<cite>. {{piece.venue}}</cite>{% if piece.pages %}, {{piece.pages}}{% endif %}{% if piece.date %}. {{piece.date|date:"F j"}}{% endif %}.
+		{% if user.is_authenticated %}
+				<a class="ml-4 otherwriting-edit cv-edit" href="#otherwriting"><i class="far fa-edit"></i></a>
+		{% endif %}
+</span>
+</div>
+<div class="editable"></div>
+</li>
+{% endfor %}
+</ul>
+{% if user.is_authenticated %}
+<ul class="cv-entry">
+	<li class="row">
+		<div class="noneditable">
+    		<a class="col-12 col-sm-12 otherwriting-add cv-add" alt="Add new writing" href="#otherwriting"><i class="far fa-plus-square"></i> Add new writing</a>  
+		</div>
+	</li>
+</ul>
+{% endif %}
+{% endif %}

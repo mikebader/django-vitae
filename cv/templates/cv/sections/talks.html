@@ -1,0 +1,19 @@
+{% load cvtags %}
+
+{% if talk_list or user.is_authenticated %}
+<h2 class="col-xs-12">Talk{{talk_list.count|pluralize}}</h2>
+<ul class="cv-entry row">
+{% for talk in talk_list %}
+<li class="col-xs-offset-2 col-xs-9 col-sm-offset-1 col-sm-10">
+<span class="cv-entry-text">&#8220;{{talk.title}}.&#8221;</span> <a href="{{talk.get_absolute_url}}" title="Details about {{talk.short_title}}"><span class="fa fa-chevron-circle-right"><span></a>
+<ul class="row cv-sublist">
+<div class="col-xs-offset-2 col-xs-9 col-sm-offset-1 col-sm-11">
+{% for presentation in talk.presentations.all %}
+<li>{{presentation.event}} ({{presentation.presentation_date|date:"M Y"}}){% if presentation.get_type_display == "Invited" %}*{% endif %}{% if not forloop.last %},{% endif %}</li>
+{% endfor %}
+</div>
+</ul>
+</li>
+{% endfor %}
+</ul>
+{% endif %}

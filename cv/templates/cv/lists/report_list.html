@@ -1,0 +1,24 @@
+{% extends "cv/lists/_cv_lists_base.html" %}
+
+{% block centerbar-content %}
+
+{% with report_objects.total_articles as total_articles %}
+{% with report_objects.article_published_list as article_published_list %}
+{% with report_objects.article_revise_list as article_revise_list %}
+{% with report_objects.article_inprep_list as article_inprep_list %}
+
+{% include "cv/sections/reports.html" %}
+
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
+
+
+{% endblock centerbar-content %}
+
+{% block next-previous %}
+{% with "reports" as section_name %}
+{{block.super}}
+{% endwith %}
+{% endblock next-previous %}

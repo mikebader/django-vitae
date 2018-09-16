@@ -1,0 +1,58 @@
+{% load cvtags %}
+
+{% if total_reports or user.is_authenticated %} 
+<div class="col-xs-12">
+<h2>Report{{total_reports|pluralize}}</h2>
+{% if report_published_list %}
+{% if report_revise_list or report_inprep_list %}<h3>Published</h3>{% endif %}
+<ul class="cv-entry">
+{% for report in report_published_list %}
+<li id="report-{{report.slug}}" class="row">
+<span class="cv-entry-date col-xs-2 col-sm-1">{% if report.get_status_display == "Forthcoming" %}forth.{% else %}{{report.pub_date|date:"Y"}}{% endif %}</span>
+<span class="cv-entry-text col-xs-9 col-sm-10">{{report.reportauthorship_set.all|print_authors}}. <cite>{{report.title}}</cite>{% if report.institution %}. {{report.institution}}{% if report.place %}:{{report:place}}{% endif %}{% endif %}.<a href="{{report.get_absolute_url}}" title="Details for {{report.short_title}}"><span class='fa  fa-chevron-circle-right' aria-hidden="true"></span></a>
+	    {% if user.is_authenticated %}
+			<a class="ml-4 report-edit cv-edit" href="{% url 'cv:cv_edit' model_name='report' pk=report.pk %}"><i class="far fa-edit"></i></a>
+		{% endif %}
+</span>
+</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+
+{% if report_revise_list %}
+<div class="col-xs-12">
+<h3>Under Review</h3>
+<ul class="cv-entry">
+{% for report in report_revise_list %}
+<li id="report-{{report.slug}}" class="row">
+<span class="cv-entry-date  col-xs-2 col-sm-1"></span>
+<span class="cv-entry-text col-xs-9 col-sm-10">{{report.reportauthorship_set.all|print_authors}}. <cite>{{report.title}}</cite>{% if report.institution %}. {{report.institution}}{% if report.place %}:{{report:place}}{% endif %}{% endif %}.
+	    {% if user.is_authenticated %}
+			<a class="ml-4 report-edit cv-edit" href="{% url 'cv:cv_edit' model_name='report' pk=report.pk %}"><i class="far fa-edit"></i></a>
+		{% endif %}
+</span>
+</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+
+{% if report_inprep_list %}
+<div class="col-xs-12">
+<h3>In Preparation</h3>
+<ul class="cv-entry">
+{% for report in report_inprep_list %}
+<li id="report-{{report.slug}}" class="row">
+<span class="cv-entry-date col-xs-2 col-sm-1"></span>
+<span class="cv-entry-text  col-xs-9 col-sm-10">{{report.reportauthorship_set.all|print_authors}}. &#8220;{{report.title}}.&#8221;. </span>
+	    {% if user.is_authenticated %}
+			<a class="ml-4 report-edit cv-edit" href="{% url 'cv:cv_edit' model_name='report' pk=report.pk %}"><i class="far fa-edit"></i></a>
+		{% endif %}
+</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+
+{% endif %}

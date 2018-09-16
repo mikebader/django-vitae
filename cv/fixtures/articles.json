@@ -1,0 +1,1588 @@
+[
+{
+  "model": "auth.permission",
+  "pk": 1,
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": 1,
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 2,
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": 1,
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 3,
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": 1,
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 4,
+  "fields": {
+    "name": "Can add user",
+    "content_type": 2,
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 5,
+  "fields": {
+    "name": "Can change user",
+    "content_type": 2,
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 6,
+  "fields": {
+    "name": "Can delete user",
+    "content_type": 2,
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 7,
+  "fields": {
+    "name": "Can add group",
+    "content_type": 3,
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 8,
+  "fields": {
+    "name": "Can change group",
+    "content_type": 3,
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 9,
+  "fields": {
+    "name": "Can delete group",
+    "content_type": 3,
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 10,
+  "fields": {
+    "name": "Can add permission",
+    "content_type": 4,
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 11,
+  "fields": {
+    "name": "Can change permission",
+    "content_type": 4,
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 12,
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": 4,
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 13,
+  "fields": {
+    "name": "Can add content type",
+    "content_type": 5,
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 14,
+  "fields": {
+    "name": "Can change content type",
+    "content_type": 5,
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 15,
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": 5,
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 16,
+  "fields": {
+    "name": "Can add session",
+    "content_type": 6,
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 17,
+  "fields": {
+    "name": "Can change session",
+    "content_type": 6,
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 18,
+  "fields": {
+    "name": "Can delete session",
+    "content_type": 6,
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 19,
+  "fields": {
+    "name": "Can add Research project image",
+    "content_type": 7,
+    "codename": "add_researchprojectimage"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 20,
+  "fields": {
+    "name": "Can change Research project image",
+    "content_type": 7,
+    "codename": "change_researchprojectimage"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 21,
+  "fields": {
+    "name": "Can delete Research project image",
+    "content_type": 7,
+    "codename": "delete_researchprojectimage"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 22,
+  "fields": {
+    "name": "Can add Research project item",
+    "content_type": 8,
+    "codename": "add_researchprojectitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 23,
+  "fields": {
+    "name": "Can change Research project item",
+    "content_type": 8,
+    "codename": "change_researchprojectitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 24,
+  "fields": {
+    "name": "Can delete Research project item",
+    "content_type": 8,
+    "codename": "delete_researchprojectitem"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 25,
+  "fields": {
+    "name": "Can add Research project",
+    "content_type": 9,
+    "codename": "add_researchproject"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 26,
+  "fields": {
+    "name": "Can change Research project",
+    "content_type": 9,
+    "codename": "change_researchproject"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 27,
+  "fields": {
+    "name": "Can delete Research project",
+    "content_type": 9,
+    "codename": "delete_researchproject"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 28,
+  "fields": {
+    "name": "Can add objective",
+    "content_type": 10,
+    "codename": "add_objective"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 29,
+  "fields": {
+    "name": "Can change objective",
+    "content_type": 10,
+    "codename": "change_objective"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 30,
+  "fields": {
+    "name": "Can delete objective",
+    "content_type": 10,
+    "codename": "delete_objective"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 31,
+  "fields": {
+    "name": "Can add course offering",
+    "content_type": 11,
+    "codename": "add_courseoffering"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 32,
+  "fields": {
+    "name": "Can change course offering",
+    "content_type": 11,
+    "codename": "change_courseoffering"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 33,
+  "fields": {
+    "name": "Can delete course offering",
+    "content_type": 11,
+    "codename": "delete_courseoffering"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 34,
+  "fields": {
+    "name": "Can add course book",
+    "content_type": 12,
+    "codename": "add_coursebook"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 35,
+  "fields": {
+    "name": "Can change course book",
+    "content_type": 12,
+    "codename": "change_coursebook"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 36,
+  "fields": {
+    "name": "Can delete course book",
+    "content_type": 12,
+    "codename": "delete_coursebook"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 37,
+  "fields": {
+    "name": "Can add course file",
+    "content_type": 13,
+    "codename": "add_coursefile"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 38,
+  "fields": {
+    "name": "Can change course file",
+    "content_type": 13,
+    "codename": "change_coursefile"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 39,
+  "fields": {
+    "name": "Can delete course file",
+    "content_type": 13,
+    "codename": "delete_coursefile"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 40,
+  "fields": {
+    "name": "Can add course image",
+    "content_type": 14,
+    "codename": "add_courseimage"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 41,
+  "fields": {
+    "name": "Can change course image",
+    "content_type": 14,
+    "codename": "change_courseimage"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 42,
+  "fields": {
+    "name": "Can delete course image",
+    "content_type": 14,
+    "codename": "delete_courseimage"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 43,
+  "fields": {
+    "name": "Can add course",
+    "content_type": 15,
+    "codename": "add_course"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 44,
+  "fields": {
+    "name": "Can change course",
+    "content_type": 15,
+    "codename": "change_course"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 45,
+  "fields": {
+    "name": "Can delete course",
+    "content_type": 15,
+    "codename": "delete_course"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 46,
+  "fields": {
+    "name": "Can add book",
+    "content_type": 16,
+    "codename": "add_book"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 47,
+  "fields": {
+    "name": "Can change book",
+    "content_type": 16,
+    "codename": "change_book"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 48,
+  "fields": {
+    "name": "Can delete book",
+    "content_type": 16,
+    "codename": "delete_book"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 49,
+  "fields": {
+    "name": "Can add service",
+    "content_type": 17,
+    "codename": "add_service"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 50,
+  "fields": {
+    "name": "Can change service",
+    "content_type": 17,
+    "codename": "change_service"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 51,
+  "fields": {
+    "name": "Can delete service",
+    "content_type": 17,
+    "codename": "delete_service"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 52,
+  "fields": {
+    "name": "Can add student",
+    "content_type": 18,
+    "codename": "add_student"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 53,
+  "fields": {
+    "name": "Can change student",
+    "content_type": 18,
+    "codename": "change_student"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 54,
+  "fields": {
+    "name": "Can delete student",
+    "content_type": 18,
+    "codename": "delete_student"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 55,
+  "fields": {
+    "name": "Can add other writing",
+    "content_type": 19,
+    "codename": "add_otherwriting"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 56,
+  "fields": {
+    "name": "Can change other writing",
+    "content_type": 19,
+    "codename": "change_otherwriting"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 57,
+  "fields": {
+    "name": "Can delete other writing",
+    "content_type": 19,
+    "codename": "delete_otherwriting"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 58,
+  "fields": {
+    "name": "Can add report authorship",
+    "content_type": 20,
+    "codename": "add_reportauthorship"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 59,
+  "fields": {
+    "name": "Can change report authorship",
+    "content_type": 20,
+    "codename": "change_reportauthorship"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 60,
+  "fields": {
+    "name": "Can delete report authorship",
+    "content_type": 20,
+    "codename": "delete_reportauthorship"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 61,
+  "fields": {
+    "name": "Can add book",
+    "content_type": 21,
+    "codename": "add_book"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 62,
+  "fields": {
+    "name": "Can change book",
+    "content_type": 21,
+    "codename": "change_book"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 63,
+  "fields": {
+    "name": "Can delete book",
+    "content_type": 21,
+    "codename": "delete_book"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 64,
+  "fields": {
+    "name": "Can add report",
+    "content_type": 22,
+    "codename": "add_report"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 65,
+  "fields": {
+    "name": "Can change report",
+    "content_type": 22,
+    "codename": "change_report"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 66,
+  "fields": {
+    "name": "Can delete report",
+    "content_type": 22,
+    "codename": "delete_report"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 67,
+  "fields": {
+    "name": "Can add journal service",
+    "content_type": 23,
+    "codename": "add_journalservice"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 68,
+  "fields": {
+    "name": "Can change journal service",
+    "content_type": 23,
+    "codename": "change_journalservice"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 69,
+  "fields": {
+    "name": "Can delete journal service",
+    "content_type": 23,
+    "codename": "delete_journalservice"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 70,
+  "fields": {
+    "name": "Can add book edition",
+    "content_type": 24,
+    "codename": "add_bookedition"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 71,
+  "fields": {
+    "name": "Can change book edition",
+    "content_type": 24,
+    "codename": "change_bookedition"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 72,
+  "fields": {
+    "name": "Can delete book edition",
+    "content_type": 24,
+    "codename": "delete_bookedition"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 73,
+  "fields": {
+    "name": "Can add media mention",
+    "content_type": 25,
+    "codename": "add_mediamention"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 74,
+  "fields": {
+    "name": "Can change media mention",
+    "content_type": 25,
+    "codename": "change_mediamention"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 75,
+  "fields": {
+    "name": "Can delete media mention",
+    "content_type": 25,
+    "codename": "delete_mediamention"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 76,
+  "fields": {
+    "name": "Can add grant",
+    "content_type": 26,
+    "codename": "add_grant"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 77,
+  "fields": {
+    "name": "Can change grant",
+    "content_type": 26,
+    "codename": "change_grant"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 78,
+  "fields": {
+    "name": "Can delete grant",
+    "content_type": 26,
+    "codename": "delete_grant"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 79,
+  "fields": {
+    "name": "Can add chapter",
+    "content_type": 27,
+    "codename": "add_chapter"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 80,
+  "fields": {
+    "name": "Can change chapter",
+    "content_type": 27,
+    "codename": "change_chapter"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 81,
+  "fields": {
+    "name": "Can delete chapter",
+    "content_type": 27,
+    "codename": "delete_chapter"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 82,
+  "fields": {
+    "name": "Can add discipline",
+    "content_type": 28,
+    "codename": "add_discipline"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 83,
+  "fields": {
+    "name": "Can change discipline",
+    "content_type": 28,
+    "codename": "change_discipline"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 84,
+  "fields": {
+    "name": "Can delete discipline",
+    "content_type": 28,
+    "codename": "delete_discipline"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 85,
+  "fields": {
+    "name": "Can add article",
+    "content_type": 29,
+    "codename": "add_article"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 86,
+  "fields": {
+    "name": "Can change article",
+    "content_type": 29,
+    "codename": "change_article"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 87,
+  "fields": {
+    "name": "Can delete article",
+    "content_type": 29,
+    "codename": "delete_article"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 88,
+  "fields": {
+    "name": "Can add chapter authorship",
+    "content_type": 30,
+    "codename": "add_chapterauthorship"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 89,
+  "fields": {
+    "name": "Can change chapter authorship",
+    "content_type": 30,
+    "codename": "change_chapterauthorship"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 90,
+  "fields": {
+    "name": "Can delete chapter authorship",
+    "content_type": 30,
+    "codename": "delete_chapterauthorship"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 91,
+  "fields": {
+    "name": "Can add award",
+    "content_type": 31,
+    "codename": "add_award"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 92,
+  "fields": {
+    "name": "Can change award",
+    "content_type": 31,
+    "codename": "change_award"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 93,
+  "fields": {
+    "name": "Can delete award",
+    "content_type": 31,
+    "codename": "delete_award"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 94,
+  "fields": {
+    "name": "Can add presentation",
+    "content_type": 32,
+    "codename": "add_presentation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 95,
+  "fields": {
+    "name": "Can change presentation",
+    "content_type": 32,
+    "codename": "change_presentation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 96,
+  "fields": {
+    "name": "Can delete presentation",
+    "content_type": 32,
+    "codename": "delete_presentation"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 97,
+  "fields": {
+    "name": "Can add book authorship",
+    "content_type": 33,
+    "codename": "add_bookauthorship"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 98,
+  "fields": {
+    "name": "Can change book authorship",
+    "content_type": 33,
+    "codename": "change_bookauthorship"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 99,
+  "fields": {
+    "name": "Can delete book authorship",
+    "content_type": 33,
+    "codename": "delete_bookauthorship"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 100,
+  "fields": {
+    "name": "Can add talk",
+    "content_type": 34,
+    "codename": "add_talk"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 101,
+  "fields": {
+    "name": "Can change talk",
+    "content_type": 34,
+    "codename": "change_talk"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 102,
+  "fields": {
+    "name": "Can delete talk",
+    "content_type": 34,
+    "codename": "delete_talk"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 103,
+  "fields": {
+    "name": "Can add grant collaborator",
+    "content_type": 35,
+    "codename": "add_grantcollaborator"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 104,
+  "fields": {
+    "name": "Can change grant collaborator",
+    "content_type": 35,
+    "codename": "change_grantcollaborator"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 105,
+  "fields": {
+    "name": "Can delete grant collaborator",
+    "content_type": 35,
+    "codename": "delete_grantcollaborator"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 106,
+  "fields": {
+    "name": "Can add chapter editorship",
+    "content_type": 36,
+    "codename": "add_chaptereditorship"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 107,
+  "fields": {
+    "name": "Can change chapter editorship",
+    "content_type": 36,
+    "codename": "change_chaptereditorship"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 108,
+  "fields": {
+    "name": "Can delete chapter editorship",
+    "content_type": 36,
+    "codename": "delete_chaptereditorship"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 109,
+  "fields": {
+    "name": "Can add journal",
+    "content_type": 37,
+    "codename": "add_journal"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 110,
+  "fields": {
+    "name": "Can change journal",
+    "content_type": 37,
+    "codename": "change_journal"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 111,
+  "fields": {
+    "name": "Can delete journal",
+    "content_type": 37,
+    "codename": "delete_journal"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 112,
+  "fields": {
+    "name": "Can add article authorship",
+    "content_type": 38,
+    "codename": "add_articleauthorship"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 113,
+  "fields": {
+    "name": "Can change article authorship",
+    "content_type": 38,
+    "codename": "change_articleauthorship"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 114,
+  "fields": {
+    "name": "Can delete article authorship",
+    "content_type": 38,
+    "codename": "delete_articleauthorship"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 115,
+  "fields": {
+    "name": "Can add collaborator",
+    "content_type": 39,
+    "codename": "add_collaborator"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 116,
+  "fields": {
+    "name": "Can change collaborator",
+    "content_type": 39,
+    "codename": "change_collaborator"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 117,
+  "fields": {
+    "name": "Can delete collaborator",
+    "content_type": 39,
+    "codename": "delete_collaborator"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 118,
+  "fields": {
+    "name": "Can add degree",
+    "content_type": 40,
+    "codename": "add_degree"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 119,
+  "fields": {
+    "name": "Can change degree",
+    "content_type": 40,
+    "codename": "change_degree"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 120,
+  "fields": {
+    "name": "Can delete degree",
+    "content_type": 40,
+    "codename": "delete_degree"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 121,
+  "fields": {
+    "name": "Can add position",
+    "content_type": 41,
+    "codename": "add_position"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 122,
+  "fields": {
+    "name": "Can change position",
+    "content_type": 41,
+    "codename": "change_position"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 123,
+  "fields": {
+    "name": "Can delete position",
+    "content_type": 41,
+    "codename": "delete_position"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 124,
+  "fields": {
+    "name": "Can add CV file",
+    "content_type": 42,
+    "codename": "add_cvfile"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 125,
+  "fields": {
+    "name": "Can change CV file",
+    "content_type": 42,
+    "codename": "change_cvfile"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 126,
+  "fields": {
+    "name": "Can delete CV file",
+    "content_type": 42,
+    "codename": "delete_cvfile"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$30000$823nQ3G4alDJ$nUB2oFnYRA6wVVcipECDZ6Jai/fLw4Kf7nOvrs1OFtw=",
+    "last_login": "2017-07-20T14:23:06.412Z",
+    "is_superuser": true,
+    "username": "mikebader",
+    "first_name": "",
+    "last_name": "",
+    "email": "mikebader9@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2017-07-20T14:22:56.572Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "nqyrbbitz82nqw2hcnhyo7rmmthd0a9a",
+  "fields": {
+    "session_data": "ZWQyNmUyZjVmMWI4NDk0ZjBiMTY5NTBlYjZiYWEwMjllZDViODIyNTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJmM2RmZDBkOTJlYThlMWFlZjhmMzYxZmZkN2JjNGI2MDZlNmZiMGRkIn0=",
+    "expire_date": "2017-08-03T14:23:06.414Z"
+  }
+},
+{
+  "model": "cv.collaborator",
+  "pk": 1,
+  "fields": {
+    "first_name": "Michael",
+    "middle_initial": "D. M.",
+    "last_name": "Bader",
+    "suffix": "",
+    "institution": "American University",
+    "website": "https://mikebader.net",
+    "email": "michaeldmbader@gmail.com",
+    "alternate_email": "bader@american.edu"
+  }
+},
+{
+  "model": "cv.collaborator",
+  "pk": 2,
+  "fields": {
+    "first_name": "Yakko",
+    "middle_initial": "",
+    "last_name": "Warner",
+    "suffix": "",
+    "institution": "Warner Brothers",
+    "website": "",
+    "email": "yakko.warner@watertower.com",
+    "alternate_email": ""
+  }
+},
+{
+  "model": "cv.collaborator",
+  "pk": 3,
+  "fields": {
+    "first_name": "Princess Angelina",
+    "middle_initial": "L. F. B. F. B. B.",
+    "last_name": "Warner",
+    "suffix": "III",
+    "institution": "Warner Brothers",
+    "website": "",
+    "email": "dot.warner@watertower.com",
+    "alternate_email": ""
+  }
+},
+{
+  "model": "cv.collaborator",
+  "pk": 4,
+  "fields": {
+    "first_name": "Wakko",
+    "middle_initial": "",
+    "last_name": "Warner",
+    "suffix": "",
+    "institution": "Warner Brothers",
+    "website": "",
+    "email": "wakko.warner@watertower.com",
+    "alternate_email": ""
+  }
+},
+{
+  "model": "cv.discipline",
+  "pk": 1,
+  "fields": {
+    "name": "CV",
+    "slug": "cv"
+  }
+},
+{
+  "model": "cv.discipline",
+  "pk": 2,
+  "fields": {
+    "name": "Django",
+    "slug": "django"
+  }
+},
+{
+  "model": "cv.journal",
+  "pk": 1,
+  "fields": {
+    "title": "Journal of CVs",
+    "abbreviated_title": "J CV",
+    "issn": "9999-9999",
+    "website": "",
+    "primary_discipline": 1,
+    "other_disciplines": []
+  }
+},
+{
+  "model": "cv.journal",
+  "pk": 2,
+  "fields": {
+    "title": "Journal of Fake Django",
+    "abbreviated_title": "J Fake Django",
+    "issn": "9999-9998",
+    "website": "",
+    "primary_discipline": 2,
+    "other_disciplines": []
+  }
+},
+{
+  "model": "cv.article",
+  "pk": 1,
+  "fields": {
+    "display": true,
+    "extra": "",
+    "title": "First Article for Django-CV Testing Suite",
+    "short_title": "First Article",
+    "slug": "first-article",
+    "primary_discipline": 1,
+    "status": 60,
+    "abstract": "",
+    "submission_date": null,
+    "pub_date": "2017-07-20",
+    "journal": 1,
+    "volume": "1",
+    "issue": "3",
+    "start_page": "234",
+    "end_page": "240",
+    "url": "",
+    "doi": "",
+    "pmcid": "",
+    "pmid": "",
+    "series": "",
+    "number": "",
+    "abstract_html": "",
+    "is_published": true,
+    "other_disciplines": [
+      2
+    ],
+    "grants": []
+  }
+},
+{
+  "model": "cv.article",
+  "pk": 2,
+  "fields": {
+    "display": true,
+    "extra": "",
+    "title": "Second Article for Django-CV Testing Suite",
+    "short_title": "Second Article",
+    "slug": "second-article",
+    "primary_discipline": null,
+    "status": 60,
+    "abstract": "* **Motivation.** Make a CV\r\n* **Results.** Made CV",
+    "submission_date": null,
+    "pub_date": "2017-07-21",
+    "journal": 2,
+    "volume": "1",
+    "issue": "1",
+    "start_page": "10",
+    "end_page": "30",
+    "url": "",
+    "doi": "",
+    "pmcid": "",
+    "pmid": "",
+    "series": "",
+    "number": "",
+    "abstract_html": "<ul>\n<li><strong>Motivation.</strong> Make a CV</li>\n<li><strong>Results.</strong> Made CV</li>\n</ul>",
+    "is_published": true,
+    "other_disciplines": [],
+    "grants": []
+  }
+},
+{
+  "model": "cv.article",
+  "pk": 3,
+  "fields": {
+    "display": true,
+    "extra": "",
+    "title": "Third Article for Django-CV Testing Suite",
+    "short_title": "Third Article",
+    "slug": "third-article",
+    "primary_discipline": null,
+    "status": 0,
+    "abstract": "",
+    "submission_date": null,
+    "pub_date": null,
+    "journal": null,
+    "volume": "",
+    "issue": "",
+    "start_page": "",
+    "end_page": "",
+    "url": "",
+    "doi": "",
+    "pmcid": "",
+    "pmid": "",
+    "series": "",
+    "number": "",
+    "abstract_html": "",
+    "is_published": false,
+    "other_disciplines": [],
+    "grants": []
+  }
+},
+{
+  "model": "cv.articleauthorship",
+  "pk": 1,
+  "fields": {
+    "collaborator": 1,
+    "print_middle": true,
+    "display_order": 1,
+    "article": 1,
+    "student_colleague": null
+  }
+},
+{
+  "model": "cv.articleauthorship",
+  "pk": 2,
+  "fields": {
+    "collaborator": 1,
+    "print_middle": false,
+    "display_order": 1,
+    "article": 2,
+    "student_colleague": null
+  }
+},
+{
+  "model": "cv.articleauthorship",
+  "pk": 3,
+  "fields": {
+    "collaborator": 2,
+    "print_middle": false,
+    "display_order": 2,
+    "article": 2,
+    "student_colleague": 0
+  }
+},
+{
+  "model": "cv.articleauthorship",
+  "pk": 4,
+  "fields": {
+    "collaborator": 3,
+    "print_middle": true,
+    "display_order": 3,
+    "article": 3,
+    "student_colleague": 20
+  }
+},
+{
+  "model": "cv.articleauthorship",
+  "pk": 5,
+  "fields": {
+    "collaborator": 2,
+    "print_middle": true,
+    "display_order": 1,
+    "article": 3,
+    "student_colleague": 10
+  }
+},
+{
+  "model": "cv.articleauthorship",
+  "pk": 6,
+  "fields": {
+    "collaborator": 4,
+    "print_middle": true,
+    "display_order": 2,
+    "article": 3,
+    "student_colleague": 0
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2017-07-20T14:24:53.135Z",
+    "user": 1,
+    "content_type": 28,
+    "object_id": "1",
+    "object_repr": "CV",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2017-07-20T14:24:56.456Z",
+    "user": 1,
+    "content_type": 37,
+    "object_id": "1",
+    "object_repr": "Journal of CVs",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2017-07-20T14:26:17.920Z",
+    "user": 1,
+    "content_type": 39,
+    "object_id": "1",
+    "object_repr": "Bader, Michael D. M.",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2017-07-20T14:26:26.434Z",
+    "user": 1,
+    "content_type": 29,
+    "object_id": "1",
+    "object_repr": "First Article",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}, {\"added\": {\"object\": \"Bader, Michael D. M.\", \"name\": \"article authorship\"}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2017-07-20T14:26:49.180Z",
+    "user": 1,
+    "content_type": 28,
+    "object_id": "2",
+    "object_repr": "Django",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2017-07-20T14:26:53.086Z",
+    "user": 1,
+    "content_type": 29,
+    "object_id": "1",
+    "object_repr": "First Article",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"primary_discipline\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2017-07-20T14:30:32.683Z",
+    "user": 1,
+    "content_type": 37,
+    "object_id": "2",
+    "object_repr": "Journal of Fake Django",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2017-07-20T14:32:57.326Z",
+    "user": 1,
+    "content_type": 39,
+    "object_id": "2",
+    "object_repr": "Warner, Yakko ",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2017-07-20T14:33:29.169Z",
+    "user": 1,
+    "content_type": 29,
+    "object_id": "2",
+    "object_repr": "Second Article",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}, {\"added\": {\"object\": \"Bader, Michael D. M.\", \"name\": \"article authorship\"}}, {\"added\": {\"object\": \"Warner, Yakko \", \"name\": \"article authorship\"}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2017-07-20T14:38:05.689Z",
+    "user": 1,
+    "content_type": 39,
+    "object_id": "3",
+    "object_repr": "Warner, Princess Angelina L. F. B. F. B. B.",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2017-07-20T14:38:38.562Z",
+    "user": 1,
+    "content_type": 39,
+    "object_id": "3",
+    "object_repr": "Warner, Princess Angelina L. F. B. F. B. B.",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"suffix\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2017-07-20T14:39:10.025Z",
+    "user": 1,
+    "content_type": 39,
+    "object_id": "4",
+    "object_repr": "Warner, Wakko ",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2017-07-20T14:39:49.197Z",
+    "user": 1,
+    "content_type": 29,
+    "object_id": "3",
+    "object_repr": "Third Article",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"article authorship\", \"object\": \"Warner, Princess Angelina L. F. B. F. B. B.\"}}, {\"added\": {\"name\": \"article authorship\", \"object\": \"Warner, Yakko \"}}, {\"added\": {\"name\": \"article authorship\", \"object\": \"Warner, Wakko \"}}]"
+  }
+}
+]

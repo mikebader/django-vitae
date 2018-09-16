@@ -1,0 +1,30 @@
+{% load cvtags %}
+
+{% if total_grants or user.is_authenticated %}
+<h2 class="col-xs-12">Grant{{total_grants|pluralize}}</h2>
+{% if internal_grants %}
+<h3 class="col-xs-12">Internal</h3>
+<ul class="cv-entry">
+{% for grant in internal_grants %}
+<li class="row">
+<span class="cv-entry-date col-xs-2 col-sm-1">{{grant|year_range}}</span>
+<span class="cv-entry-text col-xs-9 col-sm-10">{{grant.title}}. {% if grant.agency %}{{grant.agency}}{% endif %}{% if grant.division %}, {{grant.division}}{% endif %} ({{grant.amount|monetize}}). <em>{{grant.role}}</em>.  {% if grant.get_pi %}{{grant.get_pi|print_authors}}, Principal Investigator{{grant.get_pi.count|pluralize}}.{% endif %}
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if external_grants %}
+<h3 class="col-xs-12">External</h3>
+<ul class="cv-entry">
+{% for grant in external_grants %}
+<li class="row">
+<span class="cv-entry-date col-xs-2 col-sm-1">{{grant|year_range}}</span>
+<span class="cv-entry-text col-xs-9 col-sm-10">{{grant.title}}. {% if grant.division %}{{grant.division}},{% endif %}{% if grant.agency %}{{grant.agency}}{% endif %} ({{grant.amount|monetize}}). <em>{{grant.role}}</em>.  {% if grant.get_pi %}{{grant.get_pi|print_authors}}, Principal Investigator{{grant.get_pi.count|pluralize}}.{% endif %}
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+
+{% endif %}

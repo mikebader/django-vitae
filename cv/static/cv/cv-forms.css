@@ -1,0 +1,28 @@
+/* CV Form Styles */
+.invalid-feedback {
+    display:block;
+}
+
+label {
+    margin:7px 0px 0px; 
+}
+
+.author input[type="number"] {
+    width:5rem;
+}
+
+.author > input, .author > textarea, .author > select {
+    align-self: center !important;
+}
+
+
+.author {
+    display:block;
+    background:#B8DAFF;
+    border: 1px solid #0561BD;
+    border-radius:.25rem;
+}
+
+select[required=True] {
+    font-weight:bold;
+}

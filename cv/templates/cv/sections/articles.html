@@ -1,0 +1,66 @@
+{% load cvtags %} 
+
+{% if total_articles or user.is_authenticated %}
+<div class="col-xs-12">
+    <h2>Article{{total_articles|pluralize}}</h2> {% if article_published_list %} {% if article_revise_list or article_inprep_list %}
+    <h3>Published</h3>{% endif %}
+    <ul class="cv-entry">
+        {% for article in article_published_list %}
+        <li id="article-{{article.slug}}" class="row">
+            <span class="cv-entry-date col-xs-2 col-sm-1">{% if article.get_status_display == "Forthcoming" %}forth.{% else %}{{article.pub_date|date:"Y"}}{% endif %}</span>
+            <span class="cv-entry-text col-xs-9 col-sm-10"> {{article.authorship.all|print_authors}}. &#8220;{{article.title}}.&#8221; <cite>{{article.journal}}</cite>{% if article.volume %} {{article.volume}}{% endif %}{% if article.issue %}({{article.issue}}){% endif %}{%if article.start_page %}:{{article.start_page}}{%if article.end_page %}-{{article.end_page}}{% endif %}{% endif %}. <a href="{{article.get_absolute_url}}" title="Details for {{article.short_title}}"><span class='fa  fa-chevron-circle-right' aria-hidden="true"></span></a>
+        {% if user.is_authenticated %}
+			<a class="ml-4 article-edit cv-edit" href="{% url 'cv:cv_edit' model_name='article' pk=article.pk %}"><i class="far fa-edit"></i></a>
+		{% endif %}
+            </span>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %} 
+{% if article_revise_list %}
+<div class="col-xs-12">
+    <h3>Under Review</h3>
+    <ul class="cv-entry">
+        {% for article in article_revise_list %}
+        <li id="article-{{article.slug}}" class="row">
+            <span class="cv-entry-date  col-xs-2 col-sm-1"></span>
+            <span class="cv-entry-text  col-xs-9 col-sm-10">{{article.authorship.all|print_authors}}. &#8220;{{article.title}}.&#8221; {{article.get_status_display}} {% if article.journal %}at <cite>{{article.journal}}</cite>.{% endif %}        
+            {% if user.is_authenticated %}
+                <a class="ml-4 degree-edit cv-edit" href="{% url 'cv:cv_edit' model_name='article' pk=article.pk %}"><i class="far fa-edit"></i></a>
+            {% endif %}
+            </span>
+        </li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+
+{% if article_inprep_list %}
+<div class="col-xs-12">
+<h3>In Preparation</h3>
+<ul class="cv-entry">
+{% for article in article_inprep_list %}
+<li id="article-{{article.slug}}" class="row">
+<span class="cv-entry-date col-xs-2 col-sm-1"></span>
+            <span class="cv-entry-text  col-xs-9 col-sm-10">{{article.authorship.all|print_authors}}. &#8220;{{article.title}}.&#8221;. 
+            {% if user.is_authenticated %}
+                <a class="ml-4 degree-edit cv-edit" href="{% url 'cv:cv_edit' model_name='article' pk=article.pk %}"><i class="far fa-edit"></i></a>
+            {% endif %}
+
+            </span>
+
+</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+
+{% if user.is_authenticated %}
+<ul class="cv-entry">
+<li class="row">
+    <a class="col-12 col-sm-12 article-add cv-add" alt="Add new article" href="{% url 'cv:cv_add' model_name='article' %}"><i class="far fa-plus-square"></i> Add new article</a>  
+</li>
+</ul>
+{% endif %}
+{% endif %}

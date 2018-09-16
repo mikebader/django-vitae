@@ -1,0 +1,32 @@
+{% if award_list or user.is_authenticated %} 
+	<div id="award" class="row">
+		<h2 class="col-12">Honors &amp; Awards</h2>
+	</div>
+
+	<ul class="mt-0 cv-entry">
+		{% for award in award_list %}
+		{% spaceless %}
+		<li id="award-{{award.id}}" class="row">
+			<div class="noneditable">
+				<span class="cv-entry-date col-xs-2 col-sm-1">{{award.date|date:"Y"}} </span> 
+				<span class="cv-entry-text col-xs-9 col-sm-10">
+					<em class="cv-entry-award-name">{{award.name}}</em>, {{award.organization}}
+				</span>
+				<span class="cv-entry-award-extra hide">{{award.description}}</span>
+				{% if user.is_authenticated %}
+					<a class="ml-4 award-edit cv-edit" href="#award"><i class="far fa-edit"></i></a>
+				{% endif %}
+			</div>
+			<div class="editable"></div>
+		</li>
+		{% endspaceless %}
+		{% endfor %}
+		{% if user.is_authenticated %}
+		<li class="row">
+			<div class="noneditable">
+				<a class="col-12 col-sm-12 award-add cv-add" alt="Add new honor or award" href="#award"><i class="far fa-plus-square"></i> Add new honor or award</a>
+			</div>
+		</li>
+		{% endif %}
+	</ul>
+{% endif %}

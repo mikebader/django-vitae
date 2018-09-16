@@ -1,0 +1,49 @@
+{% extends "cv/details/_cv_detail_base.html" %}
+{% load cvtags %}
+{% load staticfiles %}
+
+{% with talk as object %}
+
+{% block object-list-url %}{% url 'cv:talk_object_list' %}{% endblock %}
+
+{% block next-previous %}
+{% with "talk" as section_name %}
+{{block.super}}
+{% endwith %}
+{% endblock next-previous %}
+
+
+{% block formatted-citation %}
+<p>&#8220;{{talk.title}}{% if talk.collaborator.all|length <= 1 %},{% endif %}&#8221; {% if talk.collaborator.all|length > 1 %}(with 
+{% for collaborator in talk.collaborator.all %}
+{% if collaborator.first_name != "Michael" and collaborator.last_name != "Bader" %}{{collaborator.first_name}} {{collaborator.last_name}}{% endif %}{% endfor %}),{% endif %} talk presented</p>
+<ul class="presentations">
+	{% for presentation in talk.presentations.all %}
+	<li>{{presentation.presentation_date|date:"M Y"}} at {{presentation.event}}.</li>
+	{% endfor %}
+</ul>
+
+
+{% endblock formatted-citation %}
+
+
+{% block object-citation-url-ris %}
+{% url 'cv:talk_citation' talk.slug 'ris' %}
+{% endblock %}
+
+{% block object-citation-url-bib %}
+{% url 'cv:talk_citation' talk.slug 'bib' %}
+{% endblock %}
+
+{% block type-specific-info %}
+{% endblock %}
+
+
+{% block media_mentions %}
+{{ block.super }}
+{% endblock %}
+
+{% endwith %}
+
+
+

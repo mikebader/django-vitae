@@ -1,0 +1,24 @@
+{% if student_list or user.is_authenticated %}
+<h2 class="col-xs-12">Student{{student_list.count|pluralize}}</h2>
+<ul class="cv-entry">
+    {% for student in student_list %}
+    <li id="student-{{student.pk}}" class="row">
+        <div class="noneditable">
+            <span class="cv-entry-text col-xs-11">{{student.first_name}} {{student.last_name}} ({{student.role}}) {% if student.graduation_date %}Graduated {{student.graduation_date|date:"M Y"}}{% endif %}{% if student.current_position %}, currently {{student.current_position}}{% endif %}
+    	    </span> 
+    	    {% if user.is_authenticated %}
+            	<a class="ml-4 student-edit cv-edit" href="#student"><i class="far fa-edit"></i></a> 
+            {% endif %}
+        </div>
+        <div class="editable"></div>
+    </li>
+    {% endfor %}
+{% if user.is_authenticated %}
+	<li class="row">
+		<div class="noneditable">
+			<a class="col-12 col-sm-12 student-add cv-add" alt="Add new student" href="#student"><i class="far fa-plus-square"></i> Add new student</a>
+		</div>
+	</li>
+{% endif %}
+</ul>
+{% endif %}

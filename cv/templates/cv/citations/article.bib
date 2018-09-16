@@ -1,0 +1,14 @@
+{% load cvtags %}
+@article{bader,
+	author = { {{ article.articleauthorship_set.all|print_authors_bib_format }} },
+	year = { {{article.pub_date.year}} },
+	month = {{article.pub_date|date:"b"}},
+	title = { {{article.title}} },
+	{% if article.journal %}journal = { {{article.journal.title }} },{% endif %}
+	{% if article.volume %}volume = { {{article.volume}} },
+	{% if article.issue %}number = { {{article.issue}} },{% endif %}{% endif %}
+	{% if article.start_page %}pages = { {{article.start_page}}{% if article.end_page %}--{{article.end_page}} {% else %}+ {% endif %} },{% endif %}
+	{% if article.abstract %}abstract = { {{article.abstract}} },{% endif %}
+	{% if article.series %}series = { {{article.series}} },{% endif %}
+	annote = { {% if article.pmid %}PMID:{{article.pmid}}, {% endif %}{% if article.pmcid %}{ PMCID:{{article.pmcid}} {% endif %} }
+	}

@@ -1,0 +1,13 @@
+{% load cvtags %}
+{% with talk.get_latest_presentation as presentation %}
+@inproceedings{bader_{{presentation.presentation_date.year}},
+	address = { {{presentation.city}}, {{presentation.state}} },
+	title = { {{talk.title}} },
+	booktitle = { {{presentation.event}} },
+	pages = {},
+	url = {http://{{site}}/{{talk.get_absolute_url}} },
+	author = { {{ talk.collaborator.all|print_authors_bib_format }} },
+	month = {{presentation.presentation_date|date:"b"|lower}},
+	year = { {{presentation.presentation_date.year}} }
+}
+{% endwith %}

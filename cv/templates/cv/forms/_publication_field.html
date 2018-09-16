@@ -1,0 +1,19 @@
+{% load widget_tweaks %}
+
+<label class="{{labelwidth}} form-label form-label-sm mt-0 {% if field.field.required %}font-weight-bold{% endif %}" for="{{field.id_for_label}}">{{field.label}}</label>
+{% if field.errors %}
+	{% if inputwidth  %}<span class="{{inputwidth}}">{% endif %}<span class="{{inputwidth}}">
+		{% render_field field class="form-control form-control-sm is-invalid" %}
+	{% if inputwidth %}</span>{% endif %}
+	{% for error in field.errors %}
+		<span class="form-text invalid-feedback">{{error}}</span>
+	{% endfor %}
+{% else %}
+	{% if inputwidth  %}<span class="{{inputwidth}}">{% endif %}
+		{% render_field field class="form-control form-control-sm" %}
+	{% if inputwidth %}</span>{% endif %}
+{% endif %}
+
+{% if field.help_text and not noprinthelp %}
+<span class="form-text text-muted">{{field.help_text}}</span>
+{% endif %}

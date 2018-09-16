@@ -1,0 +1,223 @@
+{% extends 'cv/base.html' %}
+
+{% load widget_tweaks %}
+{% load staticfiles %}
+
+{% block userstyles %}
+{{block.super}}
+<link rel="stylesheet" type="text/css" href="{% static 'cv/cv-forms.css' %}" />  
+{% endblock userstyles %}
+{% block centerbar %}
+<div class="alert alert-primary small">
+<h2 class="display-4">{{method}} {{model|title}}</h2>    
+	<form method="POST" id="{{model}}Form" class="post-form" action="{{action_url}}" >{% csrf_token %}
+    <div class="form-group row">
+        <div class="col-12 col-md-6 form-row">
+            <span class="col-12">
+                {% with form.title as field %}
+                    {% include "cv/forms/_publication_field.html" %}
+                {% endwith %}
+            </span>
+            <span class="col-12">
+                {% with form.short_title as field %}
+                    {% include "cv/forms/_publication_field.html" %}
+                {% endwith %}
+            </span>
+            <span class="col-12">
+                {% with form.slug as field %}
+                    {% include "cv/forms/_publication_field.html" %}
+                {% endwith %}
+            </span>
+        </div>
+            <div class="col-12 col-md-6 form-row  align-items-center">
+                <span class="col-12 form-row">
+                    {% with form.display as field %}
+                        {% with labelwidth="col-2" inputwidth="col-1" %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    {% endwith %}
+                </span>
+                <span class="col-12 form-row align-items-center row">
+                    {% with form.status as field %}
+                        {% with labelwidth="col-2" inputwidth="col-5" %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    {% endwith %}
+                </span>
+                <span class="col-12 form-row align-items-center">
+                    {% with form.submission_date as field %}
+                        {% with labelwidth="col-2" inputwidth="col-5" %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    {% endwith %}
+                </span>
+                <span class="col-12 form-row align-items-center">
+                    {% with form.pub_date as field %}
+                        {% with labelwidth="col-2" inputwidth="col-5" %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    {% endwith %}
+                </span>
+            </div>
+            <!-- ABSTRACT -->
+            <div class="col-12 col-md-6 mt-3 form-row">
+                <h5 class="col-12">Abstract</h5>
+                <span class="col-12">
+                    {% with form.abstract as field %}
+                        {% include "cv/forms/_publication_field.html" %}
+                    {% endwith %}
+                    <span class="form-text text-muted">Use <a href="https://daringfireball.net/projects/markdown/syntax" alt="Markdown syntax">Markdown syntax</a>: e.g., **<b>bold</b>**, *<i>italics</i>*, `<code>code</code>`, [link text]&lt;url&gt;</span>
+                </span>
+            </div>
+            <!-- CITATION INFORMATION -->
+            <div class="col-12 col-md-6 mt-3 form-row align-content-start">
+                <h5 class="col-12">Citation Information</h5>
+                {% block citation_information %}
+                {% endblock %}
+            </div>
+
+            <!-- AUTHORSHIP INFORMATION -->
+             <div class="col-12 row mt-3">
+                <h5 class="col-12">Authors</h5>
+                <div class="col-12 row">
+                    {{authorship_formset.management_form}}
+                    {% for author_form in authorship_formset %}
+                    <span class="col-12 d-flex flex-row flex-wrap justify-content-left justify-content-md-center ml-3 mr-3 mt-2 mb-2 author">
+                    {% for field in author_form.visible_fields %}
+                        {% spaceless %}
+                        <span class="d-flex flex-row justify-content-left align-items-center 
+
+                        {% if forloop.first %}
+                            col-12 col-md-4
+                        {% else %}
+                            col-6 col-md-2
+                        {% endif %}
+                        ">
+                        {% endspaceless %}
+                            <label for="{{field.id_for_label}}" class="p-0  mt-0 align-self-center 
+                                {% if field.field.required %}font-weight-bold{% endif %}">
+                            {{field.label}}</label>
+                            {{field}}
+                            {% if field.error %}
+                                <span class="invalid-feedback">{{field.error}}</span>
+                            {% endif %}
+                        </span>                       
+                        {% endfor %}
+                    </span>
+                    {% endfor %}
+                </div>
+
+                <!-- EDITION INFORMATION -->
+                {% block edition_information %}
+                {% endblock %}
+            </div>
+             <div class="col-12 col-md-6 row mt-3">
+                <h5 class="col-12">Grant information</h5>
+                <div class="col-12 row">
+                    <span class="col-12">
+                        {% with form.grants as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                    <span class="col-12">
+                        {% with form.pmcid as field %}{% with noprinthelp=True %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}{% endwith %}
+                    </span>
+                    <span class="col-12">
+                        {% with form.pmid as field %}{% with noprinthelp=True %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}{% endwith %}
+                        {% if form.pmid or form.pmcid %}
+                        <span class="form-text text-muted">For information on the above see <a href="https://publicaccess.nih.gov/include-pmcid-citations.htm#Difference" title="The Difference Between a PMCID and a PMID">explanation from NIH</a></span>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 row mt-3 align-content-start">
+                <h5 class="col-12">Disciplinary information</h5>
+                <div class="col-12 row">
+                    <span class="col-12">
+                        {% with form.primary_discipline as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                    <span class="col-12">
+                        {% with form.other_disciplines as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                </div>
+            </div>
+
+                <div class="save-group btn-group col-12" role="group" aria-label="{{method}} {{model}}">
+                    <button id="{{model}}FormSubmit" type="submit" class="btn btn-default">Save</button>
+{% block delete_button %}
+                    <button href="{% url 'cv:cv_delete' model_name=model pk=form.instance.pk%}" class="btn btn-detail alert-danger cv-delete">Delete</button>
+{% endblock delete_button %}
+                </div>
+        </div>
+    </form>
+</div>
+{% endblock centerbar %}
+
+{% block endscripts %}
+{{block.super}}
+<script type="text/javascript">
+  $("#{{model}}FormSubmit").click(function(event) {
+
+    //Fetch form to apply custom Bootstrap validation
+    var form = $("#{{model}}Form")
+
+    if (form[0].checkValidity() === false) {
+      event.preventDefault()
+      event.stopPropagation()
+    }
+    
+    form.addClass('was-validated');
+  });
+
+
+$("#id_short_title").keyup(function(event){
+     // Mostly copied from Django admin js code (w/o unicode support and
+    // internationalization):
+    // https://github.com/django/django/blob/3c447b108ac70757001171f7a4791f493880bf5b/django/contrib/admin/static/admin/js/urlify.js
+    var s = $(this).val();
+
+    var slugField = $("#id_slug")
+    var num_chars = slugField.attr("maxlength")
+    console.log(num_chars)
+
+    var removelist = [
+        "a", "an", "as", "at", "before", "but", "by", "for", "from", "is",
+        "in", "into", "like", "of", "off", "on", "onto", "per", "since",
+        "than", "the", "this", "that", "to", "up", "via", "with"
+        ];
+
+    var r = new RegExp('\\b(' + removelist.join('|') + ')\\b', 'gi');
+    s = s.replace(r, '');    
+    s = s.replace(/[^-\w\s]/g, ''); // remove unneeded chars    
+    s = s.replace(/^\s+|\s+$/g, '');   // trim leading/trailing spaces
+    s = s.replace(/[-\s]+/g, '-');     // convert spaces to hyphens
+    s = s.toLowerCase();               // convert to lowercase
+
+    $("#id_slug").val(s.substring(0, num_chars));
+    console.log(s.substring(0, num_chars));    
+});
+
+$("select[name$='collaborator'").change(function(event){
+    var num = $(this).attr("id").match(/\d+/g);
+    var dispInput = $("#id_authorship-" + num + "-display_order")
+    if($(this).find(":selected").prop("value")!=="") {
+        $(dispInput).prop("required",true);
+        console.log(num);
+        console.log("#id_authorship-" + num + "display_order")
+    }
+    else {
+        $(dispInput).prop("required",false);
+        console.log("false")
+    }
+})
+</script>
+{% endblock %}
+

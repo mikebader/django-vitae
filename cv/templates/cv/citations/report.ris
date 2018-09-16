@@ -1,0 +1,14 @@
+TY  - RPRT
+T1  - {{report.title}}
+{% spaceless %}{% for author in report.articleauthorship_set.all %}
+AU  - {{author}}{% endfor %}{% endspaceless %}
+PY  - {{report.pub_date|date:"Y/m/d"}}
+SP  - {{report.start_page}}
+EP  - {{report.end_page}}
+T2  - {{report.short_title|safe}}
+N2  - {{report.abstract|safe}}
+UR  - {{report.get_absolute_url}}
+DO  - {{report.doi}}
+PB  - {{report.institution}}
+CY  - {{report.place}}
+ER  - 

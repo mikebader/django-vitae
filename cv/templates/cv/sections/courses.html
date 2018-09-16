@@ -1,0 +1,20 @@
+{% if course_list or user.is_authenticated %}
+<h2 class="col-xs-12">Teaching</h2>
+<ul class="cv-entry">
+    {% for course in course_list %}
+    <li id="course-{{course.pk}} class="row">
+    	<div class="editable">
+	        <span class="cv-entry-text col-xs-11"><em>{{course.title}}</em> ({{course.get_student_level_display}}; {% for offering in course.courseoffering_set.all %}{% if not forloop.first %}, {% endif %}{{offering.get_term_display}} {{offering.start_date|date:"Y"}}{% endfor %})
+			</span>
+		</div>
+		<div class="editable"></div>
+    </li>
+    {% endfor %}
+{% if user.is_authenticated %}
+	<li class="row">
+		<div class="noneditable">
+			<a class="col-12 col-sm-12 course-add cv-add" alt="Add new course" href="#course"><i class="far fa-plus-square"></i> Add new course</a> **Need to add Courses and Offerings models to Django-CV
+		</div>
+	</li>
+{% endif %}</ul>
+{% endif %} 

@@ -1,0 +1,16 @@
+TY  - BOOK
+TI  - {{book.title}}
+{% spaceless %}{% for author in book.authorship.all %}
+AU  - {{author}}{% endfor %}{% endspaceless %}
+ST  - {{book.short_title}}
+AB  - {{book.summary}}
+{% if book.editions %}{% with book.editions.all|first as edition %}PB  - {{edition.publisher}}
+PP  - {{edition.place}}
+PY  - {{edition.edition_date|date:"Y/m/d"}}
+ET  - {{edition.edition}}
+SN  - {{edition.isbn}}
+{% endwith %}{% else %}PB  - {{book.publisher}}
+PP  - {{book.place}}
+PY  - {{book.pub_date|date:"Y/m/d"}}
+SN  - {{book.isbn}}{% endif %}
+ER  - 

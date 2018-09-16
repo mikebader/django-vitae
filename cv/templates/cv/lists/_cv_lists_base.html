@@ -1,0 +1,7 @@
+{% extends "cv/base.html" %}
+
+{% block maintitle %}{% endblock %}
+
+{% block next-previous %}
+<a href="{% url 'cv:cv_list' %}#{{section_name}}">&#xab;back to CV</a>
+{% endblock %}

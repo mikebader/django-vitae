@@ -1,0 +1,70 @@
+{% extends "cv/base.html" %}
+{% load cvtags %}
+{% load staticfiles %}
+
+
+
+{% block maintitle %}{{object.title}}{% endblock %}
+
+{% block centerbar-content %}
+<div id="abstract" class="col-xs-12 col-sm-10 push-sm-1 abstract">
+{{object.abstract_html|safe}}
+</div>
+{% endblock %}
+
+{% block next-previous %}
+<a href="{% block object-list-url %}{% endblock %}#{{section_name}}-{{object.slug}}">&#xab;back to {{section_name}}{% block plural-suffix %}s{% endblock %}</a><br />
+<a href="{% url 'cv:cv_list' %}#{{section_name}}-{{object.slug}}">&#xab;back to CV</a>
+{% endblock %}
+
+{% block details %}
+{% block citation %}
+<h2>Citation</h2>
+{% block formatted-citation %}{% endblock %}
+
+{% block url %}
+{% if object.url %}
+<p>
+&nbsp;<a href="{{object.url}}" title="Go to  {{object.short_title}} on journal website"><span class="fa fa-external-link" aria-hidden="true"></span> Link to {% block object_type_and_location %}{% endblock %}</a>
+</p>
+{% endif %}
+{% endblock %}
+
+	<a class="btn btn-secondary btn-sm" role="button" href="{% block object-citation-url-ris %}{% endblock %}" title="Download {{object.short_title}} in Reference Manager format"><span class='fa fa-paperclip ' aria-hidden="true"></span> Cite with Reference Manager</a>
+	<a class="btn btn-secondary btn-sm" role="button" href="{% block object-citation-url-bib %}{% endblock %}" title="Download {{object.short_title}} in BibTeX format"><span class='fa fa-paperclip' aria-hidden="true"></span> Cite with BibTeX</a>
+{% endblock citation %}
+
+
+{% block files %}
+<h2>Files</h2>
+{% with object.files.all as files %}
+	<ul>
+{% if files %}
+	{% for file in files %}
+	<li class="details">
+		<a class="btn btn-secondary btn-sm" role="button" href="{{file.file.url}}"><span class='fa fa-download' aria-hidden="true"></span> Download {{file.get_type_display|lower}}</a>
+	</li>
+		{% endfor %}	
+	{% else %}
+	<li>No files</li>
+	{% endif %}
+	</ul>
+	{% endwith %}
+{% endblock files %}
+
+{% block type-specific-info %}{% endblock %}
+
+{% block media_mentions %}
+{% with object.mediamention_set.all as mentions %}
+{% if mentions %}
+<h2>Media Mentions</h2>
+	<ul>
+{% for mention in mentions %}
+	<li class="details">{{mention.title}}, <cite>{{mention.outlet}}</cite> ({{mention.date|date:"b d, Y"|title}}){% if mention.url %} <a class="media-mention" href="{{mention.url}}" title="View story on external site"><span class="fa fa-external-link" aria-hidden="true"></span>{% endif %}</li>
+{% endfor %}
+	</ul>
+{% endif %}
+{% endwith %}
+{% endblock media_mentions %}
+{% endblock details %}
+

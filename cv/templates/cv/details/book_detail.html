@@ -1,0 +1,49 @@
+{% extends "cv/details/_cv_detail_base.html" %}
+{% load cvtags %}
+
+{% with book as object %}
+
+{% block object-list-url %}{% url 'cv:book_object_list' %}{% endblock %}
+
+{% block next-previous %}
+{% with "book" as section_name %}
+{{block.super}}
+{% endwith %}
+{% endblock next-previous %}
+
+{% block centerbar-content %}
+<h2>Summary</h2>
+<div id="abstract" class="col-xs-12 col-sm-10 push-sm-1 abstract">
+{{object.abstract_html|safe}}
+</div>
+{% endblock centerbar-content %}
+
+{% block formatted-citation %}
+<p>{{book.authorship.all|print_authors}}. {{book.pub_date.year}}. <cite>{{book.title}}</cite>.{% if book.editions %} {% with book.editions.all|first as edition %}{{edition.edition}} ed.,{% if edition.publisher %} {% if edition.place %}{{edition.place}}: {% endif %}{{edition.publisher}}.{% endif %}{% if edition.isbn %} ISBN: {{edition.isbn}}{% endif %}{% endwith %}{% else %}{% if book.publisher %}{% if book.place %} {{book.place}}: {{book.publisher}}.{% endif %}{% endif %}{% if book.ISBN %} ISBN: {{book.isbn}}{% endif %}{% endif %}</p>
+
+{%if book.editions.all|length > 1 %}
+<h3>Other editions</h3>
+{% for edition in book.editions.all|slice:"1:" %}
+<ul>
+	<li><em>{{edition.edition}} ed.</em> ({{edition.edition_date.year}}){% if edition.publisher %} {{edition.publisher}}.{% endif %}{% if edition.isbn %} ISBN: {{edition.isbn}}{% endif %}{% if edition.description %} {{edition.description}}{% endif %}</li>
+</ul>
+{% endfor %}
+{% endif %}
+{% endblock formatted-citation %}
+
+{% block object-citation-url-ris %}
+{% url 'cv:book_citation' book.slug 'ris' %}
+{% endblock %}
+
+{% block object-citation-url-bib %}
+{% url 'cv:book_citation' book.slug 'bib' %}
+{% endblock %}
+
+{% block object_type_and_location %}article on book website{% endblock %}
+
+
+{% block media_mentions %}
+{{ block.super }}
+{% endblock %}
+
+{% endwith %}

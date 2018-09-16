@@ -1,0 +1,33 @@
+{% extends "cv/details/_cv_detail_base.html" %}
+{% load cvtags %}
+
+{% with article as object %}
+
+{% block object-list-url %}{% url 'cv:article_object_list' %}{% endblock %}
+
+{% block next-previous %}
+{% with "article" as section_name %}
+{{block.super}}
+{% endwith %}
+{% endblock next-previous %}
+
+{% block formatted-citation %}
+<p>{{article.articleauthorship_set.all|print_authors}}. ({{article.pub_date.year}}). {% if article.journal %} <cite>{{article.journal}}</cite>{% endif %} {% if article.volume %}<span class="volume-issue">{{article.volume}}{% if article.issue %}({{article.issue}}){% endif %}</span>{% endif %}{%if article.start_page %}:<span class='page-numbers'>{{article.start_page}}{%if article.end_page %}-{{article.end_page}}{% endif %}</span>{% endif %}.</p>
+{% endblock formatted-citation %}
+
+{% block object-citation-url-ris %}
+{% url 'cv:article_citation' article.slug 'ris' %}
+{% endblock %}
+
+{% block object-citation-url-bib %}
+{% url 'cv:article_citation' article.slug 'bib' %}
+{% endblock %}
+
+{% block object_type_and_location %}article on journal website{% endblock %}
+
+
+{% block media_mentions %}
+{{ block.super }}
+{% endblock %}
+
+{% endwith %}

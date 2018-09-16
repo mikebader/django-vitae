@@ -1,0 +1,17 @@
+TY  - JOUR
+TI  - {{article.title}}
+{% spaceless %}{% for author in article.articleauthorship_set.all %}
+AU  - {{author}}{% endfor %}{% endspaceless %}
+PY  - {{article.pub_date|date:"Y/m/d"}}
+SP  - {{article.start_page}}
+EP  - {{article.end_page}}
+JF  - {{article.journal.title}}
+JA  - {{article.journal.abbreviated_title}}
+VL  - {{article.volume}}
+IS  - {{article.issue}}
+T2  - {{article.short_title|safe}}
+N2  - {{article.abstract|safe}}
+UR  - {{article.url}}
+SN  - {{article.journal.issn}}
+DO  - {{article.doi}}
+ER  - 

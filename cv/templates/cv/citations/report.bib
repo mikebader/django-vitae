@@ -1,0 +1,14 @@
+{% load cvtags %}
+@techreport{bader-{{report.slug}},
+	author = { {{ report.reportauthorship_set.all|print_authors_bib_format }} },
+	year = { {{report.pub_date.year}} },
+	month = {{report.pub_date|date:"b"}},
+	title = { {{report.title}} },
+	{% if report.abstract %}abstract = { {{report.abstract}} },{% endif %}
+	{% if report.report_number %} number = { {{report.number}} },{% endif %}
+	{% if report.place %} address = { {{report.place}} },{% endif %}
+	{% if report.institution %} institution = { {{report.institution}} },{% endif %}
+	{% if report.pages %} pages = { {{report.pages}} },{% endif %}
+	{% if report.doi %} doi = { {{report.doi}} },{% endif %}
+	url = { {{report.get_absolute_url}} }
+	}
