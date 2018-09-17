@@ -6,7 +6,7 @@ Django-CV is a CV generator that can be used with the `Django`_ web framework.
 
 .. _Django: https://docs.djangoproject.com/
 
-Many academics have trouble keeping CVs up to date. Django-CV was created to streamline this process. Django-CV allows users to make highly customizable curricula vitae for use on their websites. The application provides models for common entries on curricula vitae such as education, employment, publications, teaching, and service. Django-CV eliminates many of the repetitive tasks related to producing curricula vitae. The included templates provide a complete CV "out of the box", but allows researchers who might be interested to customize the format using Django templating language. 
+Many academics have trouble keeping CVs up to date. Django-CV was created to streamline this process. Django-CV allows users to make highly customizable curricula vitae for use on their websites. The application provides models for common entries on curricula vitae such as education, employment, publications, teaching, and service. Django-CV eliminates many of the repetitive tasks related to producing curricula vitae. The included templates provide a complete CV "out of the box", but allows researchers who might be interested in customizing the format using Django templating language. 
 
 Django-CV uses `semantic versioning`_. Though it aims to provide a complete suite to create a CV, the project does not been tested extensively (and **you** can contribute to that effort!) and pieces might still throw errors. See notes below for quirks and errors in usage that must be resolved. 
 
