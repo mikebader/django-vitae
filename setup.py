@@ -5,7 +5,7 @@ with open('README.rst', 'r') as f:
 
 setuptools.setup(
     name='django-cv',
-    version='0.0.2',
+    version='0.0.2.1',
     author='Michael Bader',
     author_email='michaeldmbader@gmail.com',
     description='A CV generator built for the Django web framework.',
@@ -14,10 +14,11 @@ setuptools.setup(
     url='https://github.com/mikebader/django-cv',
     packages=setuptools.find_packages(),
     install_requires=[
-        'markdown',
-        'citeproc-py',
-        'citeproc-py-styles',
-        'django-widgets'
+        'django>=1.11',
+        'markdown>=2.6',
+        'citeproc-py>=0.4',
+        'citeproc-py-styles>=0.1.1',
+        'django-widgets>=0.1.16'
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
