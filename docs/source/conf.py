@@ -20,8 +20,8 @@
 import os
 from os.path import abspath, dirname, join
 import sys
-# sys.path.insert(0, os.path.abspath('.'))
-sys.path.append('/Users/bader/webdev/djangoapps/cv')
+#sys.path.insert(0, os.path.abspath('.'))
+#sys.path.append('/Users/bader/webdev/djangoapps/cv')
 sys.path.append(abspath(join(dirname(__file__), "_ext")))
 
 
