@@ -26,7 +26,7 @@ Django-Vitae is developed and tested in Python 3. It depends on several external
 
 Installation
 ------------
-From `PyPI <https://pypi.org/>`_ for the latest version::
+From `PyPI <https://pypi.org/>`_::
 
     pip install django-vitae
 
@@ -62,7 +62,7 @@ To test, you need to install the following packages:
     pip install django-nose
     pip install coverage
 
-An incomplete test suite can be found in the ``tests/`` directory. With `Nose`_ and `Coverage`_ installed, you may run the tests with ``runtests.py``. From the ``django-vitae`` root directory: 
+A test suite can be found in the ``tests/`` directory. With `Nose`_ and `Coverage`_ installed, you may run the tests with ``runtests.py``. From the ``django-vitae`` root directory: 
 
 ::
 
@@ -77,7 +77,7 @@ To test only a single model, you may use the flag ``--attr=<model_name>`` for th
 
 
 
-Use Issues
-----------
+Known Issues
+------------
 
 At present, you will have the best luck editing model instances in the ``admin`` interface. You should be able to edit some models in interface implemented in the default templates, but many do not work or are not fully implemented. 
