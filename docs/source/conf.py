@@ -20,8 +20,6 @@
 import os
 from os.path import abspath, dirname, join
 import sys
-#sys.path.insert(0, os.path.abspath('.'))
-#sys.path.append('/Users/bader/webdev/djangoapps/cv')
 sys.path.append(abspath(join(dirname(__file__), "_ext")))
 
 
@@ -69,8 +67,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'Django-CV'
-copyright = '2017, Michael Bader'
+project = 'Django-Vitae'
+copyright = '2018, Michael Bader'
 author = 'Michael Bader'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -146,7 +144,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Django-CVdoc'
+htmlhelp_basename = 'django-vitae-doc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -173,7 +171,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'Django-CV.tex', 'Django-CV Documentation',
+    (master_doc, 'Django-Vitae.tex', 'Django-Vitae Documentation',
      'Michael Bader', 'manual'),
 ]
 
@@ -183,7 +181,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'django-cv', 'Django-CV Documentation',
+    (master_doc, 'django-vitae', 'Django-Vitae Documentation',
      [author], 1)
 ]
 
@@ -194,8 +192,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'Django-CV', 'Django-CV Documentation',
-     author, 'Django-CV', 'One line description of project.',
+    (master_doc, 'Django-Vitae', 'Django-Vitae Documentation',
+     author, 'Django-Vitae', 'One line description of project.',
      'Miscellaneous'),
 ]
 
