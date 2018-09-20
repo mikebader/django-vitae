@@ -1,5 +1,5 @@
-Reference
-=========
+Module Reference
+================
 
 .. toctree::
    :maxdepth: 3
@@ -7,5 +7,5 @@ Reference
    :caption: Contents:
 
    models
+   managers
    views
-   tests

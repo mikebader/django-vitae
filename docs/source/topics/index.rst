@@ -1,5 +1,5 @@
-Sections
-========
+CV Sections
+===========
 
 .. toctree::
    :name: sectiontoc
