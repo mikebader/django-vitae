@@ -1,8 +1,8 @@
 Publications
 ============
 
-Publications are the central component of Django-CV since publications are the key 
-element of CVs. Django-CV includes four types of publications: :ref:`books 
+Publications are the central component of Django-Vitae since publications are the key 
+element of CVs. Django-Vitae includes four types of publications: :ref:`books 
 <topics-pubs-books>`, :ref:`articles <topics-pubs-articles>`, :ref:`chapters 
 <topics-pubs-chapters>`, and :ref:`reports <topics-pubs-reports>`. 
 
@@ -12,8 +12,8 @@ Common Features
 ---------------
 
 Publications, regardless of type, all have some common traits such as titles and lists of 
-authors. Django-CV defines a number of common features across the four different types of 
-publications. Internally, Django-CV does this by defining a series of abstract classes. 
+authors. Django-Vitae defines a number of common features across the four different types of 
+publications. Internally, Django-Vitae does this by defining a series of abstract classes. 
 The different publication models inherit from the 
 :class:`~cv.models.VitaePublicationModel` abstract model. 
 
@@ -31,7 +31,7 @@ The following fields are common across the four types of publications:
 	A shortened title of the publication with a maximum length of 80 characters 
 	(**required**). 
 	
-	This can be the "running head" of a publication. Django-CV uses the slugified version 
+	This can be the "running head" of a publication. Django-Vitae uses the slugified version 
 	of the short title to construct URLs for the item. 
 	
 :attr:`slug`
@@ -47,7 +47,7 @@ The following fields are common across the four types of publications:
 	(**required**).
 
 	All publication models include an :attr:`status` field, which represents the where in 
-	publication process the publication currently exists. Django-CV implements the 
+	publication process the publication currently exists. Django-Vitae implements the 
 	:attr:`status` field by using an :class:`~django:django.db.models.IntegerField` with 
 	the :attr:`choices` parameter defined in :mod:`cv.constants.PUBLICATION_STATUS`:
 
@@ -144,7 +144,7 @@ Publication types also share the common trait of having authors. More
 precisely, publications have _authorships_ since a list of authors 
 contains information, such as the order of authorship. 
 
-For all publication type models, Django-CV includes an :attr:`authorship` 
+For all publication type models, Django-Vitae includes an :attr:`authorship` 
 attribute that returns a :class:`~django.db.models.query.QuerySet` of 
 authorships, e.g.::
 
@@ -383,7 +383,7 @@ Book Editions
 """""""""""""
 
 
-Django-CV allows users to link multiple editions of a book with the 
+Django-Vitae allows users to link multiple editions of a book with the 
 :class:`~cv.models.BookEdition` class. This is done through a ForeignKey relationship to 
 the :ref:`book <topics-pubs-books>`. The :class:`~cv.models.Book` model includes the 
 :meth:`~cv.models.Book.get_editions` method to return all editions associated with the 

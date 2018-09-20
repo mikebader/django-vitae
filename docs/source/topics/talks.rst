@@ -1,7 +1,7 @@
 Talks
 =====
 
-To list public presentations on CVs, Django-CV uses two models representing two different ideas. A "talk", represented by :class:`cv.models.Talk`, reflects a single idea conveyed with a title. It can optionally also include other other elements related to that talk such as notes and slides. A "presentation", represented by :class:`cv.models.Presentation`, reflects a specific public performance of a talk at a some location and at some time. 
+To list public presentations on CVs, Django-Vitae uses two models representing two different ideas. A "talk", represented by :class:`cv.models.Talk`, reflects a single idea conveyed with a title. It can optionally also include other other elements related to that talk such as notes and slides. A "presentation", represented by :class:`cv.models.Presentation`, reflects a specific public performance of a talk at a some location and at some time. 
 
 This structure allows multiple presentations of the same talk to be logically 
 connected and can prevent multiple listings with the same title, for example, in the 
@@ -64,6 +64,6 @@ The :class:`~cv.models.Presentation` model instances relate to a :class:`~cv.mod
 
 * :attr:`event` contains the name of event or venue at which the presentation was given. 
 
-Django-CV assumes that presentations will be displayed in conjunction with talks and, therefore, not displayed on their own. 
+Django-Vitae assumes that presentations will be displayed in conjunction with talks and, therefore, not displayed on their own. 
 
 

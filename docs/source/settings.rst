@@ -28,7 +28,7 @@ A list specifying the constants and display values used to create choices
 for the ``status`` field of :class:`~cv.models.VitaePublicationModel` proxy
 class and which publications :ref:`topics-pubs-common-managers` return
 
-Django-CV managers. Each option must be composed of three elements: 
+Django-Vitae managers. Each option must be composed of three elements: 
 
 *  an integer setting the constant used by the database to store values
 
@@ -38,7 +38,7 @@ Django-CV managers. Each option must be composed of three elements:
 
 *  value that will be displayed as the choice 
 
-Internally, Django-CV organizes the type of publication based on the value 
+Internally, Django-Vitae organizes the type of publication based on the value 
 of the integer used for the choice. The following table shows the ranges
 used for different publication statuses.
 
