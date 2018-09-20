@@ -9,7 +9,8 @@ from .models import Collaborator, CVFile, Journal, Discipline, Award, \
 					Book, BookAuthorship, BookEdition, \
 					Report, ReportAuthorship, \
 					Talk, Presentation, OtherWriting, \
-					MediaMention, Service, JournalService, Student 
+					MediaMention, Service, JournalService, Student, \
+					Course, CourseOffering 
 
 ## Uncomment the following two lines if you would like to use the `researchprojects` app
 ## to link lines in CV to research projects
@@ -318,6 +319,24 @@ class StudentAdmin(admin.ModelAdmin):
 	date_hierarchy = 'graduation_date'
 	list_filter = ('student_level','is_current_student')
 
+
+class CourseOfferingInline(admin.TabularInline):
+	model = CourseOffering
+	extra = 2
+
+
+class CourseAdmin(admin.ModelAdmin):
+	fieldsets = (
+		('Course Information', {'fields':(
+			'title', 'slug', 'student_level')}),
+		('Description', {'fields':(
+			('short_description'),
+			('full_description'))})
+		)
+	list_display = ('title', 'student_level')
+	list_filter = ('student_level',)
+	inlines = [CourseOfferingInline]
+
 def register_hidden_models(*model_names):
 	"""Hide models from list of models on CV admin but allow models to be edited using 
 	plus symbol on related models."""
@@ -369,3 +388,4 @@ admin.site.register(MediaMention,MediaMentionAdmin)
 admin.site.register(Service,ServiceAdmin)
 admin.site.register(JournalService,JournalServiceAdmin)
 admin.site.register(Student,StudentAdmin)
+admin.site.register(Course, CourseAdmin)
