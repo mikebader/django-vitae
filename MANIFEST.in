@@ -1,5 +1,8 @@
 include LICENSE
+include MANIFEST.in
 include README.rst
-recursive-include cv/static *
-recursive-include cv/templates *
-recursive-include docs *
+graft docs
+graft cv/static *
+graft cv/templates *
+global-exclude __pycache__
+global-exclude *.py[co]

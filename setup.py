@@ -5,7 +5,7 @@ with open('README.rst', 'r') as f:
 
 setuptools.setup(
     name='django-vitae',
-    version='0.0.1',
+    version='0.0.2',
     author='Michael Bader',
     author_email='michaeldmbader@gmail.com',
     description='A CV generator built for the Django web framework.',
@@ -13,6 +13,7 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     url='https://github.com/mikebader/django-vitae',
     packages=setuptools.find_packages(),
+    include_package_data=True,
     install_requires=[
         'django>=1.11',
         'markdown>=2.6.11',
