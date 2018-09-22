@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Django-Vitae Documentation
-=======================
+==========================
 
 .. _overview:
 
@@ -23,17 +23,17 @@ Organization of the Documentation
       
       * Education & Employment
       
-      * :doc:`Publications <topics/publications/>` ( 
+      * :doc:`Publications <topics/publications/index/>` ( 
         :ref:`Articles <topics-pubs-articles>` |
         :ref:`Books <topics-pubs-books>` |
         :ref:`Chapters <topics-pubs-chapters>` |
         :ref:`Reports <topics-pubs-reports>`)
    
-      * Grants
-      
-      * :doc:`Talks <topics/talks/>`
-      
-      * Public writing
+      * :doc:`Other Works <topics/works/index/>` (
+        :ref:`Grants <topics-works-grants>` |
+        :ref:`Talks <topics-works-talks>` |
+        :ref:`Other Writing <topics-works-otherwriting>` |
+        :ref:`Datasets <topics-works-datasets>`)
       
       * Teaching
       
@@ -72,7 +72,7 @@ Documentation Contents
 ----------------------
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 3
    :name: fronttoc
    
    topics/index
