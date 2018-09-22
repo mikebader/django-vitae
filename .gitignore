@@ -20,7 +20,10 @@ var/
 wheels/
 *.egg-info/
 *.egg
+
+
 .coverage
+tests/html
 
 docs/_build/
 
