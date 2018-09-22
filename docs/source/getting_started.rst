@@ -75,7 +75,7 @@ and you will change it to look like this::
 
     urlpatterns = [
         path('admin/', admin.site.urls),
-        path('/', include('cv.urls', namespace='cv')),
+        path('', include('cv.urls', namespace='cv')),
     ]
 
 Save the ``urls.py`` file and close it. The hard part is done!
