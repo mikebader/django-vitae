@@ -13,6 +13,27 @@ Overview
 
 Django-Vitae allows users to make highly customizable curricula vitae for use on their websites. The application provides models for common entries on curricula vitae such as education, employment, publications, teaching, and service. Django-Vitae eliminates many of the repetitive tasks related to producing curricula vitae. The included templates provide a complete CV "out of the box", but allows researchers who might be interested to customize the format using Django templating language. 
 
+Installation
+------------
+
+A stable version of Django-Vitae is available in the `Python Package Index`_ and can be installed using ``pip``::
+
+    $ pip install django-vitae
+
+.. _`Python Package Index`: https://pypi.org/project/django-vitae/
+
+The latest development version can be obtained from `GitHub`_::
+
+    $ git clone https://github.com/mikebader/django-vitae
+    $ cd django-vitae
+    $ python setup.py install
+
+.. _GitHub: https://github.com/mikebader/django-vitae
+
+If you do not have experience with Django_, you might be interested in the :ref:`Getting Started <getting-started>` guide. 
+
+.. _Django: https://www.djangoproject.com
+
 .. _documentation-organization:
 
 Organization of the Documentation
@@ -75,6 +96,7 @@ Documentation Contents
    :maxdepth: 3
    :name: fronttoc
    
+   getting_started
    topics/index
    shortcuts
    settings

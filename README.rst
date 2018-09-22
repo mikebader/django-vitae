@@ -38,12 +38,14 @@ For the latest development version:
     cd django-vitae
     python setup.py install
 
+If you are new to Django_, you may want to visit the `Getting Started`_ guide in the documentation. 
 
+.. _`Getting Started`: https://djangocv.readthedocs.io/en/latest/getting_started.html
 
 Documentation
 -------------
 
-Limited documentation is available in the ``docs`` directory. 
+Incomplete documentation can be found in the ``docs/`` directory and at http://djangocv.readthedocs.io/.
 
 Testing
 -------
