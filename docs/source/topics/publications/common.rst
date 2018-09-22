@@ -133,7 +133,7 @@ Authorship Sets
 ---------------
 
 Publication types also share the common trait of having authors. More 
-precisely, publications have _authorships_ since a list of authors 
+precisely, publications have *authorships* since a list of authors 
 contains information, such as the order of authorship. 
 
 For all publication type models, Django-Vitae includes an :attr:`authorship` 

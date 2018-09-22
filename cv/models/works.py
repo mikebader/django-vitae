@@ -192,12 +192,15 @@ class OtherWriting(VitaeModel):
     abstract_html = models.TextField(blank=True, editable=False)
 
     class Meta:
+        """Orders other writings in reverse chronological order."""
         ordering = ['-date']
 
     def __str__(self):
+        """Returns string representation of other writing."""
         return self.short_title
 
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
+        """Saves abstract in html format."""
         self.abstract_html = markdown(self.abstract)
         super(OtherWriting, self).save(
             force_insert, force_update, *args, **kwargs)
@@ -237,11 +240,13 @@ class Dataset(VitaeModel):
         _('DOI'), max_length=100, blank=True, null=True)
 
     def get_absolute_url(self):
+        """"Returns reverse URL for an instance of a dataset."""
         return reverse(
             'cv:item_detail',
             kwargs={'model_name': self._meta.model_name, 'slug': self.slug})
 
     def __str__(self):
+        """String representation of a dataset instance."""
         return '%s' % self.short_title
 
     objects = models.Manager()
