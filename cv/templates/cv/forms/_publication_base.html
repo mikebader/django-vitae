@@ -12,7 +12,7 @@
 <h2 class="display-4">{{method}} {{model|title}}</h2>    
 	<form method="POST" id="{{model}}Form" class="post-form" action="{{action_url}}" >{% csrf_token %}
     <div class="form-group row">
-        <div class="col-12 col-md-6 form-row">
+        <div class="col-12 col-lg-6 form-row">
             <span class="col-12">
                 {% with form.title as field %}
                     {% include "cv/forms/_publication_field.html" %}
@@ -29,7 +29,7 @@
                 {% endwith %}
             </span>
         </div>
-            <div class="col-12 col-md-6 form-row  align-items-center">
+            <div class="col-12 col-lg-6 form-row  align-items-center">
                 <span class="col-12 form-row">
                     {% with form.display as field %}
                         {% with labelwidth="col-2" inputwidth="col-1" %}
@@ -60,7 +60,7 @@
                 </span>
             </div>
             <!-- ABSTRACT -->
-            <div class="col-12 col-md-6 mt-3 form-row">
+            <div class="col-12 col-lg-6 mt-3 form-row">
                 <h5 class="col-12">Abstract</h5>
                 <span class="col-12">
                     {% with form.abstract as field %}
@@ -70,7 +70,7 @@
                 </span>
             </div>
             <!-- CITATION INFORMATION -->
-            <div class="col-12 col-md-6 mt-3 form-row align-content-start">
+            <div class="col-12 col-lg-6 mt-3 form-row align-content-start">
                 <h5 class="col-12">Citation Information</h5>
                 {% block citation_information %}
                 {% endblock %}
@@ -88,9 +88,9 @@
                         <span class="d-flex flex-row justify-content-left align-items-center 
 
                         {% if forloop.first %}
-                            col-12 col-md-4
+                            col-12 col-lg-4
                         {% else %}
-                            col-6 col-md-2
+                            col-4 col-md-3 col-lg-2
                         {% endif %}
                         ">
                         {% endspaceless %}
@@ -109,6 +109,10 @@
 
                 <!-- EDITION INFORMATION -->
                 {% block edition_information %}
+                {% endblock %}
+
+                <!-- EDITORSHIP INFOMRATION -->
+                {% block editorship_information %}
                 {% endblock %}
             </div>
              <div class="col-12 col-md-6 row mt-3">

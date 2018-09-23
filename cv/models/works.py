@@ -39,18 +39,28 @@ class Grant(VitaeModel):
     SOURCE = ((INTERNAL, 'Internal'),
               (EXTERNAL, 'External'))
     source = models.IntegerField(
-        choices=SOURCE, help_text="Internal/external source of funding")
-    agency = models.CharField(max_length=200, blank=True)
-    agency_acronym = models.CharField(max_length=20, blank=True)
-    division = models.CharField(max_length=200, blank=True)
-    division_acronym = models.CharField(max_length=20, blank=True)
-    grant_number = models.CharField(max_length=50, blank=True)
-    amount = models.IntegerField()
-    start_date = models.DateField(null=True, blank=True)
-    end_date = models.DateField(null=True, blank=True)
-    is_current = models.BooleanField(default=True)
+        _('Source'), choices=SOURCE,
+        help_text="Internal/external source of funding")
+    agency = models.CharField(
+        _('Agency'), max_length=200, blank=True)
+    agency_acronym = models.CharField(
+        _('Agency acronym'), max_length=20, blank=True)
+    division = models.CharField(
+        _('Division'), max_length=200, blank=True)
+    division_acronym = models.CharField(
+        _('Division acronym'), max_length=20, blank=True)
+    grant_number = models.CharField(
+        _('Grant number'), max_length=50, blank=True)
+    amount = models.IntegerField(_('Amount'))
+    start_date = models.DateField(
+        _('Start date'), null=True, blank=True)
+    end_date = models.DateField(
+        _('End date'), null=True, blank=True)
+    is_current = models.BooleanField(
+        _('Is currently funded'), default=True)
 
-    abstract = models.TextField(blank=True, null=True)
+    abstract = models.TextField(
+        _('Abstract'), blank=True, null=True)
     abstract_html = models.TextField(blank=True, null=True, editable=False)
 
     collaborators = models.ManyToManyField(
@@ -79,8 +89,10 @@ class GrantCollaboration(CollaborationModel):
 
     grant = models.ForeignKey(
         Grant, related_name="collaboration", on_delete=models.PROTECT)
-    is_pi = models.BooleanField(default=False)
-    role = models.CharField(max_length=50, blank=True)
+    is_pi = models.BooleanField(
+        _('Is principal investigator?'), default=False)
+    role = models.CharField(
+        _('Role'), max_length=50, blank=True)
 
     class Meta:
         ordering = ['display_order']

@@ -26,5 +26,12 @@
 </ul>
 {% endif %}
 
+{% if user.is_authenticated %}
+<ul class="cv-entry">
+<li class="row">
+	<a class="col-12 col-sm-12 grant-add cv-add" alt="Add new grant" href="{% url 'cv:cv_add' model_name='grant' %}"><i class="far fa-plus-square"></i> Add new grant</a>	
+</li>
+</ul>
+{% endif %}
 
 {% endif %}

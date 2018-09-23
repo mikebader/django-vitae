@@ -1,0 +1,106 @@
+{% extends 'cv/forms/_publication_base.html' %}
+
+{% block citation_information %}
+                <span class="col-12 row">
+                    <span class="col-12">
+                        {% with form.book_title as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                </span>
+                <span class="col-12 row">
+                    <span class="col-6 col-md-6">
+                        {% with form.start_page as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                    <span class="col-6 col-md-6">
+                        {% with form.end_page as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                    <span class="col-12 col-md-6">
+                        {% with form.publisher as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                    <span class="col-12 col-md-6">
+                        {% with form.place as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                </span>
+                <span class="col-12 row">
+                   <span class="col-6 col-md-4">
+                        {% with form.edition as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                   </span>
+                   <span class="col-6 col-md-4">
+                        {% with form.volume as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                    <span class="col-6 col-md-4">
+                        {% with form.volumes as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                    <span class="col-6 col-md-8">
+                        {% with form.series as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                    <span class="col-6 col-md-4">
+                        {% with form.series_number as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                </span>
+                <span class="col-12 row">
+                    <span class="col-12">
+                        {% with form.isbn as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                    <span class="col-12">
+                        {% with form.url as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                </span>
+
+{% endblock citation_information %}
+
+{% block editorship_information %}
+             <div class="col-12 row mt-3">
+                <h5 class="col-12">Editors</h5>
+                <div class="col-12 row">
+                    {{editorship_formset.management_form}}
+                    {% for editor_form in editorship_formset %}
+                    <span class="col-12 d-flex flex-row flex-wrap justify-content-left justify-content-md-left ml-3 mr-3 mt-2 mb-2 author">
+                    {% for field in editor_form.visible_fields %}
+                        {% spaceless %}
+                        <span class="d-flex flex-row justify-content-left align-items-center 
+
+                        {% if forloop.first %}
+                            col-12 col-md-4
+                        {% else %}
+                            col-6 col-md-2
+                        {% endif %}
+                        ">
+                        {% endspaceless %}
+                            <label for="{{field.id_for_label}}" class="p-0  mt-0 align-self-center 
+                                {% if field.field.required %}font-weight-bold{% endif %}">
+                            {{field.label}}</label>
+                            {{field}}
+                            {% if field.error %}
+                                <span class="invalid-feedback">{{field.error}}</span>
+                            {% endif %}
+                        </span>                       
+                        {% endfor %}
+                    </span>
+                    {% endfor %}
+                </div>
+
+{% endblock %}

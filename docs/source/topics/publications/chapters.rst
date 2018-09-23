@@ -25,6 +25,7 @@ chapter appears. Like the :attr:`authorship` attribute, the
 =======================                         ========================================
 Model field reference                           :class:`cv.models.publications.Chapter`
 Authorship set                                  :class:`cv.models.publications.ChapterAuthorship`
+Editorship set                                  :class:`cv.models.publications.ChapterEditorship`
 =======================                         ========================================
 
 Chapter Views

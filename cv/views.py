@@ -356,7 +356,10 @@ class CVDetailView(generic.DetailView):
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, SingleObjectTemplateResponseMixin
 from django.urls import reverse_lazy
 from django.apps import apps
-from .forms import authorship_formset_factory, edition_formset_factory
+from .forms import authorship_formset_factory, \
+                   edition_formset_factory, \
+                   editorship_formset_factory, \
+                   grant_collaboration_formset_factory
 
 def template_name(model_name, suffix):
 #   model_name = model.__name__.lower()
@@ -367,14 +370,9 @@ fieldsets = {
     'award': ['name', 'organization', 'date', 'description'],
     'degree': ['degree', 'major', 'date_earned', 'institution', 'city',
                'state', 'country', 'honors'],
-    'position': ['title', 'start_date', 'end_date', 'project', 
+    'position': ['title', 'start_date', 'end_date', 'project',
                  'department', 'institution', 'current_position',
                  'primary_position'],
-    'service': ['role', 'group', 'organization', 'type', 'start_date', 
-                'end_date', 'description'],
-    'student': ['first_name', 'last_name', 'middle_name', 'student_level',
-                'role', 'thesis_title', 'is_current_student', 
-                'graduation_date', 'first_position', 'current_position'],
     'article': ['title', 'status', 'display', 'submission_date', 'pub_date',
                 'short_title', 'slug', 'abstract', 'journal', 'volume',
                 'issue', 'start_page', 'end_page', 'url', 'series',
@@ -383,10 +381,30 @@ fieldsets = {
     'book': ['title', 'short_title', 'slug', 'status', 'display',
              'submission_date', 'pub_date', 'abstract', 'publisher',
              'place', 'volume', 'series', 'series_number', 'num_pages',
-             'isbn', 'url', 'grants','primary_discipline', 'other_disciplines', 
-             'extra'],
-    'otherwriting': ['title', 'short_title', 'slug', 'type', 'venue', 'date', 'pages', 'url', 'place', 
-                     'volume', 'issue', 'abstract']
+             'isbn', 'url', 'grants', 'primary_discipline',
+             'other_disciplines', 'extra'],
+    'chapter': ['title', 'short_title', 'slug', 'status', 'display',
+                'submission_date', 'pub_date', 'abstract', 'book_title',
+                'volume', 'volumes', 'edition', 'publisher', 'place',
+                'series', 'series_number', 'start_page', 'end_page',
+                'isbn', 'url', 'grants', 'primary_discipline',
+                'other_disciplines'],
+    'report': ['title', 'short_title', 'slug', 'status', 'display',
+               'submission_date', 'pub_date', 'abstract', 'report_number',
+               'report_type', 'series_title', 'place', 'institution',
+               'pages', 'url', 'doi', 'grants', 'primary_discipline',
+               'other_disciplines'],
+    'grant': ['title', 'short_title', 'slug', 'display', 'source', 'agency',
+              'agency_acronym', 'division', 'division_acronym', 'grant_number',
+              'amount', 'start_date', 'end_date', 'is_current', 'abstract',
+              'primary_discipline', 'other_disciplines'],
+    'otherwriting': ['title', 'short_title', 'slug', 'type', 'venue', 'date',
+                     'pages', 'url', 'place', 'volume', 'issue', 'abstract'],
+    'service': ['role', 'group', 'organization', 'type', 'start_date',
+                'end_date', 'description'],
+    'student': ['first_name', 'last_name', 'middle_name', 'student_level',
+                'role', 'thesis_title', 'is_current_student',
+                'graduation_date', 'first_position', 'current_position'],
 }
 
 
@@ -413,10 +431,16 @@ class CVSingleObjectMixin(SingleObjectTemplateResponseMixin):
         context = super(CVSingleObjectMixin, self).get_context_data(**kwargs)
         context['method'] = self.method.title()
         context['model'] = self.model_name
-        self.formset = authorship_formset_factory(self.model_name)
-        self.edition_formset = edition_formset_factory()
+        self.authorship_formset = authorship_formset_factory(self.model_name)
+        self.edition_formset = None
         if self.model_name=='book':
             self.edition_formset = edition_formset_factory()
+        self.editorship_formset = None
+        if self.model_name=='chapter':
+            self.editorship_formset = editorship_formset_factory()
+        self.grant_collaboration_formset = None
+        if self.model_name=='grant':
+            self.grant_collaboration_formset = grant_collaboration_formset_factory()
         return context
 
     def get_template_names(self):
@@ -441,16 +465,15 @@ class CVCreateView(CreateView, CVSingleObjectMixin):
     def get_context_data(self, **kwargs):
         """Insert authorship formset into the context dict."""
         context = super(CVCreateView, self).get_context_data(**kwargs)
-        if self.formset:
-            if self.request.POST:
-                context['authorship_formset'] = self.formset(self.request.POST)
-            else:
-                context['authorship_formset'] = self.formset()
-        if self.edition_formset:
-            if self.request.POST:
-                context['edition_formset'] = self.edition_formset(self.request.POST)
-            else:
-                context['edition_formset'] = self.edition_formset()
+        for formset in ['authorship', 'edition', 'editorship',
+                        'grant_collaboration']:
+            formset_name = '{0}_formset'.format(formset)
+            make_formset = getattr(self, formset_name)
+            if make_formset:
+                if self.request.POST:
+                    context[formset_name] = make_formset(self.request.POST)
+                else:
+                    context[formset_name] = make_formset()
 
         context['action_url'] = reverse_lazy(
             'cv:cv_add',
@@ -482,15 +505,18 @@ class CVUpdateView(UpdateView, CVSingleObjectMixin):
 
     def get_context_data(self, **kwargs):
         context = super(CVUpdateView, self).get_context_data(**kwargs)
-        if self.formset:
-            if self.request.POST:
-                context['authorship_formset'] = self.formset(
-                    self.request.POST,
-                    instance=self.object)
-                context['authorship_formset'].full_clean()
-            else:
-                context['authorship_formset'] = self.formset(
-                    instance=self.object)
+        for formset in ['authorship', 'edition', 'editorship',
+                        'grant_collaboration']:
+            formset_name = '{0}_formset'.format(formset)
+            make_formset = getattr(self, formset_name)
+            if make_formset:
+                if self.request.POST:
+                    context[formset_name] = make_formset(
+                        self.request.POST,
+                        instance=self.object)
+                else:
+                    context[formset_name] = make_formset(
+                        instance=self.object)
         context['model'] = self.model_name
         context['action_url'] = reverse_lazy(
             'cv:cv_edit',

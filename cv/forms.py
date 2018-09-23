@@ -1,18 +1,15 @@
 from django.apps import apps
 from django.forms import inlineformset_factory
 
-from cv.models import Book, BookEdition
+from cv.models import Book, BookEdition, \
+                      Chapter, ChapterEditorship, \
+                      Grant, GrantCollaboration
 
-# ArticleAuthorshipFormset = inlineformset_factory(
-#                             Article,ArticleAuthorship,
-#                             fields=['collaborator','print_middle','display_order','student_colleague']
-#                             )
-formset_fields = {
-    'article': ['collaborator', 'print_middle', 'display_order',
-                'student_colleague'],
-    'book': ['collaborator', 'print_middle', 'display_order', 
-             'student_colleague']
-}
+
+def get_authorship_fields():
+    """Return list of fields for student collaborations."""
+    return ('collaborator', 'print_middle', 'display_order',
+            'student_colleague')
 
 
 def authorship_formset_factory(model_name=None, **kwargs):
@@ -21,25 +18,33 @@ def authorship_formset_factory(model_name=None, **kwargs):
     try:
         authorship_model = apps.get_model('cv', '%sauthorship' % model_name)
         return inlineformset_factory(
-            model, authorship_model, fields=formset_fields[model_name], **kwargs)
+            model, authorship_model, fields=get_authorship_fields(), **kwargs)
     except LookupError:
         return None
 
+
 def edition_formset_factory(**kwargs):
     """Manipulate the editions of a book."""
-    return inlineformset_factory(Book, BookEdition,
+    return inlineformset_factory(
+        Book, BookEdition,
         fields=['edition', 'pub_date', 'submission_date', 'publisher',
-                'place', 'num_pages', 'isbn'], **kwargs)
+                'place', 'num_pages', 'isbn'], **kwargs
+    )
 
 
+def editorship_formset_factory(**kwargs):
+    """Create formsets for editorships."""
+    return inlineformset_factory(
+        Chapter, ChapterEditorship,
+        fields=get_authorship_fields()[0:3],
+        **kwargs
+    )
 
-class AuthorshipFormset:
-    """Instance of authorship formset;
-    Refactored to ``authorship_formset_factory`` function above"""
-    def __init__(self, model_name,fields=None):
-        self.model_name = model_name
-        self.model = apps.get_model('cv', model_name)
-        self.authorship_model = apps.get_model('cv', '%sauthorship' % model_name)
-        self.formset = inlineformset_factory(
-            self.model, self.authorship_model, fields=fields)
 
+def grant_collaboration_formset_factory(**kwargs):
+    """Create set of forms representing grang collaborations."""
+    return inlineformset_factory(
+        Grant, GrantCollaboration,
+        fields=['collaborator', 'role', 'is_pi'],
+        **kwargs
+    )
