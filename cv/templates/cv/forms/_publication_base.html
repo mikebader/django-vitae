@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 
 {% block centerbar %}
-<div class="alert alert-primary small">
+<div id="article-add" class="alert alert-primary small">
 <h2 class="display-4">{{method}} {{model|title}}</h2>    
 	<form method="POST" id="{{model}}Form" class="post-form" action="{{action_url}}" >{% csrf_token %}
     <div class="form-group row">
@@ -150,10 +150,11 @@
             </div>
 
                 <div class="save-group btn-group col-12" role="group" aria-label="{{method}} {{model}}">
-                    <button id="{{model}}FormSubmit" type="submit" class="btn btn-default">Save</button>
-{% block delete_button %}
+                    <button id="{{model}}FormSubmit" type="submit" class="btn btn-light">Save</button>
+                    <a id="cancel" class="btn btn-light" href="{% url 'cv:cv_list' %}#{{model}}s">Cancel</a>
+{% if method == "Edit" %}
                     <button href="{% url 'cv:cv_delete' model_name=model pk=form.instance.pk%}" class="btn btn-detail alert-danger cv-delete">Delete</button>
-{% endblock delete_button %}
+{% endif %}
                 </div>
         </div>
     </form>

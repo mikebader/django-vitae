@@ -450,7 +450,7 @@ class CVSingleObjectMixin(SingleObjectTemplateResponseMixin):
         * ``cv/forms/<model_name>_add_form.html`` or
         * the ``template_name`` defined for the view
         """
-        return ['cv/forms/%s_%s_form.html' % (self.model_name, self.method),
+        return ['cv/forms/%s.html' % (self.model_name),
                 self.template_name,
                 'cv/forms/cv_%s_form.html' % (self.method)]
 
