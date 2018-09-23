@@ -1,12 +1,7 @@
 {% extends 'cv/base.html' %}
 
 {% load widget_tweaks %}
-{% load staticfiles %}
 
-{% block userstyles %}
-{{block.super}}
-<link rel="stylesheet" type="text/css" href="{% static 'cv/cv-forms.css' %}" />  
-{% endblock userstyles %}
 {% block centerbar %}
 <div class="alert alert-primary small">
 <h2 class="display-4">{{method}} {{model|title}}</h2>    
