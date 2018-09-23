@@ -88,7 +88,6 @@ input {
 				$.get("/cv/forms/"+modelName+"/add/",function(data){
 					cancel = cancelButton(orig,editable);
 					editable.html(data).attr("class","alert alert-primary").data("subMenuPopulated",true);
-					editable.find(".cv-delete").hide();
 					editable.find(".save-group").append(cancel);
 
 				});
@@ -101,7 +100,6 @@ input {
 			var modelName = editRe.exec(this.className)[1];
 			var attrib = $(this).closest("li");
 			var pk = attrib.attr("id").substring(modelName.length+1);
-			console.log(pk)
 
 			var $attrib = $("#"+attrib.attr("id"));
 
@@ -115,7 +113,6 @@ input {
 			if(!editable.data("subMenuPopulated") && editable.is(":visible")){
 				$.get("/cv/forms/"+modelName+"/"+pk+"/edit/",function(data){
 					cancel = cancelButton(orig,editable);
-					console.log(cancel.html());
 					editable.html(data).attr("class","alert alert-primary editable").data("subMenuPopulated",true);
 					editable.find(".save-group").append(cancel);
 				});
