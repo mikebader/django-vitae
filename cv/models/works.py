@@ -56,6 +56,8 @@ class Grant(VitaeModel):
         _('Start date'), null=True, blank=True)
     end_date = models.DateField(
         _('End date'), null=True, blank=True)
+    role = models.CharField(
+        _('Role'), max_length=50, blank=True)
     is_current = models.BooleanField(
         _('Is currently funded'), default=True)
 
@@ -67,7 +69,7 @@ class Grant(VitaeModel):
         Collaborator, through='GrantCollaboration', related_name="grants")
 
     def get_pi(self):
-        return self.collaborators.filter(grantcollaborator__is_pi=True)
+        return self.collaborators.filter(grantcollaboration__is_pi=True)
 
     def save(self, force_insert=False, force_update=False, *args, **kwargs):
         self.abstract_html = markdown(self.abstract)

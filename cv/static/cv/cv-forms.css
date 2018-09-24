@@ -15,6 +15,13 @@ label {
     align-self: center !important;
 }
 
+.fixed-width > input {
+	width: 70%;
+}
+
+.fixed-width > label{
+	width: 20%;
+}
 
 .author {
     display:block;

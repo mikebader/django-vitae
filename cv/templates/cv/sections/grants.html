@@ -7,8 +7,12 @@
 <ul class="cv-entry">
 {% for grant in internal_grants %}
 <li class="row">
-<span class="cv-entry-date col-xs-2 col-sm-1">{{grant|year_range}}</span>
-<span class="cv-entry-text col-xs-9 col-sm-10">{{grant.title}}. {% if grant.agency %}{{grant.agency}}{% endif %}{% if grant.division %}, {{grant.division}}{% endif %} ({{grant.amount|monetize}}). <em>{{grant.role}}</em>.  {% if grant.get_pi %}{{grant.get_pi|print_authors}}, Principal Investigator{{grant.get_pi.count|pluralize}}.{% endif %}
+<span class="cv-entry-date col-xs-2 col-sm-1">{% if grant.start_date and grant.end_date%}{{grant|year_range}}{% endif %}</span>
+<span class="cv-entry-text col-xs-9 col-sm-10">{{grant.title}}. {% if grant.agency %}{{grant.agency}}{% endif %}{% if grant.division %}, {{grant.division}}{% endif %} ({{grant.amount|monetize}}). {% if grant.role %}<em>{{grant.role}}</em>. {% endif %}{% if grant.get_pi %}{{grant.get_pi|print_authors}}, Principal Investigator{{grant.get_pi.count|pluralize}}.{% endif %}
+        {% if user.is_authenticated %}
+			<a class="ml-4 article-edit cv-edit" href="{% url 'cv:cv_edit' model_name='grant' pk=grant.pk %}"><i class="far fa-edit"></i></a>
+		{% endif %}
+</span>
 </li>
 {% endfor %}
 </ul>
@@ -20,7 +24,11 @@
 {% for grant in external_grants %}
 <li class="row">
 <span class="cv-entry-date col-xs-2 col-sm-1">{{grant|year_range}}</span>
-<span class="cv-entry-text col-xs-9 col-sm-10">{{grant.title}}. {% if grant.division %}{{grant.division}},{% endif %}{% if grant.agency %}{{grant.agency}}{% endif %} ({{grant.amount|monetize}}). <em>{{grant.role}}</em>.  {% if grant.get_pi %}{{grant.get_pi|print_authors}}, Principal Investigator{{grant.get_pi.count|pluralize}}.{% endif %}
+<span class="cv-entry-text col-xs-9 col-sm-10">{{grant.title}}. {% if grant.division %}{{grant.division}},{% endif %}{% if grant.agency %}{{grant.agency}}{% endif %} ({{grant.amount|monetize}}). {% if grant.role %}<em>{{grant.role}}</em>. {% endif %}{% if grant.get_pi %}{{pi|print_authors}}, Principal Investigator{{grant.get_pi.count|pluralize}}.{% endif %}
+        {% if user.is_authenticated %}
+			<a class="ml-4 article-edit cv-edit" href="{% url 'cv:cv_edit' model_name='grant' pk=grant.pk %}"><i class="far fa-edit"></i></a>
+		{% endif %}
+</span>
 </li>
 {% endfor %}
 </ul>

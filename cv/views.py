@@ -359,7 +359,8 @@ from django.apps import apps
 from .forms import authorship_formset_factory, \
                    edition_formset_factory, \
                    editorship_formset_factory, \
-                   grant_collaboration_formset_factory
+                   grant_collaboration_formset_factory, \
+                   presentation_formset_factory
 
 def template_name(model_name, suffix):
 #   model_name = model.__name__.lower()
@@ -394,12 +395,15 @@ fieldsets = {
                'report_type', 'series_title', 'place', 'institution',
                'pages', 'url', 'doi', 'grants', 'primary_discipline',
                'other_disciplines'],
-    'grant': ['title', 'short_title', 'slug', 'display', 'source', 'agency',
-              'agency_acronym', 'division', 'division_acronym', 'grant_number',
-              'amount', 'start_date', 'end_date', 'is_current', 'abstract',
-              'primary_discipline', 'other_disciplines'],
+    'grant': ['title', 'short_title', 'slug', 'display', 'source', 'role',
+              'agency', 'agency_acronym', 'division', 'division_acronym',
+              'grant_number', 'amount', 'start_date', 'end_date',
+              'is_current', 'abstract', 'primary_discipline',
+              'other_disciplines'],
     'otherwriting': ['title', 'short_title', 'slug', 'type', 'venue', 'date',
                      'pages', 'url', 'place', 'volume', 'issue', 'abstract'],
+    'talk': ['title', 'short_title', 'slug', 'display', 'abstract','grants',
+             'primary_discipline', 'other_disciplines'],
     'service': ['role', 'group', 'organization', 'type', 'start_date',
                 'end_date', 'description'],
     'student': ['first_name', 'last_name', 'middle_name', 'student_level',
@@ -441,6 +445,15 @@ class CVSingleObjectMixin(SingleObjectTemplateResponseMixin):
         self.grant_collaboration_formset = None
         if self.model_name=='grant':
             self.grant_collaboration_formset = grant_collaboration_formset_factory()
+        self.presentation_formset = None
+        if self.model_name=='talk':
+            self.presentation_formset = presentation_formset_factory()
+        self.formsets = list()
+        for formset in ['authorship', 'edition', 'editorship',
+                        'grant_collaboration', 'presentation']:
+            formset_name = '{0}_formset'.format(formset)
+            if getattr(self, formset_name):
+                self.formsets.append(formset_name)
         return context
 
     def get_template_names(self):
@@ -465,11 +478,11 @@ class CVCreateView(CreateView, CVSingleObjectMixin):
     def get_context_data(self, **kwargs):
         """Insert authorship formset into the context dict."""
         context = super(CVCreateView, self).get_context_data(**kwargs)
-        for formset in ['authorship', 'edition', 'editorship',
-                        'grant_collaboration']:
-            formset_name = '{0}_formset'.format(formset)
+        self.formsets = list()
+        for formset_name in self.formsets:
             make_formset = getattr(self, formset_name)
             if make_formset:
+                self.formsets.append(formset_name)
                 if self.request.POST:
                     context[formset_name] = make_formset(self.request.POST)
                 else:
@@ -484,8 +497,8 @@ class CVCreateView(CreateView, CVSingleObjectMixin):
     def form_valid(self, form):
         """Save authorship formset data if valid."""
         context = self.get_context_data()
-        if self.formset:
-            formset = context['authorship_formset']
+        for formset_name in self.formsets:
+            formset = context[formset_name]
             if formset.is_valid():
                 self.object = form.save()
                 formset.instance = self.object
@@ -502,6 +515,7 @@ class CVUpdateView(UpdateView, CVSingleObjectMixin):
 
     method = 'edit'
     template_name = "cv/forms/cv_edit_form.html"
+    success_url = reverse_lazy('cv:cv_list')
 
     def get_context_data(self, **kwargs):
         context = super(CVUpdateView, self).get_context_data(**kwargs)
@@ -529,6 +543,22 @@ class CVUpdateView(UpdateView, CVSingleObjectMixin):
                     'model_name': self.model_name}
         )
         return context
+
+    def form_valid(self, form):
+        """Save authorship formset data if valid."""
+        context = self.get_context_data()
+        formsets = self.formsets
+        for formset_name in self.formsets:
+            formset = context[formset_name]
+            if formset.is_valid():
+                self.object = form.save()
+                formset.instance = self.object
+                formset.save()
+            else:
+                return self.render_to_response(
+                    self.get_context_data(form=form))
+        super().form_valid(form)
+        return redirect(self.success_url)
 
 class CVDeleteView(DeleteView):
     success_url = reverse_lazy('cv:cv_list')

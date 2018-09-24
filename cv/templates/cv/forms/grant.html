@@ -1,4 +1,4 @@
-{% extends 'cv/base.html' %}
+{% extends 'cv/forms/_publication_base.html' %}
 
 {% load widget_tweaks %}
 {% load staticfiles %}
@@ -30,6 +30,11 @@
             </span>
         </div>
         <div class="col-12 col-lg-6 form-row">
+            <span class="col-12">
+                {% with form.role as field %}
+                    {% include "cv/forms/_publication_field.html" %}
+                {% endwith %}
+            </span>
             <span class="col-6">
                 {% with form.start_date as field %}
                     {% include "cv/forms/_publication_field.html" %}
@@ -39,7 +44,7 @@
                 {% with form.end_date as field %}
                     {% include "cv/forms/_publication_field.html" %}
                 {% endwith %}
-            </span>                
+            </span>
             <span class="col-12">
                 {% with form.source as field %}
                     {% include "cv/forms/_publication_field.html" %}

@@ -3,7 +3,8 @@ from django.forms import inlineformset_factory
 
 from cv.models import Book, BookEdition, \
                       Chapter, ChapterEditorship, \
-                      Grant, GrantCollaboration
+                      Grant, GrantCollaboration, \
+                      Talk, Presentation
 
 
 def get_authorship_fields():
@@ -45,6 +46,14 @@ def grant_collaboration_formset_factory(**kwargs):
     """Create set of forms representing grang collaborations."""
     return inlineformset_factory(
         Grant, GrantCollaboration,
-        fields=['collaborator', 'role', 'is_pi'],
+        fields=['collaborator', 'role', 'is_pi', 'display_order'],
+        **kwargs
+    )
+
+def presentation_formset_factory(**kwargs):
+    return inlineformset_factory(
+        Talk, Presentation,
+        fields=['presentation_date', 'type', 'event', 'event_acronym', 'city',
+                'state', 'country'],
         **kwargs
     )

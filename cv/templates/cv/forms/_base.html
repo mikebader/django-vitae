@@ -1,5 +1,5 @@
 {% block centerbar %}
-<form method="POST" id="{{model}}-form" class="post-form" action="{{action_url}}">{% csrf_token %}
+<form method="POST" id="{{model}}-form" class="post-form small" action="{{action_url}}">{% csrf_token %}
 {% block formcontent %}
     <div class="form-group row form-row">
         {% for field in form %}
