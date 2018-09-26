@@ -1,6 +1,6 @@
 TY  - RPRT
 T1  - {{report.title}}
-{% spaceless %}{% for author in report.articleauthorship_set.all %}
+{% spaceless %}{% for author in report.authorship.all %}
 AU  - {{author}}{% endfor %}{% endspaceless %}
 PY  - {{report.pub_date|date:"Y/m/d"}}
 SP  - {{report.start_page}}

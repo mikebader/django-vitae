@@ -228,8 +228,10 @@ class VitaePublicationModel(VitaeModel):
         super(VitaePublicationModel, self).clean(*args, **kwargs)
 
     def get_absolute_url(self):
-        url_name = 'cv:%s_object_detail' % self._meta.model_name
-        return reverse(url_name, kwargs={'slug': self.slug})
+        return reverse(
+            'cv:item_detail',
+            kwargs={'model_name': self._meta.model_name, 'slug': self.slug}
+        )
 
     def get_next_previous_by_status(self, direc):
         if direc not in ["previous", "next"]:

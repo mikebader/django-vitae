@@ -3,7 +3,7 @@
 
 {% with report as object %}
 
-{% block object-list-url %}{% url 'cv:report_object_list' %}{% endblock %}
+{% block object-list-url %}{% url 'cv:section_list' 'report' %}{% endblock %}
 
 {% block next-previous %}
 {% with "report" as section_name %}
@@ -16,11 +16,11 @@
 {% endblock formatted-citation %}
 
 {% block object-citation-url-ris %}
-{% url 'cv:report_citation' report.slug 'ris' %}
+{% url 'cv:citation' 'report' report.slug 'ris' %}
 {% endblock %}
 
 {% block object-citation-url-bib %}
-{% url 'cv:report_citation' report.slug 'bib' %}
+{% url 'cv:citation' 'report' report.slug 'bib' %}
 {% endblock %}
 
 {% block object_type_and_location %}{% endblock %}

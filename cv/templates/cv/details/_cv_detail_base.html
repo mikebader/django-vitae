@@ -4,12 +4,16 @@
 
 
 
-{% block maintitle %}{{object.title}}{% endblock %}
+
 
 {% block centerbar-content %}
-<div id="abstract" class="col-xs-12 col-sm-10 push-sm-1 abstract">
+<h1 class="col-12 col-sm-10">{% block maintitle %}{{object.title}}{% endblock %}</h1>
+{% block abstract %}
+<h2 class="col-12 col-sm-10 abstract-name">{% block abstract_name %}Abstract{% endblock abstract_name %}</h2>
+<div id="abstract" class="col-xs-12 col-sm-10 abstract">
 {{object.abstract_html|safe}}
 </div>
+{% endblock abstract %}
 {% endblock %}
 
 {% block next-previous %}
@@ -19,8 +23,10 @@
 
 {% block details %}
 {% block citation %}
-<h2>Citation</h2>
-{% block formatted-citation %}{% endblock %}
+<h2 class="col-12 col-sm-10">Citation</h2>
+<div class="col-12 col-sm-10 citation">
+	{% block formatted-citation %}{% endblock %}
+</div>
 
 {% block url %}
 {% if object.url %}
@@ -29,13 +35,15 @@
 </p>
 {% endif %}
 {% endblock %}
-
+<div class="col-12 col-sm-10 citation-links">
 	<a class="btn btn-secondary btn-sm" role="button" href="{% block object-citation-url-ris %}{% endblock %}" title="Download {{object.short_title}} in Reference Manager format"><span class='fa fa-paperclip ' aria-hidden="true"></span> Cite with Reference Manager</a>
 	<a class="btn btn-secondary btn-sm" role="button" href="{% block object-citation-url-bib %}{% endblock %}" title="Download {{object.short_title}} in BibTeX format"><span class='fa fa-paperclip' aria-hidden="true"></span> Cite with BibTeX</a>
+</div>
 {% endblock citation %}
 
 
 {% block files %}
+<div class="col-12 col-sm-10 files">
 <h2>Files</h2>
 {% with object.files.all as files %}
 	<ul>
@@ -50,6 +58,7 @@
 	{% endif %}
 	</ul>
 	{% endwith %}
+</div>
 {% endblock files %}
 
 {% block type-specific-info %}{% endblock %}

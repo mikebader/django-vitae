@@ -4,7 +4,7 @@
 
 {% with talk as object %}
 
-{% block object-list-url %}{% url 'cv:talk_object_list' %}{% endblock %}
+{% block object-list-url %}{% url 'cv:section_list' 'talk' %}{% endblock %}
 
 {% block next-previous %}
 {% with "talk" as section_name %}
@@ -28,11 +28,11 @@
 
 
 {% block object-citation-url-ris %}
-{% url 'cv:talk_citation' talk.slug 'ris' %}
+{% url 'cv:citation' 'talk' talk.slug 'ris' %}
 {% endblock %}
 
 {% block object-citation-url-bib %}
-{% url 'cv:talk_citation' talk.slug 'bib' %}
+{% url 'cv:citation' 'talk' talk.slug 'bib' %}
 {% endblock %}
 
 {% block type-specific-info %}

@@ -1,6 +1,6 @@
 TY  - JOUR
 TI  - {{article.title}}
-{% spaceless %}{% for author in article.articleauthorship_set.all %}
+{% spaceless %}{% for author in article.authorship.all %}
 AU  - {{author}}{% endfor %}{% endspaceless %}
 PY  - {{article.pub_date|date:"Y/m/d"}}
 SP  - {{article.start_page}}

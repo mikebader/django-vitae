@@ -3,7 +3,7 @@ TI  - {{book.title}}
 {% spaceless %}{% for author in book.authorship.all %}
 AU  - {{author}}{% endfor %}{% endspaceless %}
 ST  - {{book.short_title}}
-AB  - {{book.summary}}
+AB  - {{book.abstract}}
 {% if book.editions %}{% with book.editions.all|first as edition %}PB  - {{edition.publisher}}
 PP  - {{edition.place}}
 PY  - {{edition.edition_date|date:"Y/m/d"}}

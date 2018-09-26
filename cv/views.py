@@ -1,20 +1,14 @@
-from django.conf import settings
-from django.http import HttpResponse
+from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
-from django.template import loader, Context, RequestContext
 from django.views import generic
 
-from .models import Collaborator, Journal, Discipline, Award, \
-                    Position, Degree, \
-                    Grant, GrantCollaboration, \
-                    Article, ArticleAuthorship, \
-                    Chapter, ChapterAuthorship,\
-                    Book, BookAuthorship, BookEdition, \
-                    Report, ReportAuthorship, \
-                    Talk, Presentation, OtherWriting, \
-                    MediaMention, Service, JournalService, Student 
+from sys import modules
 
-#from .forms import DegreeForm, AwardForm
+from .models import Award, Position, Degree, \
+    Article, Book, Chapter, Report, \
+    Grant, Talk, OtherWriting, \
+    MediaMention, Service, JournalService, Student
+
 
 ## Helper functions to gather data about different parts of CV
 def sum_items(dict):
@@ -140,186 +134,21 @@ def get_cv_data():
         context.update(f)
     return context
 
-## Views
-def cv_list(request):   
+
+# Views
+DETAIL_VIEWS_AVAILABLE = [
+    'article', 'book', 'chapter', 'report', 'talk'
+]
+CITATION_VIEWS_AVAILABLE = DETAIL_VIEWS_AVAILABLE
+
+
+def cv_list(request):
     """Create view of entire CV for printing in `html`."""
     return render(request, 'cv/cv.html', get_cv_data())
 
-class ArticleListView(generic.ListView):
-    
-    """Return list of articles"""
-    
-    template_name = 'cv/lists/article_list.html'
-    context_object_name = 'article_objects'
-    
-    def get_queryset(self):
-        return get_cv_article_data()
-            
-class ArticleDetailView(generic.DetailView):
-    
-    """Return view of a single article"""
-    
-    model = Article
-    template_name = 'cv/details/article_detail.html'
-    context_object_name = 'article' 
 
-def article_citation_view(request,slug,format):
-    """Returns view to allow citation to be downloaded to citation management 
-    software."""
-    p = get_object_or_404(Article,slug=slug)
-    if format=="ris":
-        template_file = 'cv/citations/article.ris'
-        mime='application/x-research-info-systems'
-    else:
-        template_file = 'cv/citations/article.bib'
-        mime='application/x-bibtex'
-    return render(request, template_file, {'article':p},content_type=mime)
-
-class BookListView(generic.ListView):
-    
-    """Return list of books"""
-
-    template_name = 'cv/lists/book_list.html'
-    context_object_name = 'book_objects'
-
-    def get_queryset(self):
-        return get_cv_book_data()
-
-class BookDetailView(generic.DetailView):
-
-    """Return view of single book"""
-
-    model = Book
-    template_name = 'cv/details/book_detail.html'
-    context_object_name = 'book'
-
-def book_citation_view(request, slug, format):
-    """Returns view to allow citation to be downloaded to citation management
-    software in RIS or BibTeX formats."""
-    p = get_object_or_404(Book, slug=slug)
-    if format == "ris":
-        template_file = 'cv/citations/book.ris'
-        mime = 'application/x-research-info-systems'
-    else:
-        template_file = 'cv/citations/book.bib'
-        mime = 'application/x-bibtex'
-    return render(request, template_file, {'book':p}, content_type=mime)
-
-class ChapterListView(generic.ListView):
-    """Return view containing list of chapters."""
-    template_name = 'cv/lists/chapter_list.html'
-    context_object_name = 'chapter_objects'
-
-    def get_queryset(self):
-        return get_cv_chapter_data()
-
-class ChapterDetailView(generic.DetailView):
-    """Return view containing details of single chapter."""
-    model = Chapter
-    template_name = 'cv/details/chapter_detail.html'
-    context_object_name = 'chapter'
-
-
-def chapter_citation_view(request, slug, format):
-    """Returns citation to be downloaded to citation management software."""
-    p = get_object_or_404(Chapter, slug=slug)
-    if format == "ris":
-        template_file = 'cv/citations/chapter.ris'
-        mime = 'application/x-research-info-systems'
-    else:
-        template_file = 'cv/citations/chapter.bib'
-        mime = 'application/x-bibtex'
-    return render(request, template_file, {'report': p}, content_type=mime)
-
-
-class ReportListView(generic.ListView):
-    """
-    Return view containing list of reports.
-    
-    """
-    
-    template_name = 'cv/lists/report_list.html'
-    context_object_name = 'report_objects'
-    
-    def get_queryset(self):
-        return get_cv_report_data()
-    
-class ReportDetailView(generic.DetailView):
-    """
-    Return view containing details of single report.
-    
-    """
-    
-    model = Report
-    template_name = 'cv/details/report_detail.html'
-    context_object_name = 'report'
-    
-def report_citation_view(request,slug,format):
-    """Returns view to allow citation to be downloaded to citation management software."""
-    p = get_object_or_404(Report,slug=slug)
-    if format=="ris":
-        template_file = 'cv/citations/report.ris'
-        mime='application/x-research-info-systems'
-    else:
-        template_file = 'cv/citations/report.bib'
-        mime='application/x-bibtex'
-    return render(request, template_file, {'report':p},content_type=mime)
-
-class TalkListView(generic.ListView):
-    """
-    Return list of articles.
-    
-    """
-    
-    model=Talk
-    template_name = 'cv/lists/talk_list.html'
-    context_object_name = 'talk_list'
-    
-class TalkDetailView(generic.DetailView):
-    """
-    Return view of a single talk.
-    
-    """
-    
-    model = Talk
-    template_name = 'cv/details/talk_detail.html'
-    context_object_name = 'talk'    
-
-def talk_citation_view(request,slug,format):
-    """Returns view to allow citation to be downloaded to citation management software."""
-    p = get_object_or_404(Talk,slug=slug)
-    if format=="ris":
-        template_file = 'cv/citations/talk.ris'
-        mime='application/x-research-info-systems'
-    else:
-        template_file = 'cv/citations/talk.bib'
-        mime='application/x-bibtex'
-    return render(request, template_file, {'talk':p},content_type=mime)
-
-class GrantListView(generic.ListView):
-    """
-    Return list of grants.
-    
-    """
-    
-    model=Grant
-    template_name = 'cv/lists/grant_list.html'
-    context_object_name = 'grant_list'
-    
-class GrantDetailView(generic.DetailView):
-    """
-    Return view of a single grant.
-    
-    """
-    
-    model = Grant
-    template_name = 'cv/details/grant_detail.html'
-    context_object_name = 'grant'   
-
-
-# Abstracted Model Views
 class CVListView(generic.ListView):
-    """Returns view of all instances for a particular object."""
+    """Creates view of all instances for a particular section."""
 
     def dispatch(self, request, *args, **kwargs):
         """Set class parameters based on URL and dispatch."""
@@ -328,6 +157,11 @@ class CVListView(generic.ListView):
         self.context_object_name = (
             '%s' % ''.join(self.model._meta.verbose_name_plural))
         return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        mod = modules[__name__]
+        queryset_method = getattr(mod, 'get_cv_%s_data' % self.model_name)
+        return queryset_method()
 
     def get_template_names(self):
         """
@@ -341,16 +175,46 @@ class CVListView(generic.ListView):
 
 
 class CVDetailView(generic.DetailView):
+    """Creates view of a single instance of a CV item."""
 
     def dispatch(self, request, *args, **kwargs):
         self.model_name = kwargs['model_name']
+        if self.model_name not in DETAIL_VIEWS_AVAILABLE:
+            raise Http404('Detailed information not '
+                          'available for {0}s'.format(self.model_name))
         self.model = apps.get_model('cv', self.model_name)
         self.context_object_name = (
             '%s' % ''.join(self.model._meta.verbose_name))
         return super().dispatch(request, *args, **kwargs)
 
     def get_template_names(self):
+        """
+        Returns the name template to use to display a list of model instances.
+
+        Currently returns ``cv/lists/<model_name>_detail.html``.
+
+        Might add a generic template for vitae models in the future.
+        """
         return ['cv/details/%s_detail.html' % (self.model_name)]
+
+
+def citation_view(request, model_name, slug, format):
+    """Returns view to allow citation to be downloaded to citation management
+    software.
+    """
+    if model_name not in CITATION_VIEWS_AVAILABLE:
+        raise Http404('Citation format not '
+                      'available for {0}'.format(model_name))
+    model = apps.get_model('cv', model_name)
+    p = get_object_or_404(model, slug=slug)
+    if format == "ris":
+        template_file = 'cv/citations/{0}.ris'.format(model_name)
+        mime = 'application/x-research-info-systems'
+    else:
+        template_file = 'cv/citations/{0}.bib'.format(model_name)
+        mime = 'application/x-bibtex'
+    return render(request, template_file, {model_name: p}, content_type=mime)
+
 
 # Forms
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, SingleObjectTemplateResponseMixin

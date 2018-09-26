@@ -1,6 +1,7 @@
 {% load cvtags %}
+
 @article{bader,
-	author = { {{ article.articleauthorship_set.all|print_authors_bib_format }} },
+	author = { {{ article.authorship.all|print_authors_bib_format }} },
 	year = { {{article.pub_date.year}} },
 	month = {{article.pub_date|date:"b"}},
 	title = { {{article.title}} },
