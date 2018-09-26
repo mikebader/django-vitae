@@ -10,125 +10,105 @@ from .models import Award, Position, Degree, \
     MediaMention, Service, JournalService, Student
 
 
-## Helper functions to gather data about different parts of CV
+# Helper functions to gather data about different parts of CV
 def sum_items(dict):
     """Sum items across dictionaries."""
     return sum([len(i) for i in dict.values()])
 
+
 def get_cv_primary_positions():
     """Return dictionary of CV data with current positions."""
     return {'primary_positions': Position.primarypositions.all()}
-            
+
+
 def get_cv_personnel_data():
     """Return dictionary of CV data related to personnel and awards."""
     return {
         'award_list': Award.displayable.all(),
         'degree_list': Degree.displayable.all(),
-        'position_list': Position.displayable.all() 
-        }
+        'position_list': Position.displayable.all()
+    }
 
-def get_cv_service_data():
-    """Return dictionary of services at different levels."""
-    service_dict = {
-        'department_service_list' : Service.department_services.all(),
-        'university_service_list' : Service.university_services.all(),
-        'discipline_service_list' : Service.discipline_services.all()
-        }
-    service_dict['total_service']=sum_items(service_dict)
-    return service_dict
 
-def get_cv_journal_service_data():
-    """Return dictionary of journals served."""
-    return {
-        'journal_service_list' : JournalService.objects.all().filter(is_reviewer=True)
-        }
+def get_cv_publication_data(model):
+    """Returns dictionary of querysets for publication models."""
+    model_name = model._meta.model_name.lower()
+    model_plural = model._meta.verbose_name_plural.lower()
+    pub_dict = {
+        '{0}_published_list'.format(model_name): model.published.all(),
+        '{0}_revise_list'.format(model_name): model.revise.all(),
+        '{0}_inprep_list'.format(model_name): model.inprep.all(),
+    }
+    pub_dict['total_{0}'.format(model_plural)] = sum_items(pub_dict)
+    return pub_dict
 
-def get_cv_article_data():
-    """Return dictionary of articles in different stages of publication."""
-    article_dict = {
-        'article_published_list': Article.published.all(),
-        'article_revise_list': Article.revise.all(),
-        'article_inprep_list': Article.inprep.all()
-        }
-    article_dict['total_articles']=sum_items(article_dict)
-    return article_dict
-
-def get_cv_chapter_data():
-    """Return dictionary of chapters in different stages of publication."""
-    chapter_dict = {
-        'chapter_published_list': Chapter.published.all(),
-        'chapter_revise_list': Chapter.revise.all(),
-        'chapter_inprep_list': Chapter.inprep.all()
-        }
-    chapter_dict['total_chapters']=sum_items(chapter_dict)
-    return chapter_dict
-
-def get_cv_book_data():
-    """Return dictionary of books in different stages of publication."""
-    book_dict = {
-        'book_published_list': Book.published.all(),
-        'book_revise_list': Book.revise.all(),
-        'book_inprep_list': Book.inprep.all()
-        }
-    book_dict['total_books']=sum_items(book_dict)
-    return book_dict
 
 def get_cv_grant_data():
     """Return dictionary of grants."""
     grant_dict = {
         'internal_grants': Grant.internal_grants.all(),
         'external_grants': Grant.external_grants.all()
-        }
-    grant_dict.update({'total_grants':sum_items(grant_dict)})
+    }
+    grant_dict.update({'total_grants': sum_items(grant_dict)})
     return grant_dict
 
-def get_cv_report_data():
-    """Return dictionary of reports in different stages of publication."""
-    report_dict = {
-        'report_published_list': Report.published.all(),
-        'report_revise_list': Report.revise.all(),
-        'report_inprep_list': Report.inprep.all()
-        }
-    report_dict['total_reports']=sum_items(report_dict)
-    return report_dict
 
 def get_cv_otherwriting_data():
     """Return dictionary of other writing objects."""
     return {
         'otherwriting_list': OtherWriting.displayable.all()
-        }
+    }
+
 
 def get_cv_talk_data():
     """Return dictionary of talks."""
     return {
         'talk_list': Talk.displayable.all()
-        }
+    }
+
 
 def get_cv_media_data():
     """Return dictionary of media mentions."""
     return {
         'media_mention_list': MediaMention.displayable.all()
-        }
+    }
+
+
+def get_cv_service_data():
+    """Return dictionary of services at different levels."""
+    service_dict = {
+        'department_service_list': Service.department_services.all(),
+        'university_service_list': Service.university_services.all(),
+        'discipline_service_list': Service.discipline_services.all()
+    }
+    service_dict['total_service'] = sum_items(service_dict)
+    return service_dict
+
+
+def get_cv_journal_service_data():
+    """Return dictionary of journals served."""
+    return {
+        'journal_service_list': JournalService.objects.all().filter(
+            is_reviewer=True
+        )
+    }
+
 
 def get_cv_teaching_data():
     """Return dictionary of teaching and mentoring."""
-    context = {'student_list': Student.displayable.all()}
-    try:
-        from courses.models import Course
-        context.update({'course_list': Course.displayable.all()})
-        return context
-    # except ImportError:
-    except:
-        return context
+    return {'student_list': Student.displayable.all()}
+
 
 def get_cv_data():
     """Return dictionary of different types of CV entries."""
-    cv_entry_list = [
-        get_cv_primary_positions(), get_cv_personnel_data(), get_cv_service_data(), 
-        get_cv_journal_service_data(), get_cv_article_data(), get_cv_chapter_data(), 
-        get_cv_book_data(), get_cv_talk_data(), get_cv_otherwriting_data(),
-        get_cv_media_data(), get_cv_teaching_data(), get_cv_grant_data()
-        ]
+    cv_entry_list = [get_cv_publication_data(model) for model in
+                     [Article, Book, Chapter, Report]]
+    cv_entry_list += [
+        get_cv_primary_positions(), get_cv_personnel_data(),
+        get_cv_grant_data(), get_cv_talk_data(), get_cv_otherwriting_data(),
+        get_cv_service_data(), get_cv_journal_service_data(),
+        get_cv_teaching_data()
+    ]
     context = dict()
     for f in cv_entry_list:
         context.update(f)
