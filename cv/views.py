@@ -140,8 +140,12 @@ class CVListView(generic.ListView):
 
     def get_queryset(self):
         mod = modules[__name__]
-        queryset_method = getattr(mod, 'get_cv_%s_data' % self.model_name)
-        return queryset_method()
+        try:
+            queryset_method = getattr(mod, 'get_cv_%s_data' % self.model_name)
+            return queryset_method()
+        except AttributeError:
+            queryset_method = getattr(mod, 'get_cv_publication_data')
+            return queryset_method(self.model)
 
     def get_template_names(self):
         """
@@ -267,37 +271,32 @@ class CVSingleObjectMixin(SingleObjectTemplateResponseMixin):
         self.fields = fieldsets[self.model_name]
         return super().dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, **kwargs):
-        """
-        Set common context variables for CV views and set value of
-        authorship formset
+    def get_formset_factories(self):
+        """Return a dictionary of formset names and factory methods."""
+        factories = dict()
+        authorship_formset = authorship_formset_factory(self.model_name)
+        if authorship_formset:
+            factories['authorship_formset'] = authorship_formset
+        edition_formset = None
+        if self.model_name=='book':
+            factories['edition_formset'] = edition_formset_factory()
+        editorship_formset = None
+        if self.model_name=='chapter':
+            factories['editorship_formset'] = editorship_formset_factory()
+        if self.model_name=='grant':
+            factories['grant_collaboration_formset'] = grant_collaboration_formset_factory()
+        if self.model_name=='talk':
+            factories['presentation_formset'] = presentation_formset_factory()
+        return factories
 
-        ``self.formset`` will be:
-        * ``inlineformset_factory`` for the authorship model if one exists
-        * ``None`` otherwise
+    def get_context_data(self, **kwargs):
+        """Set common context variables for CV views and get formset factories.
         """
         context = super(CVSingleObjectMixin, self).get_context_data(**kwargs)
         context['method'] = self.method.title()
         context['model'] = self.model_name
-        self.authorship_formset = authorship_formset_factory(self.model_name)
-        self.edition_formset = None
-        if self.model_name=='book':
-            self.edition_formset = edition_formset_factory()
-        self.editorship_formset = None
-        if self.model_name=='chapter':
-            self.editorship_formset = editorship_formset_factory()
-        self.grant_collaboration_formset = None
-        if self.model_name=='grant':
-            self.grant_collaboration_formset = grant_collaboration_formset_factory()
-        self.presentation_formset = None
-        if self.model_name=='talk':
-            self.presentation_formset = presentation_formset_factory()
-        self.formsets = list()
-        for formset in ['authorship', 'edition', 'editorship',
-                        'grant_collaboration', 'presentation']:
-            formset_name = '{0}_formset'.format(formset)
-            if getattr(self, formset_name):
-                self.formsets.append(formset_name)
+        self.factories = self.get_formset_factories()
+
         return context
 
     def get_template_names(self):
@@ -322,27 +321,19 @@ class CVCreateView(CreateView, CVSingleObjectMixin):
     def get_context_data(self, **kwargs):
         """Insert authorship formset into the context dict."""
         context = super(CVCreateView, self).get_context_data(**kwargs)
-        self.formsets = list()
-        for formset_name in self.formsets:
-            make_formset = getattr(self, formset_name)
-            if make_formset:
-                self.formsets.append(formset_name)
-                if self.request.POST:
-                    context[formset_name] = make_formset(self.request.POST)
-                else:
-                    context[formset_name] = make_formset()
-
-        context['action_url'] = reverse_lazy(
-            'cv:cv_add',
-            kwargs={'model_name': self.model_name}
-        )
+        context['model'] = self.model_name
+        for name, factory in self.factories.items():
+            if self.request.POST:
+                context[name] = factory(self.request.POST)
+            else:
+                context[name] = factory()
         return context
 
     def form_valid(self, form):
         """Save authorship formset data if valid."""
         context = self.get_context_data()
-        for formset_name in self.formsets:
-            formset = context[formset_name]
+        for factory in self.factories:
+            formset = context[factory]
             if formset.is_valid():
                 self.object = form.save()
                 formset.instance = self.object
@@ -350,8 +341,7 @@ class CVCreateView(CreateView, CVSingleObjectMixin):
             else:
                 return self.render_to_response(
                     self.get_context_data(form=form))
-        super().form_valid(form)
-        return redirect(self.success_url)
+        return super().form_valid(form)
 
 
 class CVUpdateView(UpdateView, CVSingleObjectMixin):
@@ -363,46 +353,19 @@ class CVUpdateView(UpdateView, CVSingleObjectMixin):
 
     def get_context_data(self, **kwargs):
         context = super(CVUpdateView, self).get_context_data(**kwargs)
-        for formset in ['authorship', 'edition', 'editorship',
-                        'grant_collaboration']:
-            formset_name = '{0}_formset'.format(formset)
-            make_formset = getattr(self, formset_name)
-            if make_formset:
-                if self.request.POST:
-                    context[formset_name] = make_formset(
-                        self.request.POST,
-                        instance=self.object)
-                else:
-                    context[formset_name] = make_formset(
-                        instance=self.object)
         context['model'] = self.model_name
-        context['action_url'] = reverse_lazy(
-            'cv:cv_edit',
-            kwargs={'pk': context['object'].id,
-                    'model_name': self.model_name}
-        )
+        for name, factory in self.factories.items():
+            if self.request.POST:
+                context[name] = factory(
+                    self.request.POST, instance=self.object)
+            else:
+                context[name] = factory(instance=self.object)
         context['delete_url'] = reverse_lazy(
             'cv:cv_delete',
             kwargs={'pk': context['object'].id,
                     'model_name': self.model_name}
         )
         return context
-
-    def form_valid(self, form):
-        """Save authorship formset data if valid."""
-        context = self.get_context_data()
-        formsets = self.formsets
-        for formset_name in self.formsets:
-            formset = context[formset_name]
-            if formset.is_valid():
-                self.object = form.save()
-                formset.instance = self.object
-                formset.save()
-            else:
-                return self.render_to_response(
-                    self.get_context_data(form=form))
-        super().form_valid(form)
-        return redirect(self.success_url)
 
 class CVDeleteView(DeleteView):
     success_url = reverse_lazy('cv:cv_list')
