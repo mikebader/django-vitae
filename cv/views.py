@@ -333,6 +333,10 @@ class CVCreateView(CreateView, CVSingleObjectMixin):
                 context[name] = factory(self.request.POST)
             else:
                 context[name] = factory()
+        context['action_url'] = reverse_lazy(
+            'cv:cv_add',
+            kwargs={'model_name': self.model_name}
+        )
         return context
 
     def form_valid(self, form):
@@ -366,11 +370,16 @@ class CVUpdateView(UpdateView, CVSingleObjectMixin):
                     self.request.POST, instance=self.object)
             else:
                 context[name] = factory(instance=self.object)
+        context['action_url'] = reverse_lazy(
+            'cv:cv_edit',
+            kwargs={'pk': context['object'].id,
+                    'model_name': self.model_name}
+        )
         context['delete_url'] = reverse_lazy(
             'cv:cv_delete',
             kwargs={'pk': context['object'].id,
                     'model_name': self.model_name}
-        )
+        )        
         return context
 
     def form_valid(self, form):

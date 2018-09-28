@@ -68,6 +68,7 @@ input {
 			return $("<button>").attr("type","button").attr("class","cv-edit btn btn-light").text("Cancel").click(function(event){
 						orig.toggle();
 						editable.toggle();
+						editable.remove();
 						event.preventDefault();
 					});
 		}
