@@ -12,5 +12,5 @@ urlpatterns = [
 
     path('<str:model_name>s/', views.CVListView.as_view(), name='section_list'),
     path('<str:model_name>s/<slug:slug>', views.CVDetailView.as_view(), name='item_detail'),
-    path('<str:model_name>s/<slug:slug>/<str:format>', views.citation_view, name='citation'),
+    path('<str:model_name>s/<slug:slug>/cite/<str:format>', views.citation_view, name='citation'),
     ]
