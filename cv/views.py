@@ -367,6 +367,20 @@ class CVUpdateView(UpdateView, CVSingleObjectMixin):
         )
         return context
 
+    def form_valid(self, form):
+        """Save authorship formset data if valid."""
+        context = self.get_context_data()
+        for factory in self.factories:
+            formset = context[factory]
+            if formset.is_valid():
+                    self.object = form.save()
+                    formset.instance = self.object
+                    formset.save()
+            else:
+                return self.render_to_response(
+                    self.get_context_data(form=form))
+        return super().form_valid(form)
+
 class CVDeleteView(DeleteView):
     success_url = reverse_lazy('cv:cv_list')
     template_name = 'cv/forms/cv_confirm_delete.html'
