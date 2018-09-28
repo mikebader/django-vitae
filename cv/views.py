@@ -7,7 +7,7 @@ from sys import modules
 from .models import Award, Position, Degree, \
     Article, Book, Chapter, Report, \
     Grant, Talk, OtherWriting, \
-    MediaMention, Service, JournalService, Student
+    MediaMention, Service, JournalService, Student, Course
 
 
 # Helper functions to gather data about different parts of CV
@@ -96,7 +96,10 @@ def get_cv_journal_service_data():
 
 def get_cv_teaching_data():
     """Return dictionary of teaching and mentoring."""
-    return {'student_list': Student.displayable.all()}
+    return {
+        'course_list': Course.displayable.all(),
+        'student_list': Student.displayable.all()
+    }
 
 
 def get_cv_data():
@@ -208,7 +211,8 @@ from .forms import authorship_formset_factory, \
                    edition_formset_factory, \
                    editorship_formset_factory, \
                    grant_collaboration_formset_factory, \
-                   presentation_formset_factory
+                   presentation_formset_factory, \
+                   offering_formset_factory
 
 def template_name(model_name, suffix):
 #   model_name = model.__name__.lower()
@@ -257,6 +261,8 @@ fieldsets = {
     'student': ['first_name', 'last_name', 'middle_name', 'student_level',
                 'role', 'thesis_title', 'is_current_student',
                 'graduation_date', 'first_position', 'current_position'],
+    'course': ['title', 'slug', 'short_description', 'full_description', 
+               'student_level']
 }
 
 
@@ -277,16 +283,16 @@ class CVSingleObjectMixin(SingleObjectTemplateResponseMixin):
         authorship_formset = authorship_formset_factory(self.model_name)
         if authorship_formset:
             factories['authorship_formset'] = authorship_formset
-        edition_formset = None
         if self.model_name=='book':
             factories['edition_formset'] = edition_formset_factory()
-        editorship_formset = None
         if self.model_name=='chapter':
             factories['editorship_formset'] = editorship_formset_factory()
         if self.model_name=='grant':
             factories['grant_collaboration_formset'] = grant_collaboration_formset_factory()
         if self.model_name=='talk':
             factories['presentation_formset'] = presentation_formset_factory()
+        if self.model_name=='course':
+            factories['offering_formset'] = offering_formset_factory()
         return factories
 
     def get_context_data(self, **kwargs):

@@ -19,7 +19,7 @@ for model in apps.get_app_config('cv').get_models():
 def update_last_and_current_offering(sender, **kwargs):
     offering = kwargs.get('instance')
     course = offering.course
-    course.last_offered = course.courseoffering_set.filter(
+    course.last_offered = course.offerings.filter(
         start_date__lte=timezone.now()).aggregate(
         last_offering=Max('end_date'))['last_offering']
     course.save()

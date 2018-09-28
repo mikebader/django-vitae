@@ -606,7 +606,7 @@ class Course(DisplayableModel):
     short_description_html = models.TextField(editable=False)
     description_html = models.TextField(editable=False)
 
-    last_offered = models.DateField(_('last offered'), null=True)
+    last_offered = models.DateField(_('last offered'), null=True, blank=True)
     # is_current_offering = models.BooleanField(
     #     _('is current offering?'), default=False)
 

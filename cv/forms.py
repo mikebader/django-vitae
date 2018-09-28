@@ -4,7 +4,8 @@ from django.forms import inlineformset_factory
 from cv.models import Book, BookEdition, \
                       Chapter, ChapterEditorship, \
                       Grant, GrantCollaboration, \
-                      Talk, Presentation
+                      Talk, Presentation, \
+                      Course, CourseOffering
 
 
 def get_authorship_fields():
@@ -57,3 +58,11 @@ def presentation_formset_factory(**kwargs):
                 'state', 'country'],
         **kwargs
     )
+
+
+def offering_formset_factory(**kwargs):
+    """Create set of forms for course offerings of a course."""
+    return inlineformset_factory(
+        Course, CourseOffering, 
+        fields=['term', 'start_date', 'end_date', 'institution',
+                'course_number'])

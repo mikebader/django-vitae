@@ -1,0 +1,113 @@
+{% extends 'cv/base.html' %}
+
+{% block centerbar %}
+<div id="course-add" class="alert alert-primary small">
+	<h2 class="display-4">{{method}} {{model}}</h2>
+		<form method="POST" id="{{model}}Form" class="post-form" action="">{% csrf_token %}
+			<div class="form-group row">
+				<span class="col-12 col-lg-6 row">
+					<span class="col-12">
+					{% with form.title as field %}
+						{% include "cv/forms/_publication_field.html" %}
+	                {% endwith %}
+	            	</span>
+					<span class="col-12">
+					{% with form.slug as field %}
+						{% include "cv/forms/_publication_field.html" %}
+	                {% endwith %}
+	            	</span>
+	            	<span class="col-6">
+					{% with form.student_level as field %}
+						{% include "cv/forms/_publication_field.html" %}
+	                {% endwith %}
+	            	</span>
+	            </span>
+	        </div>
+	        <div class="form-group row">
+	            <span class="col-12 col-lg-6 row">
+	            	<span class="col-12">
+					{% with form.short_description as field %}
+						{% include "cv/forms/_publication_field.html" %}
+	                {% endwith %}
+	            	</span>
+	            </span>
+	            <span class="col-12 col-lg-6 row">
+	            	<span class="col-12">
+					{% with form.full_description as field %}
+						{% include "cv/forms/_publication_field.html" %}
+	                {% endwith %}
+	            	</span>
+	            </span>
+			</div>	
+			<div class="form-group mt-3 row">
+				<h5 class="col-12">Offerings</h5>
+				{{offering_formset.management_form}}
+				{% for offering_form in offering_formset %}
+					<span class="col-12 d-flex flex-row flex-wrap justify-content-left justify-content-md-left mt-2 mb-2 author">
+						<span class="col-12 col-md-6 row">
+							{% with offering_form.term as field %}
+								<label class="form-label form-label-sm col-4 {% if field.field.required %}font-weight-bold{% endif %} align-self-center">{{field.label}}</label><span class="col-8 align-self-center">{{field}}</span>
+									{% if field.errors %}
+										{% for error in field.errors %}
+										<span class="invalid-feedback">{{error}}</span>
+										{% endfor %}
+									{% endif %}
+								{% endwith %}
+
+								{% with offering_form.start_date as field %}
+								<label class="form-label form-label-sm col-4 {% if field.field.required %}font-weight-bold{% endif %} align-self-center">{{field.label}}</label><span class="col-8 align-self-center">{{field}}</span>
+									{% if field.errors %}
+										{% for error in field.errors %}
+										<span class="invalid-feedback">{{error}}</span>
+										{% endfor %}
+									{% endif %}
+								{% endwith %}
+
+								{% with offering_form.end_date as field %}
+								<label class="form-label form-label-sm col-4 {% if field.field.required %}font-weight-bold{% endif %} align-self-center">{{field.label}}</label><span class="col-8 align-self-center">{{field}}</span>
+									{% if field.errors %}
+										{% for error in field.errors %}
+										<span class="invalid-feedback">{{error}}</span>
+										{% endfor %}
+									{% endif %}
+								{% endwith %}
+						</span>
+						<span class="col-12 col-md-6 row">
+								{% with offering_form.institution as field %}
+								<label class="form-label form-label-sm col-4 {% if field.field.required %}font-weight-bold{% endif %} align-self-center">{{field.label}}</label><span class="col-8 align-self-center">{{field}}</span>
+									{% if field.errors %}
+										{% for error in field.errors %}
+										<span class="invalid-feedback">{{error}}</span>
+										{% endfor %}
+									{% endif %}
+								{% endwith %}
+
+								{% with offering_form.course_number as field %}
+								<label class="form-label form-label-sm col-4 {% if field.field.required %}font-weight-bold{% endif %} align-self-center">{{field.label}}</label><span class="col-8 align-self-center">{{field}}</span>
+									{% if field.errors %}
+										{% for error in field.errors %}
+										<span class="invalid-feedback">{{error}}</span>
+										{% endfor %}
+									{% endif %}
+								{% endwith %}
+					            
+					            {% if offering_formset.can_delete %}
+									<label class="form-label form-label-sm col-4 {% if field.field.required %}font-weight-bold{% endif %} align-self-center">Delete?</label><span class="col-8 align-self-center">{{ offering_form.DELETE }}</span>
+					            {% endif %}								
+						</span>
+						{% for field in offering_form.hidden_fields %}
+							{{field}}
+						{% endfor %}
+					</span>
+				{% endfor %}
+			</div>
+			<div class="d-flex save-group btn-group justify-content-center justify-content-lg-start" role="group" aria-label="{{method}} {{model}}">
+	                <button id="{{model}}FormSubmit" type="submit" class="btn btn-light">Save</button>
+	{% if method == "Edit" %}
+	                <button href="{% url 'cv:cv_delete' model_name=model pk=form.instance.pk%}" class="btn btn-detail alert-danger cv-delete">Delete</button>
+	{% endif %}
+	            </div>
+	        </div>
+	</form> 
+</div>
+{% endblock %}
