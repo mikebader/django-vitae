@@ -4,7 +4,7 @@ from django.views import generic
 
 from sys import modules
 
-from .models import Award, Position, Degree, \
+from cv.models import Award, Position, Degree, \
     Article, Book, Chapter, Report, \
     Grant, Talk, OtherWriting, \
     MediaMention, Service, JournalService, Student, Course
@@ -207,7 +207,7 @@ def citation_view(request, model_name, slug, format):
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, SingleObjectTemplateResponseMixin
 from django.urls import reverse_lazy
 from django.apps import apps
-from .forms import authorship_formset_factory, \
+from cv.forms import authorship_formset_factory, \
                    edition_formset_factory, \
                    editorship_formset_factory, \
                    grant_collaboration_formset_factory, \
@@ -404,3 +404,16 @@ class CVDeleteView(DeleteView):
         self.model_name = kwargs['model_name']
         self.model = apps.get_model('cv',self.model_name)
         return super().dispatch(request, *args, **kwargs)
+
+import io
+from django.http import FileResponse, HttpResponse
+from cv.views.pdf import CVPdf
+
+def cv_pdf(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="cv.pdf"'
+    buffer = io.BytesIO()
+    pdf = CVPdf()
+    pdf_out = pdf.build_cv(buffer)
+    response.write(pdf_out)
+    return response

@@ -5,6 +5,7 @@ from . import views
 app_name = 'cv'
 urlpatterns = [
     path('', views.cv_list, name='cv_list'),
+    path('pdf/', views.cv_pdf, name='cv_pdf'),
 
     path('forms/<str:model_name>/add/', views.CVCreateView.as_view(),name='cv_add'),
     path('forms/<str:model_name>/<int:pk>/edit/', views.CVUpdateView.as_view(),name='cv_edit'),
