@@ -1,0 +1,1 @@
+{% load cvtags %}{{authorship.all|print_authors}}. &#8220;{{title}}.&#8221; <i>{{book_title}}</i>.{% if editors %} {{editors|editors}}, ed{{editors.count}}.{% endif %}{% if place %} {{place}}:{% endif %}{% if publisher %}{{publisher}}.{% endif %}{% if start_page %} {{start_page}}{% if end_page %}-{{end_page}}{% endif %}{% endif %}

@@ -1,0 +1,1 @@
+{% load cvtags %}{{authorship.all|print_authors}}. &#8220;{{title}}.&#8221;{% if journal %}<i>{{journal}}</i>{% if volume %} {{volume}}{% if issue %}({{issue}}){% endif %}: {% endif %}{% endif %}{% if start_page %}{{start_page}}{% if end_page %}-{{end_page}}{% endif %}{% endif %}
