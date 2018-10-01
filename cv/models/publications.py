@@ -40,7 +40,7 @@ class Article(VitaePublicationModel):
     abstract_html = models.TextField(blank=True, editable=False)
 
     grants = models.ManyToManyField(Grant, blank=True)
-    talks = models.ManyToManyField(Talk, blank=True)
+    # talks = models.ManyToManyField(Talk, blank=True)
 
     # def save(self, force_insert=False, force_update=False, *args, **kwargs):
     #     """Saves instance of article."""

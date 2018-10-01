@@ -129,7 +129,8 @@ class Talk(VitaeModel):
         super(Talk, self).save(force_insert, force_update, *args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('cv:talk_object_detail', kwargs={'slug': self.slug})
+        return reverse(
+            'cv:item_detail', kwargs={'model_name': 'talk', 'slug': self.slug})
 
     def get_latest_presentation(self):
         return self.presentations.all()[0]

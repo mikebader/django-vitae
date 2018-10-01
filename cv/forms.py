@@ -54,8 +54,8 @@ def grant_collaboration_formset_factory(**kwargs):
 def presentation_formset_factory(**kwargs):
     return inlineformset_factory(
         Talk, Presentation,
-        fields=['presentation_date', 'type', 'event', 'event_acronym', 'city',
-                'state', 'country'],
+        fields=['presentation_date', 'event', 'event_acronym', 'city',
+                'state', 'country', 'type'],
         **kwargs
     )
 

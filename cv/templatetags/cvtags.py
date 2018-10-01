@@ -60,11 +60,11 @@ def print_authors_bib_format(value):
 	return mark_safe(' and '.join(name_list))
 
 @register.filter(needs_autoescape=False)
-def year_range(value,arg="&#8211;",autoescape=True):
+def year_range(value,arg="–",autoescape=True):
 	'''Return values of start date year and end date year'''
 	if value.end_date:
 		if value.start_date and value.start_date.year!=value.end_date.year:
-			return mark_safe('%s&#8211;%s' % (value.start_date.year,value.end_date.year))
+			return mark_safe('%s%s%s' % (value.start_date.year,arg,value.end_date.year))
 		return mark_safe(value.end_date.year)
 	return mark_safe(value.start_date.year)+mark_safe(arg)
 #	return mark_safe('%s%s') % (value.start_date.year,arg)

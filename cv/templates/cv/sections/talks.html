@@ -1,5 +1,4 @@
 {% load cvtags %}
-
 {% if talk_list or user.is_authenticated %}
 <h2 class="col-xs-12">Talk{{talk_list.count|pluralize}}</h2>
 <ul class="cv-entry">
@@ -18,7 +17,7 @@
 {% if user.is_authenticated %}
 <li class="row">
 	<div class="noneditable">
-		<a class="col-12 col-sm-12 talk-add cv-add" alt="Add new talk" href="#talk"><i class="far fa-plus-square"></i> Add new talk</a>
+		<a class="col-12 col-sm-12 talk-add cv-add" alt="Add new talk" href="{% url 'cv:cv_add' model_name='talk' %}"><i class="far fa-plus-square"></i> Add new talk</a>
 	</div>
 </li>
 {% endif %}

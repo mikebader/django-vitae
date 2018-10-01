@@ -244,7 +244,7 @@ class TalkAdmin(admin.ModelAdmin):
 		(None, {'fields':(('title','display'),('short_title','slug'))}),
 		('Abstract', {'fields':('abstract',)}),
 		('Collaborators',{'fields':('collaborator',)}),
-		('Related CV Items', {'fields':('grants','article_from_talk')}),
+		('Related CV Items', {'fields':('grants',)}),
 		('Disciplines', {
 			'fields':('primary_discipline','other_disciplines'),
 			'classes':('collapse',)
