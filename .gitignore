@@ -5,6 +5,7 @@ ROADMAP.rst
 __pychache__/
 *.py[cod]
 .Python
+*.orig
 
 bin/
 build/

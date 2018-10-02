@@ -1,1 +1,1 @@
-{% load cvtags %}<i>{{title}}</i>. {{publisher}}
+{% load cvtags %}<i>{{book.title}}</i>. {{book.publisher}}

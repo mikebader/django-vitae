@@ -1,0 +1,1 @@
+{% load cvtags %}<i>{{course.title}}</i> ({{course.get_student_level_display}}{% if course.offerings.count > 0 %}; {% for offering in course.offerings.all %}{% if not forloop.first %}, {% endif %}{{offering.get_term_display}} {{offering.start_date|date:"Y"}}{% endfor %}{% endif %}) 

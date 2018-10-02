@@ -1,1 +1,1 @@
-&#8220;{{title}}.&#8221;<br />{% for presentation in presentations.all %}{{presentation.event}} ({{presentation.presentation_date|date:"M Y"}}){%if presentation.get_type_display == "Invited" %}<super rise=3>*</super>{% endif %}{%if not forloop.last %}, {% endif %}{% endfor %}
+&#8220;{{talk.title}}.&#8221;<br />{% for presentation in talk.presentations.all %}{{presentation.event}} ({{presentation.presentation_date|date:"M Y"}}){%if presentation.get_type_display == "Invited" %}<super rise=3>*</super>{% endif %}{%if not forloop.last %}, {% endif %}{% endfor %}

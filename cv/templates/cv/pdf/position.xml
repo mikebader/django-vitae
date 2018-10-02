@@ -1,1 +1,1 @@
-{{title}}{% if project %}, {{project}}{% endif %}{% if department %}, {{department}}{% endif %}, {{institution}}
+{{position.title}}{% if position.project %}, {{position.project}}{% endif %}{% if position.department %}, {{position.department}}{% endif %}, {{position.institution}}

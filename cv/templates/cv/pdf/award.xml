@@ -1,1 +1,1 @@
-<i>{{name}}</i>, {{organization}}
+<i>{{award.name}}</i>, {{award.organization}}

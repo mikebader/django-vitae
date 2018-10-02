@@ -12,6 +12,7 @@ from reportlab.lib.units import inch
 
 from cv.settings import CV_PERSONAL_INFO
 from cv.templatetags.cvtags import year_range
+from cv.models import Position
 
 
 
@@ -88,7 +89,7 @@ class CVPdf(object):
 
     def section_header(self, text):
         """Defines a line to be written as a section header."""
-        return SectionHeader(text, self.styles["SectionHeader"])
+        return SectionHeader(text, style=self.styles["SectionHeader"])
 
     # Define page styles
     def myFirstPage(self, canvas, doc):
@@ -115,7 +116,17 @@ class CVPdf(object):
         )
         canvas.restoreState()
 
+    def build_primary_positions(self):
+        for position in Position.primarypositions.all():
+            line = '{}'.format(position.title)
+            if position.department:
+                line += ', {}'.format(position.department)
+            self.cv.append(
+                Paragraph(line, self.styles["Infoblock"])
+            )
+
     def build_heading(self):
+        self.build_primary_positions()
         for key in ['address', 'phone', 'email']:
             if key in CV_PERSONAL_INFO.keys():
                 lines = CV_PERSONAL_INFO[key].split("\n")
@@ -162,8 +173,10 @@ class CVPdf(object):
             date_field=('start_date', 'end_date'))
         self.build_section(positions)
 
-        awards = CVPdfSection('award',
-            display_name='Honors & Awards', date_field='date')
+        awards = CVPdfSection(
+            'award',
+            display_name='Honors & Awards', date_field='date'
+        )
         self.build_section(awards)
 
         books = CVPdfSection('book', date_field='pub_date')
@@ -181,14 +194,21 @@ class CVPdf(object):
         grants = CVPdfSection('report', date_field=('start_date', 'end_date'))
         self.build_section(grants)
 
-        talks = CVPdfSection('talk')
-        self.build_section(talks)
-
         otherwriting = CVPdfSection(
             'otherwriting',
             display_name='Op-Eds, Book Reviews, and Other Writing',
             date_field='date')
         self.build_section(otherwriting)
+
+        talks = CVPdfSection('talk')
+        self.build_section(talks)
+
+        students = CVPdfSection('student')
+        self.build_section(students)
+
+        courses = CVPdfSection('course')
+        self.build_section(courses)
+
 
         doc.build(
             self.cv,
@@ -231,8 +251,9 @@ class CVPdfSection():
 
     def get_context_data(self, instance):
         context = dict()
-        for field in self.model._meta.get_fields():
-            context[field.name] = getattr(instance, field.name)
+        # for field in self.model._meta.get_fields():
+        #     context[field.name] = getattr(instance, field.name)
+        context[self.model_name] = instance
         return context
 
     def make_section_entries(self):
@@ -246,10 +267,40 @@ class CVPdfSection():
                     instance_dict['date'] = self.make_date(
                         instance, self.date_field)
                 context = self.get_context_data(instance)
+                if self.model_name=='course':
+                #     context['course']['student_level_display'] = instance.get_student_level_display()
+                    print(instance.get_student_level_display())
+                if self.model_name=='article':
+                    print(instance.get_absolute_url())
                 instance_dict['text'] = template.render(context)
                 entries.append(instance_dict)
             return entries
         return None
+
+from django.views.generic.detail import DetailView
+from cv.models import Article
+import cv
+
+class CVPdfSectionView(DetailView):    
+    # model = Article
+    template_name = 'cv/pdf/article.xml'
+    context_object_name = 'article'
+
+    def __init__(self, **kwargs):
+        self.model = apps.get_model('cv', 'article')
+        super(CVPdfSectionView, self).__init__(**kwargs)
+
+    # def __init__(self, model_name, display_name=None, template=None,
+    #              date_field=None):
+    #     super(CVPdfSectionView, self).__init__()
+    #     self.model_name = model_name
+    #     self.model = apps.get_model('cv', self.model_name)
+
+    def get_context_data(self, **kwargs):
+        context = super(CVPdfSectionView, self).get_context_data(**kwargs)
+        print(context)
+        return context
+
 
 
 

@@ -599,8 +599,8 @@ class Course(DisplayableModel):
     slug = models.SlugField(_('slug'), blank=True)
     short_description = models.TextField(_('short description'), blank=True)
     full_description = models.TextField(_('full description'), blank=True)
-    student_level = models.IntegerField(
-        _('student level'), choices=STUDENT_LEVELS_CHOICES)
+    student_level = models.IntegerField(choices=STUDENT_LEVELS_CHOICES,
+        null=True, blank=True)
 
     # Fields used to store html from Markdown input
     short_description_html = models.TextField(editable=False)

@@ -1,0 +1,1 @@
+{% load cvtags %}{{student.first_name}}{% if student.middle_initial %} {{student.middle_initial}}{% endif %} {{student.last_name}} ({{student.role}}){% if student.graduation_date %}Graduated {{student.graduation_date|date:"M Y"}}{% endif %}{% if student.current_position %}, currently {{student.current_position}}{% endif %}

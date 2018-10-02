@@ -1,1 +1,1 @@
-{{degree}}{% if honors %} ({{honors}}){% endif %}{% if major %}, {{major}}{% endif %}, {{institution}}, {{city}}, {{state}}
+{{degree.degree}}{% if degree.honors %} ({{degree.honors}}){% endif %}{% if degree.major %}, {{degree.major}}{% endif %}, {{degree.institution}}, {{degree.city}}, {{degree.state}}
