@@ -19,9 +19,9 @@ CV_PUBLICATION_STATUS_CHOICES = (
     )
 
 CV_STUDENT_LEVELS_CHOICES =(
-    (0,'UNDERGRAD',_('Undergraduate student')),
-    (10,'MASTERS',_('Masters student')),
-    (20,'DOCTORAL',_('Doctoral student'))
+    (0,'UNDERGRAD',_('Undergraduate')),
+    (10,'MASTERS',_('Masters')),
+    (20,'DOCTORAL',_('Doctoral'))
     )
 
 CV_SERVICE_TYPES_CHOICES = (
