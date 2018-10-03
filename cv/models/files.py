@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from cv.settings import FILE_TYPES_CHOICES
 
 from markdown import markdown
+import os
 
 
 def cv_file_path(instance, filename):
@@ -92,3 +93,6 @@ class CVFile(models.Model):
         """
         self.description_html = markdown(self.description)
         super(CVFile, self).save(force_insert, force_update, *args, **kwargs)
+
+    def filename(self):
+        return os.path.basename(self.file.name)

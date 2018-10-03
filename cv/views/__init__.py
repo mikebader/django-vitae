@@ -411,6 +411,11 @@ class CVDeleteView(DeleteView):
         self.model = apps.get_model('cv',self.model_name)
         return super().dispatch(request, *args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super(CVDeleteView, self).get_context_data(**kwargs)
+        context['model'] = self.model_name
+        return context
+
 import io
 from django.http import FileResponse, HttpResponse
 from cv.views.pdf import CVPdf
