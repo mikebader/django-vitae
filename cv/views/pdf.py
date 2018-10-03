@@ -8,6 +8,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
 from reportlab.lib.units import inch
 
+from cv.models import Position
 from cv.settings import CV_PERSONAL_INFO
 
 import json
