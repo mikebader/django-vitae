@@ -6,7 +6,7 @@ from sys import modules
 
 from cv.models import Award, Position, Degree, \
     Article, Book, Chapter, Report, \
-    Grant, Talk, OtherWriting, \
+    Grant, Talk, OtherWriting, Dataset, \
     MediaMention, Service, JournalService, Student, Course
 
 
@@ -101,6 +101,12 @@ def get_cv_teaching_data():
         'student_list': Student.displayable.all()
     }
 
+def get_cv_dataset_data():
+    """Return dictionary of datasets."""
+    return {
+        'dataset_list': Dataset.displayable.all()
+    }
+
 
 def get_cv_data():
     """Return dictionary of different types of CV entries."""
@@ -120,7 +126,7 @@ def get_cv_data():
 
 # Views
 DETAIL_VIEWS_AVAILABLE = [
-    'article', 'book', 'chapter', 'report', 'talk'
+    'article', 'book', 'chapter', 'report', 'talk', 'dataset'
 ]
 CITATION_VIEWS_AVAILABLE = DETAIL_VIEWS_AVAILABLE
 

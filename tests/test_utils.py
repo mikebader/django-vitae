@@ -52,7 +52,3 @@ class UtilsTest(TestCase):
             check_isbn(bad_isbn)
             self.assertIn(_("Improperly formatted ISBN"),
                           str(e))
-
-    def test_retrieve_style(self):
-        ## Need to add basic csl file to be distributed with application and then test its existence here
-        self.assertEqual(retrieve_csl_style('harvard1'), "/Users/bader/webdev/djangoapps/cv-dev/csl/harvard1.csl")

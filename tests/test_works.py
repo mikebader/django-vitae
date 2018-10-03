@@ -97,7 +97,7 @@ class DatasetTestCase(AuthorshipTestCase):
     def test_get_absolute_url(self):
         """Test that instance returns correct URL"""
         d = Dataset.objects.get(slug='test-dataset')
-        self.assertEqual('/datasets/test-dataset', d.get_absolute_url())
+        self.assertEqual('/datasets/test-dataset/', d.get_absolute_url())
 
     def test_list_view(self):
         """Test valid url and template used for dataset list."""
