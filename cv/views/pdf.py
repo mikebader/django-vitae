@@ -12,7 +12,7 @@ from reportlab.lib.units import inch
 
 from cv.settings import CV_PERSONAL_INFO
 from cv.templatetags.cvtags import year_range
-from cv.models import Position
+from cv.models import Position, Article, Book
 
 
 
@@ -34,6 +34,13 @@ class SectionHeader(Paragraph):
         self.canv.setLineWidth(.5)
         self.canv.line(-6, -3, TEXT_WIDTH + 6, -3)
 
+class SubsectionHeader(Paragraph):
+    def __init__(self, text, style, *args, **kwargs):
+        self.style = style
+        Paragraph.__init__(self, text, style=style, *args, **kwargs)
+
+    def draw(self):
+        Paragraph.draw(self)
 
 class DateBlock(Paragraph):
     """Create a line that includes a block for a date."""
@@ -54,9 +61,8 @@ class DateBlock(Paragraph):
         Paragraph.draw(self)
 
 
-class CVPdf(object):
-    """Instance of a PDF representation of a CV."""
-
+class CVPdfStyle:
+    """Defines styles for PDF representation of CV."""
     def __init__(self):
         """Creates styles and container to hold CV information."""
         self.cv = list()
@@ -74,6 +80,14 @@ class CVPdf(object):
                                        spaceAfter=3,
                                        leftIndent=0))
 
+        self.styles.add(ParagraphStyle(name="SubsectionHeader",
+                                      fontName="Times-Italic",
+                                      fontSize=13,
+                                      alignment=TA_LEFT,
+                                      spaceBefore=0,
+                                      spaceAfter=3,
+                                      leftIndent=0))
+
         self.styles.add(ParagraphStyle(name="Dateblock",
                                        fontName="Times-Roman",
                                        fontSize=11,
@@ -83,13 +97,17 @@ class CVPdf(object):
                                        leftIndent=54,
                                        allowOrphans=0,))
 
-    def date_block(self, text, date, *args, **kwargs):
-        """Defines a line to be written with the DateBlock style."""
-        return DateBlock(text=text, date=date, style=self.styles["Dateblock"])
-
     def section_header(self, text):
         """Defines a line to be written as a section header."""
         return SectionHeader(text, style=self.styles["SectionHeader"])
+
+    def subsection_header(self, text):
+        """Defines a line to be written as a subsection header."""
+        return SubsectionHeader(text, style=self.styles["SubsectionHeader"])
+
+    def date_block(self, text, date, *args, **kwargs):
+        """Defines a line to be written with the DateBlock style."""
+        return DateBlock(text=text, date=date, style=self.styles["Dateblock"])
 
     # Define page styles
     def myFirstPage(self, canvas, doc):
@@ -101,8 +119,6 @@ class CVPdf(object):
             PAGE_HEIGHT - MARGINS[0] - 6,
             CV_PERSONAL_INFO['name']
         )
-        # canvas.setLineWidth(1.5)
-        # canvas.line(MARGINS[3],PAGE_HEIGHT-(MARGINS[0]+6),PAGE_WIDTH-MARGINS[1],PAGE_HEIGHT-(MARGINS[0]+6))
         canvas.setFont('Times-Roman', 11)
         canvas.drawString(PAGE_WIDTH - inch, 0.75 * inch, "%d" % doc.page)
         canvas.restoreState()
@@ -116,6 +132,81 @@ class CVPdf(object):
         )
         canvas.restoreState()
 
+class CVPdfEntryMixin():
+    def make_date(self, instance, date_field):
+        if type(date_field) == str:
+            date = getattr(instance, date_field)
+            return '{}'.format(date.year) if date else ''
+        return '{0}–{1}'.format(
+            getattr(instance, date_field[0]).year,
+            getattr(instance, date_field[1]).year
+        )
+
+    def get_context_data(self, instance):
+        context = {self.model_name: instance}
+        return context
+
+    def make_entries(self, template, instances):
+        entries = list()
+        template = get_template(template)
+        for instance in instances:
+            instance_dict = dict()
+            instance_dict['date'] = ''
+            if self.date_field:
+                instance_dict['date'] = self.make_date(
+                    instance, self.date_field)
+            context = self.get_context_data(instance)
+            instance_dict['text'] = template.render(context)
+            entries.append(instance_dict)
+        return entries
+
+
+class CVPdfSubsectionContainer:
+    def __init__(self, subsection_entries):
+        self.subsection_entries = subsection_entries
+
+
+class CVPdfSection(CVPdfEntryMixin):
+    def __init__(self, model_name, display_name=None, template=None,
+                 date_field=None, subsections=None):
+        self.model_name = model_name
+        self.model = apps.get_model('cv', self.model_name)
+        if display_name:
+            self.display_name = display_name
+        else:
+            self.display_name = self.model._meta.verbose_name_plural.title()
+        if not template:
+            template = 'cv/pdf/{}.xml'.format(self.model_name)
+        self.template = template
+        self.date_field = date_field
+
+        self.entries_exist = False
+        if self.model.displayable.all().count() > 0:
+            self.entries_exist = True
+        self.subsections = subsections
+        self.elems = list()
+
+    def make_section_header_name(self):
+        return self.display_name
+
+    def make_section_entries(self):
+        if self.entries_exist is True:
+            if self.subsections:
+                subsection_entries = list()
+                for s in self.subsections:
+                    s_entries = self.make_entries(self.template, s[1])
+                    print(s_entries)
+                    if s_entries:
+                        subsection_entries.append({s[0]: s_entries})
+                return CVPdfSubsectionContainer(subsection_entries)
+            return self.make_entries(
+                self.template,
+                self.model.displayable.all())
+        return None
+
+
+class CVPdf(CVPdfStyle):
+    """A PDF representation of a CV."""
     def build_primary_positions(self):
         for position in Position.primarypositions.all():
             line = '{}'.format(position.title)
@@ -138,19 +229,20 @@ class CVPdf(object):
         if entries:
             self.cv.append(self.section_header(
                 section_obj.make_section_header_name()))
-            for e in entries:
-                self.cv.append(self.date_block(**e))
+            if type(entries) == CVPdfSubsectionContainer:
+                for subsection in entries.subsection_entries:
+                    for k in subsection.keys():
+                        self.cv.append(self.subsection_header(k))
+                        for e in subsection[k]:
+                            self.cv.append(self.date_block(**e))
+                        self.cv.append(Spacer(PAGE_WIDTH, 20))
+            else:
+                for e in entries:
+                    self.cv.append(self.date_block(**e))
             self.cv.append(Spacer(PAGE_WIDTH, 20))
 
     def build_cv(self, file):
         """Combine elements to build a CV from parts."""
-        educ = [
-            {"date": "2009",
-             "text": "Ph.D., Sociology, University of Michigan, Ann Arbor, Michigan"},
-            {"date": "2003",
-             "text": ("B.A., Architecture & Art History, "
-                      "Rice University, Houston, Texas")}
-        ]
         doc = SimpleDocTemplate(file,
                                 pagesize=letter,
                                 topMargin=MARGINS[0],
@@ -158,10 +250,6 @@ class CVPdf(object):
                                 bottomMargin=MARGINS[2],
                                 leftMargin=MARGINS[3])
         self.build_heading()
-        self.cv.append(Spacer(PAGE_WIDTH, 24))
-        self.cv.append(self.section_header("Education"))
-        for e in educ:
-            self.cv.append(self.date_block(**e))
         self.cv.append(Spacer(PAGE_WIDTH, 24))
 
         degrees = CVPdfSection(
@@ -175,14 +263,26 @@ class CVPdf(object):
 
         awards = CVPdfSection(
             'award',
-            display_name='Honors & Awards', date_field='date'
+            display_name='Honors & Awards', date_field='date',
         )
         self.build_section(awards)
 
-        books = CVPdfSection('book', date_field='pub_date')
+        books = CVPdfSection(
+            'book', date_field='pub_date',
+            subsections=[
+                ('Published', Book.published.all()),
+                ('Under Review', Book.revise.all()),
+                ('In Preparation', Book.inprep.all())
+            ])
         self.build_section(books)
 
-        articles = CVPdfSection('article', date_field='pub_date')
+        articles = CVPdfSection(
+            'article', date_field='pub_date',
+            subsections=[
+                ('Published', Article.published.all()),
+                ('Under Review', Article.revise.all()),
+                ('In Preparation', Article.inprep.all())
+            ])
         self.build_section(articles)
 
         chapters = CVPdfSection('chapter', date_field='pub_date')
@@ -209,6 +309,8 @@ class CVPdf(object):
         courses = CVPdfSection('course')
         self.build_section(courses)
 
+        service = CVPdfSection('service')
+        self.build_section(service)
 
         doc.build(
             self.cv,
@@ -218,93 +320,3 @@ class CVPdf(object):
         pdf = file.getvalue()
         file.close()
         return pdf
-
-
-class CVPdfSection():
-    def __init__(self, model_name, display_name=None, template=None,
-                 date_field=None):
-        self.model_name = model_name
-        self.model = apps.get_model('cv', self.model_name)
-        if display_name:
-            self.display_name = display_name
-        else:
-            self.display_name = self.model._meta.verbose_name_plural.title()
-        if not template:
-            template = 'cv/pdf/{}.xml'.format(self.model_name)
-        self.template = template
-        self.date_field = date_field
-
-        self.instances = self.model.displayable.all()
-        self.elems = list()
-
-    def make_section_header_name(self):
-        return self.display_name
-
-    def make_date(self, instance, date_field):
-        if type(date_field) == str:
-            date = getattr(instance, date_field)
-            return '{}'.format(date.year) if date else ''
-        return '{0}–{1}'.format(
-            getattr(instance, date_field[0]).year,
-            getattr(instance, date_field[1]).year
-        )
-
-    def get_context_data(self, instance):
-        context = dict()
-        # for field in self.model._meta.get_fields():
-        #     context[field.name] = getattr(instance, field.name)
-        context[self.model_name] = instance
-        return context
-
-    def make_section_entries(self):
-        if self.instances.count() > 0:
-            entries = list()
-            template = get_template(self.template)
-            for instance in self.instances:
-                instance_dict = dict()
-                instance_dict['date'] = ''
-                if self.date_field:
-                    instance_dict['date'] = self.make_date(
-                        instance, self.date_field)
-                context = self.get_context_data(instance)
-                if self.model_name=='course':
-                #     context['course']['student_level_display'] = instance.get_student_level_display()
-                    print(instance.get_student_level_display())
-                if self.model_name=='article':
-                    print(instance.get_absolute_url())
-                instance_dict['text'] = template.render(context)
-                entries.append(instance_dict)
-            return entries
-        return None
-
-from django.views.generic.detail import DetailView
-from cv.models import Article
-import cv
-
-class CVPdfSectionView(DetailView):    
-    # model = Article
-    template_name = 'cv/pdf/article.xml'
-    context_object_name = 'article'
-
-    def __init__(self, **kwargs):
-        self.model = apps.get_model('cv', 'article')
-        super(CVPdfSectionView, self).__init__(**kwargs)
-
-    # def __init__(self, model_name, display_name=None, template=None,
-    #              date_field=None):
-    #     super(CVPdfSectionView, self).__init__()
-    #     self.model_name = model_name
-    #     self.model = apps.get_model('cv', self.model_name)
-
-    def get_context_data(self, **kwargs):
-        context = super(CVPdfSectionView, self).get_context_data(**kwargs)
-        print(context)
-        return context
-
-
-
-
-
-
-
-
