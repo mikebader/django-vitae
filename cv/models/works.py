@@ -52,8 +52,7 @@ class Grant(VitaeModel):
     grant_number = models.CharField(
         _('Grant number'), max_length=50, blank=True)
     amount = models.IntegerField(_('Amount'))
-    start_date = models.DateField(
-        _('Start date'), null=True, blank=True)
+    start_date = models.DateField(_('Start date'))
     end_date = models.DateField(
         _('End date'), null=True, blank=True)
     role = models.CharField(

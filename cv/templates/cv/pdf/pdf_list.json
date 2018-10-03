@@ -1,0 +1,71 @@
+[
+    {"model_name": "degree",
+     "display_name": "Education",
+     "date_field": "date_earned"},
+
+    {"model_name": "position",
+     "display_name": "Employment",
+     "date_field": ["start_date", "end_date"]},
+
+    {"model_name": "award",
+     "display_name": "Honors & Awards",
+     "date_field": "date"},
+
+    {"model_name": "book",
+     "date_field": "pub_date",
+     "subsections": [
+        ["Published", "published"],
+        ["Under Review", "revise"],
+        ["In Preparation", "inprep"]
+     ]},
+
+    {"model_name": "article",
+     "date_field": "pub_date",
+     "subsections": [
+        ["Published", "published"],
+        ["Under Review", "revise"],
+        ["In Preparation", "inprep"]
+     ]},
+
+    {"model_name": "chapter",
+     "date_field": "pub_date",
+     "subsections": [
+        ["Published", "published"],
+        ["Under Review", "revise"],
+        ["In Preparation", "inprep"]
+     ]},
+
+    {"model_name": "report",
+     "date_field": "pub_date",
+     "subsections": [
+        ["Published", "published"],
+        ["Under Review", "revise"],
+        ["In Preparation", "inprep"]
+     ]},
+
+    {"model_name": "grant",
+     "date_field": ["start_date", "end_date"],
+     "subsections": [
+        ["External", "external_grants"],
+        ["Internal", "internal_grants"]
+     ]},
+
+    {"model_name": "otherwriting",
+     "display_name": "Op-Eds, Book Reviews, and Other Writing",
+     "date_field": "date"},
+
+    {"model_name": "talk"},
+
+    {"model_name": "student"},
+
+    {"model_name": "course"},
+
+    {"model_name": "service",
+     "display_name": "Service",
+     "date_field": ["start_date", "end_date"],
+     "subsections": [
+        ["Discipline", "discipline_services"],
+        ["University", "university_services"],
+        ["Department", "department_services"]
+     ]}
+]
