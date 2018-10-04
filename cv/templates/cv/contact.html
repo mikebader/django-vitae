@@ -3,11 +3,14 @@
 	<h1 class="col-12 name-add add">{{info.name}}</h1>
 	{% block currentposition %}
 		{% if primary_positions %}
-		<ul id="cv-primary-positions" class="col-12 list-unstyled">
+		<ul id="cv-primary-positions" class="col-11 list-unstyled">
 			{% for position in primary_positions %}
-			<li class="cv-primary-positions">{{position.title}}, {{position.department}}, {{position.institution}}</li>
+			<li class="cv-primary-positions">{{position.title}}<br /> {{position.department}}<br />{{position.institution}}</li>
 			{% endfor %}
 		</ul>
+		<span class="d-flex justify-content-end">
+			<a href="{% url 'cv:cv_pdf' %}"><i class="fas fa-file-pdf fa-3x d-flex"></i></a>
+		</span>		
 		{% endif %}
 	{% endblock %}
 
