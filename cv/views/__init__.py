@@ -210,6 +210,7 @@ def citation_view(request, model_name, slug, format):
 
 
 # Forms
+from django.db import transaction
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, SingleObjectTemplateResponseMixin
 from django.urls import reverse_lazy
 from django.apps import apps
@@ -345,20 +346,67 @@ class CVCreateView(CreateView, CVSingleObjectMixin):
         )
         return context
 
+    def check_formsets_valid(self, formsets):
+        return all(formset.is_valid() is True for formset in formsets)
+
     def form_valid(self, form):
-        """Save authorship formset data if valid."""
         context = self.get_context_data()
-        for factory in self.factories:
-            formset = context[factory]
-            if formset.is_valid():
-                self.object = form.save()
+        formsets = [context[factory] for factory in self.factories]
+        if self.check_formsets_valid(formsets):
+            self.object = form.save()
+            for formset in formsets:
                 formset.instance = self.object
                 formset.save()
-            else:
-                return self.render_to_response(
-                    self.get_context_data(form=form))
-        return super().form_valid(form)
+            return super(CVCreateView, self).form_valid(form)
+        return self.render_to_response(self.get_context_data(form=form))
 
+    # def form_valid(self, form):
+    #     """Save authorship formset data if valid."""
+    #     context = self.get_context_data()
+    #     for factory in self.factories:
+    #         formset = context[factory]
+    #         if formset.is_valid():
+    #             self.object = form.save()
+    #             formset.instance = self.object
+    #             formset.save()
+    #         else:
+    #             return self.render_to_response(
+    #                 self.get_context_data(form=form))
+    #     return super().form_valid(form)
+
+
+class ReportUpdateView(UpdateView):
+    model = Report
+    fields = fieldsets['report']
+    template_name = 'cv/forms/report.html'
+    success_url = reverse_lazy('cv:cv_list')
+
+    def get_context_data(self, **kwargs):
+        context = super(ReportUpdateView, self).get_context_data(**kwargs)
+        authorship_factory = authorship_formset_factory('report')
+        if self.request.POST:
+            context['authorship_formset'] = authorship_factory(
+                self.request.POST, instance=self.object)
+        else:
+            context['authorship_formset'] = authorship_factory(
+                instance=self.object)
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        authorship = context['authorship_formset']
+        self.object = form.save()
+
+        if authorship.is_valid():
+            print("Authorship True")
+            authorship.instance = self.object
+            authorship.save()
+        else:
+            print("Authorship False")
+            print(authorship.errors)
+            return self.render_to_response(self.get_context_data(form=form))
+
+        return super(ReportUpdateView, self).form_valid(form)
 
 class CVUpdateView(UpdateView, CVSingleObjectMixin):
     """View to edit CV objects."""
@@ -388,19 +436,19 @@ class CVUpdateView(UpdateView, CVSingleObjectMixin):
         )        
         return context
 
+    def check_formsets_valid(self, formsets):
+        return all(formset.is_valid() is True for formset in formsets)
+
     def form_valid(self, form):
-        """Save authorship formset data if valid."""
         context = self.get_context_data()
-        for factory in self.factories:
-            formset = context[factory]
-            if formset.is_valid():
-                    self.object = form.save()
-                    formset.instance = self.object
-                    formset.save()
-            else:
-                return self.render_to_response(
-                    self.get_context_data(form=form))
-        return super().form_valid(form)
+        formsets = [context[factory] for factory in self.factories]
+        if self.check_formsets_valid(formsets):
+            self.object = form.save()
+            for formset in formsets:
+                formset.instance = self.object
+                formset.save()
+            return super(CVUpdateView, self).form_valid(form)
+        return self.render_to_response(self.get_context_data(form=form))
 
 class CVDeleteView(DeleteView):
     success_url = reverse_lazy('cv:cv_list')

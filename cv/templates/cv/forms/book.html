@@ -35,12 +35,14 @@
                 </span>
 {% endblock citation_information %}
 
+
 {% block edition_information %}
 <div class="col-12 row mt-3">
     <h5 class="col-12">Editions</h5>
     <div class="col-12 row">
         {{edition_formset.management_form}} 
         {% for edition_form in edition_formset %}
+        {{edition_form.non_field_errors}}
         <span class="col-12 d-flex flex-row flex-wrap justify-content-left justify-content-md-left ml-3 mr-3 mt-2 mb-2 author">
         {% for field in edition_form.visible_fields %}
             {% spaceless %}
@@ -55,9 +57,12 @@
             {% endspaceless %}
                 <label for="{{field.id_for_label}}" class="p-0 mt-0 align-self-center {%if field.field.required %}font-weight-bold{% endif %}" style="width:80px">{{field.label}}
                 </label>{{field}}
-                {% if field.error %}
-                    <span class="invalid-feedback">{{field.error}}</span> {% endif %}
+                {% if field.errors %}
+                    <span class="invalid-feedback">{% for error in field.errors %}{{error}} {% endfor %}</span> {% endif %}
             </span>
+        {% endfor %}
+        {% for field in edition_form.hidden_fields %}
+            {{field}}
         {% endfor %}
         </span>
     {% endfor %}

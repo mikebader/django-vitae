@@ -78,6 +78,7 @@
                 <div class="col-12 row">
                     {{editorship_formset.management_form}}
                     {% for editor_form in editorship_formset %}
+                    {{editor_form.non_field_errors}}
                     <span class="col-12 d-flex flex-row flex-wrap justify-content-left justify-content-md-left ml-3 mr-3 mt-2 mb-2 author">
                     {% for field in editor_form.visible_fields %}
                         {% spaceless %}
@@ -94,11 +95,14 @@
                                 {% if field.field.required %}font-weight-bold{% endif %}">
                             {{field.label}}</label>
                             {{field}}
-                            {% if field.error %}
-                                <span class="invalid-feedback">{{field.error}}</span>
+                            {% if field.errors %}
+                                <span class="invalid-feedback">{% for error in field.errors %}{{error}}{% endfor %}</span>
                             {% endif %}
                         </span>                       
                         {% endfor %}
+        {% for field in editor_form.hidden_fields %}
+            {{field}}
+        {% endfor %}
                     </span>
                     {% endfor %}
                 </div>
