@@ -1,5 +1,6 @@
 """Create PDF file of CV to be used in views."""
 from django.apps import apps
+from django.http import FileResponse, HttpResponse
 from django.template.loader import get_template
 
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
@@ -11,6 +12,7 @@ from reportlab.lib.units import inch
 from cv.models import Position
 from cv.settings import CV_PERSONAL_INFO
 
+import io
 import json
 
 
@@ -301,3 +303,12 @@ class CVPdf(CVPdfStyle):
         pdf = file.getvalue()
         file.close()
         return pdf
+
+def cv_pdf(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="cv.pdf"'
+    buffer = io.BytesIO()
+    pdf = CVPdf()
+    pdf_out = pdf.build_cv(buffer)
+    response.write(pdf_out)
+    return response
