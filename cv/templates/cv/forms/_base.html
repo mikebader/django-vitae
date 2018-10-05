@@ -1,6 +1,7 @@
 {% block centerbar %}
 <form method="POST" id="{{model}}-form" class="post-form small" action="{{action_url}}">{% csrf_token %}
 {% block formcontent %}
+    <span class="invalid-feedback">{{form.non_field_errors}}</span>
     <div class="form-group row form-row">
         {% for field in form %}
             <span class="col-12 col-lg-6">
@@ -17,7 +18,7 @@
     	</div>
 {% if method == "Edit" %}
     	<div class="btn-group" role="group" aria-label="Delete degree">
-        	<a href="{{delete_url}}" class="btn btn-detail alert-danger cv-delete">Delete</a>
+        	<a href="{{delete_url}}" class="btn btn-danger alert-danger cv-delete">Delete</a>
         </div>
 {% endif %}
 	</div>

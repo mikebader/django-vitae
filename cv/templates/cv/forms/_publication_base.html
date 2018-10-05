@@ -3,9 +3,10 @@
 {% load widget_tweaks %}
 
 {% block centerbar %}
-<div id="article-add" class="alert alert-primary small">
+<div id="{{model}}-add" class="alert alert-primary small">
 <h2 class="display-4">{{method}} {{model|title}}</h2>    
-	<form method="POST" id="{{model}}Form" class="post-form" action="{{action_url}}" >{% csrf_token %}
+	<form method="POST" id="{{model}}Form" class="post-form" action="" >{% csrf_token %}
+    {{ form.non_field_errors }}
     <div class="form-group row">
         <div class="col-12 col-lg-6 form-row">
             <span class="col-12">
@@ -94,8 +95,8 @@
                                     {% if field.field.required %}font-weight-bold{% endif %}">
                                 {{field.label}}</label>
                                 {{field}}
-                                {% if field.error %}
-                                    <span class="invalid-feedback">{{field.error}}</span>
+                                {% if field.errors %}
+                                    <span class="invalid-feedback">{% for error in field.errors %}{{error}}{% endfor %}</span>
                                 {% endif %}
                             </span>                       
                             {% endfor %}
@@ -105,15 +106,16 @@
                         </span>
                     {% endfor %}
                 </div>
-
-                <!-- EDITION INFORMATION -->
-                {% block edition_information %}
-                {% endblock %}
-
-                <!-- EDITORSHIP INFOMRATION -->
-                {% block editorship_information %}
-                {% endblock %}
             </div>
+
+            <!-- EDITION INFORMATION -->
+            {% block edition_information %}
+            {% endblock %}
+
+            <!-- EDITORSHIP INFOMRATION -->
+            {% block editorship_information %}
+            {% endblock %}
+
              <div class="col-12 col-md-6 row mt-3">
                 <h5 class="col-12">Grant information</h5>
                 <div class="col-12 row">
@@ -179,6 +181,7 @@
     }
     
     form.addClass('was-validated');
+
   });
 
 

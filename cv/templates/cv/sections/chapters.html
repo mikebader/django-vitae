@@ -8,7 +8,7 @@
 {% for chapter in chapter_published_list %}
 <li class="row">
 <span class="cv-entry-date col-xs-2 col-sm-1">{{chapter.pub_date|date:"Y"}}</span>
-<span class="cv-entry-text col-xs-9 col-sm-10">{{chapter.chapterauthorship_set.all|print_authors}}. &#8220;{{chapter.title}}.&#8221; <cite>{{chapter.book_title}}</cite>. {% if chapter.editors %}{{chapter|editors}}, ed{{chapter.editors.count|pluralize}}. {% endif %} {{chapter.place}}:{{chapter.publisher}}. pp. {{chapter.start_page}}-{{chapter.end_page}}.
+<span class="cv-entry-text col-xs-9 col-sm-10">{{chapter.authors.all|print_authors}}. &#8220;{{chapter.title}}.&#8221; <cite>{{chapter.book_title}}</cite>. {% if chapter.editors %}{{chapter|editors}}, ed{{chapter.editors.count|pluralize}}. {% endif %} {{chapter.place}}:{{chapter.publisher}}. pp. {{chapter.start_page}}-{{chapter.end_page}}.
 	    {% if user.is_authenticated %}
 			<a class="ml-4 chapter-edit cv-edit" href="{% url 'cv:cv_edit' model_name='chapter' pk=chapter.pk %}"><i class="far fa-edit"></i></a>
 		{% endif %}
@@ -24,7 +24,7 @@
 {% for chapter in chapter_revise_list %}
 <li class="row">
 <span class="cv-entry-date col-xs-2 col-sm-1"></span>
-<span class="cv-entry-text col-xs-9 col-sm-10">{{chapter.chapterauthorship_set.all|print_authors}}. &#8220;{{chapter.title}}.&#8221; <cite>{{chapter.book_title}}</cite>{% if chapter.edition%}, {{chapter.edition}}{% endif %}. {{chapter.place}}:{{chapter.publisher}}.
+<span class="cv-entry-text col-xs-9 col-sm-10">{{chapter.authors.all|print_authors}}. &#8220;{{chapter.title}}.&#8221; <cite>{{chapter.book_title}}</cite>{% if chapter.edition%}, {{chapter.edition}}{% endif %}. {{chapter.place}}:{{chapter.publisher}}.
 	    {% if user.is_authenticated %}
 			<a class="ml-4 chapter-edit cv-edit" href="{% url 'cv:cv_edit' model_name='chapter' pk=chapter.pk %}"><i class="far fa-edit"></i></a>
 		{% endif %}
@@ -40,7 +40,7 @@
 {% for chapter in chapter_inprep_list %}
 <li class="row">
 <span class="cv-entry-date col-xs-2 col-sm-1"></span>
-<span class="cv-entry-text col xs-9 col-sm-10">{{chapter.chapterauthorship_set.all|print_authors}}. &#8220;{{chapter.title}}.&#8221; <cite>{{chapter.book_title}}</cite>. 
+<span class="cv-entry-text col xs-9 col-sm-10">{{chapter.authors.all|print_authors}}. &#8220;{{chapter.title}}.&#8221; <cite>{{chapter.book_title}}</cite>. 
 	    {% if user.is_authenticated %}
 			<a class="ml-4 chapter-edit cv-edit" href="{% url 'cv:cv_edit' model_name='chapter' pk=chapter.pk %}"><i class="far fa-edit"></i></a>
 		{% endif %}

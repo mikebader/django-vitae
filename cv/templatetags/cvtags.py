@@ -78,7 +78,7 @@ def monetize(value,sign="$"):
 def editors(value):
 	if not value:
 		return ''
-	editors = value.chaptereditorship_set.all()
+	editors = value.editors.all()
 	return print_authors(editors)
 
 def make_param_values(name):

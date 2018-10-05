@@ -1,0 +1,1 @@
+{% load cvtags %}{{report.authorship.all|print_authors}}. <i>{{report.title}}</i>.{% if report.institution %} {{report.institution}}{% if report.place %}:{{report.place}}{% endif %}.{% endif %}
