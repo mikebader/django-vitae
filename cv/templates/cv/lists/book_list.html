@@ -1,10 +1,10 @@
 {% extends "cv/lists/_cv_lists_base.html" %}
 
 {% block centerbar-content %}
-{% with book_objects.total_books as total_books %}
-{% with book_objects.book_published_list as book_published_list %}
-{% with book_objects.book_revise_list as book_revise_list %}
-{% with book_objects.book_inprep_list as book_inprep_list %}
+{% with object_list.total_books as total_books %}
+{% with object_list.book_published_list as book_published_list %}
+{% with object_list.book_revise_list as book_revise_list %}
+{% with object_list.book_inprep_list as book_inprep_list %}
 
 {% include "cv/sections/books.html" %}
 
