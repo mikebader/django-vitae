@@ -5,30 +5,31 @@ from django.utils.translation import ugettext_lazy as _
 
 from .base import (VitaeModel, Collaborator, CollaborationModel,
                    StudentCollaborationModel)
+from .managers import GrantManager
 
 from markdown import markdown
 
 
-class InternalGrantManager(models.Manager):
-    """Return grant objects for which source of funding is internal."""
+# class InternalGrantManager(models.Manager):
+#     """Return grant objects for which source of funding is internal."""
 
-    def get_queryset(self):
-        return super(InternalGrantManager, self).get_queryset().filter(
-            source=10
-        ).filter(
-            display=True
-        )
+#     def get_queryset(self):
+#         return super(InternalGrantManager, self).get_queryset().filter(
+#             source=10
+#         ).filter(
+#             display=True
+#         )
 
 
-class ExternalGrantManager(models.Manager):
-    """Return grant objects for which source of funding is external."""
+# class ExternalGrantManager(models.Manager):
+#     """Return grant objects for which source of funding is external."""
 
-    def get_queryset(self):
-        return super(ExternalGrantManager, self).get_queryset().filter(
-            source=40
-        ).filter(
-            display=True
-        )
+#     def get_queryset(self):
+#         return super(ExternalGrantManager, self).get_queryset().filter(
+#             source=40
+#         ).filter(
+#             display=True
+#         )
 
 
 class Grant(VitaeModel):
@@ -81,8 +82,9 @@ class Grant(VitaeModel):
         return self.title
 
     objects = models.Manager()
-    internal_grants = InternalGrantManager()
-    external_grants = ExternalGrantManager()
+    displayable = GrantManager()
+    # internal_grants = InternalGrantManager()
+    # external_grants = ExternalGrantManager()
 
 
 class GrantCollaboration(CollaborationModel):

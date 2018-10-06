@@ -219,8 +219,8 @@ class CVPdfSection(CVPdfEntryMixin):
             if self.subsections:
                 subsection_entries = list()
                 for s in self.subsections:
-                    manager = getattr(self.model, s[1])
-                    s_entries = self.make_entries(self.template, manager.all())
+                    manager = getattr(self.model.displayable, s[1])
+                    s_entries = self.make_entries(self.template, manager())
                     if s_entries:
                         subsection_entries.append({s[0]: s_entries})
                 return CVPdfSubsectionContainer(subsection_entries)

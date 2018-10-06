@@ -11,8 +11,6 @@ from .publications import Article, ArticleAuthorship, \
     Chapter, ChapterAuthorship, ChapterEditorship, \
     Report, ReportAuthorship
 
-from .managers import InprepManager, PublishedManager, ReviseManager
-
 from .works import Grant, GrantCollaboration, \
     Talk, Presentation, \
     Dataset, DatasetAuthorship, \

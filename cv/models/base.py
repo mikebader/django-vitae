@@ -18,8 +18,10 @@ from cv.settings import PUBLICATION_STATUS_CHOICES, \
 from cv.utils import CSLCitation, check_isbn
 
 from .files import CVFile
-from .managers import DisplayManager, PublishedManager, ReviseManager, \
-    InprepManager
+from .managers import (
+    DisplayManager, PublicationManager, ServiceManager,
+    PrimaryPositionManager
+)
 
 
 class DisplayableModel(models.Model):  
@@ -202,9 +204,11 @@ class VitaePublicationModel(VitaeModel):
     is_inrevision = models.BooleanField(default=False, editable=False)
     is_inprep = models.BooleanField(default=False, editable=False)
 
-    published = PublishedManager()
-    inprep = InprepManager()
-    revise = ReviseManager()
+    # published = PublishedManager()
+    # inprep = InprepManager()
+    # revise = ReviseManager()
+
+    displayable = PublicationManager()
 
     class Meta:
         abstract = True
@@ -255,8 +259,8 @@ class VitaePublicationModel(VitaeModel):
                              'by status' %
                              (self._meta.object_name, filter_var, direc))
         filter_params = {filter_var + db_filter: ref_date}
-        mgr = getattr(self.__class__, mgr_name)
-        obj = mgr.all().order_by(
+        mgr = getattr(self.__class__.displayable, mgr_name)
+        obj = mgr().order_by(
             '%s%s' % (sign, filter_var)).filter(**filter_params).first()
         if obj:
             return obj
@@ -396,14 +400,6 @@ class Degree(DisplayableModel):
         return '%s#degree-%s' % (reverse('cv:cv_list'),self.pk)
 
     objects = models.Manager()
-
-## Positions
-class PrimaryPositionManager(models.Manager):
-    
-    """Return positions in which ``primary_position`` has been set to ``True``."""
-    
-    def get_queryset(self):
-        return super(PrimaryPositionManager,self).get_queryset().filter(primary_position=True)
 
 class Position(DisplayableModel):
 
@@ -545,9 +541,10 @@ class Service(DisplayableModel):
             raise ValidationError(_('Must select at least one date field.'))
     
     objects = models.Manager()
-    department_services = DepartmentServiceManager()
-    university_services = UniversityServiceManager()
-    discipline_services = DisciplineServiceManager()
+    displayable = ServiceManager()
+    # department_services = DepartmentServiceManager()
+    # university_services = UniversityServiceManager()
+    # discipline_services = DisciplineServiceManager()
 
 ## Reviews
 class JournalService(DisplayableModel):

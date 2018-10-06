@@ -13,118 +13,53 @@ from .pdf import cv_pdf
 from .forms import CVCreateView, CVUpdateView, CVDeleteView
 
 
-# Helper functions to gather data about different parts of CV
-def sum_items(dict):
-    """Sum items across dictionaries."""
-    return sum([len(i) for i in dict.values()])
+MODELS = [Award, Position, Degree,
+          Article, Book, Chapter, Report,
+          Grant, Talk, OtherWriting, Dataset,
+          MediaMention, Service, JournalService,
+          Student, Course]
 
 
-def get_cv_primary_positions():
-    """Return dictionary of CV data with current positions."""
-    return {'primary_positions': Position.primarypositions.all()}
+class CVListMixin:
+    """Class of helper functions to gather data for CV sections."""
+
+    def sum_items(self, dict):
+        """Sum items across dictionaries."""
+        return sum([len(i) for i in dict.values()])
+
+    def get_cv_list(self, model):
+        """Gather data for CV section into dictionaries."""
+        model_name = model._meta.model_name.lower()
+        model_plural = model._meta.verbose_name_plural.lower()
+        if hasattr(model.displayable, 'management_lists'):
+            management_lists = model.displayable.management_lists
+            data_dict = dict()
+            for mgr in management_lists:
+                method = getattr(model.displayable, mgr)
+                context_key = '{0}_{1}_list'.format(model_name, mgr)
+                data_dict[context_key] = method()
+            total_key = 'total_{}'.format(model_plural)
+            data_dict[total_key] = self.sum_items(data_dict)
+            return data_dict
+        return {'{}_list'.format(model_name): model.displayable.all()}
+
+    def get_cv_primary_positions(self):
+        """Return dictionary of CV data with current positions."""
+        return {'primary_positions': Position.primarypositions.all()}
 
 
-def get_cv_personnel_data():
-    """Return dictionary of CV data related to personnel and awards."""
-    return {
-        'award_list': Award.displayable.all(),
-        'degree_list': Degree.displayable.all(),
-        'position_list': Position.displayable.all()
-    }
+class CVView(generic.TemplateView, CVListMixin):
+    """An HTML representation of a CV."""
+    template_name = 'cv/cv.html'
 
-
-def get_cv_publication_data(model):
-    """Returns dictionary of querysets for publication models."""
-    model_name = model._meta.model_name.lower()
-    model_plural = model._meta.verbose_name_plural.lower()
-    pub_dict = {
-        '{0}_published_list'.format(model_name): model.published.all(),
-        '{0}_revise_list'.format(model_name): model.revise.all(),
-        '{0}_inprep_list'.format(model_name): model.inprep.all(),
-    }
-    pub_dict['total_{0}'.format(model_plural)] = sum_items(pub_dict)
-    return pub_dict
-
-
-def get_cv_grant_data():
-    """Return dictionary of grants."""
-    grant_dict = {
-        'internal_grants': Grant.internal_grants.all(),
-        'external_grants': Grant.external_grants.all()
-    }
-    grant_dict.update({'total_grants': sum_items(grant_dict)})
-    return grant_dict
-
-
-def get_cv_otherwriting_data():
-    """Return dictionary of other writing objects."""
-    return {
-        'otherwriting_list': OtherWriting.displayable.all()
-    }
-
-
-def get_cv_talk_data():
-    """Return dictionary of talks."""
-    return {
-        'talk_list': Talk.displayable.all()
-    }
-
-
-def get_cv_media_data():
-    """Return dictionary of media mentions."""
-    return {
-        'media_mention_list': MediaMention.displayable.all()
-    }
-
-
-def get_cv_service_data():
-    """Return dictionary of services at different levels."""
-    service_dict = {
-        'department_service_list': Service.department_services.all(),
-        'university_service_list': Service.university_services.all(),
-        'discipline_service_list': Service.discipline_services.all()
-    }
-    service_dict['total_service'] = sum_items(service_dict)
-    return service_dict
-
-
-def get_cv_journal_service_data():
-    """Return dictionary of journals served."""
-    return {
-        'journal_service_list': JournalService.objects.all().filter(
-            is_reviewer=True
-        )
-    }
-
-
-def get_cv_teaching_data():
-    """Return dictionary of teaching and mentoring."""
-    return {
-        'course_list': Course.displayable.all(),
-        'student_list': Student.displayable.all()
-    }
-
-def get_cv_dataset_data():
-    """Return dictionary of datasets."""
-    return {
-        'dataset_list': Dataset.displayable.all()
-    }
-
-
-def get_cv_data():
-    """Return dictionary of different types of CV entries."""
-    cv_entry_list = [get_cv_publication_data(model) for model in
-                     [Article, Book, Chapter, Report]]
-    cv_entry_list += [
-        get_cv_primary_positions(), get_cv_personnel_data(),
-        get_cv_grant_data(), get_cv_talk_data(), get_cv_otherwriting_data(),
-        get_cv_service_data(), get_cv_journal_service_data(),
-        get_cv_teaching_data()
-    ]
-    context = dict()
-    for f in cv_entry_list:
-        context.update(f)
-    return context
+    def get_context_data(self, **kwargs):
+        """Return dictionary of different types of CV entries."""
+        cv_entry_list = [self.get_cv_list(model) for model in MODELS]
+        cv_entry_list += [self.get_cv_primary_positions()]
+        context = dict()
+        for f in cv_entry_list:
+            context.update(f)
+        return context
 
 
 # Views
@@ -134,12 +69,7 @@ DETAIL_VIEWS_AVAILABLE = [
 CITATION_VIEWS_AVAILABLE = DETAIL_VIEWS_AVAILABLE
 
 
-def cv_list(request):
-    """Create view of entire CV for printing in `html`."""
-    return render(request, 'cv/cv.html', get_cv_data())
-
-
-class CVListView(generic.ListView):
+class CVListView(generic.ListView, CVListMixin):
     """Creates view of all instances for a particular section."""
 
     def dispatch(self, request, *args, **kwargs):
@@ -152,12 +82,7 @@ class CVListView(generic.ListView):
 
     def get_queryset(self):
         mod = modules[__name__]
-        try:
-            queryset_method = getattr(mod, 'get_cv_%s_data' % self.model_name)
-            return queryset_method()
-        except AttributeError:
-            queryset_method = getattr(mod, 'get_cv_publication_data')
-            return queryset_method(self.model)
+        return self.get_cv_list(self.model)
 
     def get_template_names(self):
         """
