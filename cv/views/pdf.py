@@ -246,12 +246,15 @@ class CVPdf(CVPdfStyle):
     def build_primary_positions(self):
         """Append formatted list of primary positions to CV."""
         for position in Position.primarypositions.all():
-            line = '{}'.format(position.title)
+            lines = ['{}'.format(position.title)]
             if position.department:
-                line += ', {}'.format(position.department)
-            self.cv.append(
-                Paragraph(line, self.styles["Infoblock"])
-            )
+                lines += [position.department]
+            if position.institution:
+                lines += [position.institution]
+            for line in lines:
+                self.cv.append(
+                    Paragraph(line, self.styles["Infoblock"])
+                )
 
     def build_heading(self):
         """Append the main heading material to CV."""
@@ -287,7 +290,9 @@ class CVPdf(CVPdfStyle):
                                 topMargin=MARGINS[0],
                                 rightMargin=MARGINS[1],
                                 bottomMargin=MARGINS[2],
-                                leftMargin=MARGINS[3])
+                                leftMargin=MARGINS[3],
+                                title='{}' .format(
+                                    CV_PERSONAL_INFO['name']))
         self.build_heading()
         self.cv.append(Spacer(PAGE_WIDTH, 24))
 
@@ -306,7 +311,9 @@ class CVPdf(CVPdfStyle):
 
 def cv_pdf(request):
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'filename="cv.pdf"'
+    name = CV_PERSONAL_INFO['name'].lower().replace('.', '').split(' ')
+    name = ('_').join(name)
+    response['Content-Disposition'] = 'filename="cv_{}.pdf"'.format(name)
     buffer = io.BytesIO()
     pdf = CVPdf()
     pdf_out = pdf.build_cv(buffer)

@@ -1,5 +1,9 @@
 {% extends "cv/lists/_cv_lists_base.html" %}
 
+{% block title %}
+{% if cv_personal_info.name %}{{cv_personal_info.name}}--{% endif %}Reports--Django Vitae
+{% endblock %}
+
 {% block centerbar-content %}
 
 {% with object_list.total_reports as total_reports %}

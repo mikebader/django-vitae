@@ -1,5 +1,9 @@
 {% extends "cv/lists/_cv_lists_base.html" %}
 
+{% block title %}
+{% if cv_personal_info.name %}{{cv_personal_info.name}}--{% endif %}Books--Django Vitae
+{% endblock %}
+
 {% block centerbar-content %}
 {% with object_list.total_books as total_books %}
 {% with object_list.book_published_list as book_published_list %}

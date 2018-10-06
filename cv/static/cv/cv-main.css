@@ -72,3 +72,7 @@ ul.presentations > li:before {
 		display: inline-block;
 		}
 	}
+
+.editable {
+	display: none;
+}
