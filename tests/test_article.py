@@ -72,7 +72,7 @@ class ArticleTestCase(VitaePublicationTestCase, AuthorshipTestCase):
         ]
 
     def unpublish_articles(self):
-        for article in Article.published.all():
+        for article in Article.displayable.published():
             article.status = 20
             article.submission_date = article.pub_date
             article.pub_date = None
@@ -151,20 +151,20 @@ class ArticleTestCase(VitaePublicationTestCase, AuthorshipTestCase):
     # Test Managers
     def test_get_inprep_articles(self):
         """Test that ``inprep`` manager returns only status==0"""
-        self.assertEqual(len(Article.inprep.all()), 0)
+        self.assertEqual(len(Article.displayable.inprep()), 0)
         for fields in self.all_new_articles:
             Article.objects.create(**fields)
-        self.assertEqual(len(Article.inprep.all()), 1)
+        self.assertEqual(len(Article.displayable.inprep()), 1)
 
     def test_revise_article_manager(self):
         """Test that ``revise`` manager returns only status>0 and <50"""
         for fields in self.all_new_articles:
             Article.objects.create(**fields)
-        self.assertEqual(len(Article.revise.all()), 0)
+        self.assertEqual(len(Article.displayable.revise()), 0)
         a = Article.objects.get(slug="unified-field-theory")
         a.status = PUBLICATION_STATUS['REVISE_STATUS']
         a.save()
-        self.assertEqual(len(Article.revise.all()), 1)
+        self.assertEqual(len(Article.displayable.revise()), 1)
         # a.status = PUBLICATION_STATUS['FORTHCOMING_STATUS']
         # a.pub_date, a.submission_date = ("1957-04-18", None)
         # a.save()
@@ -174,7 +174,7 @@ class ArticleTestCase(VitaePublicationTestCase, AuthorshipTestCase):
         """Test that ``published`` manager returns only status>=50 & <99"""
         # for fieldset in self.all_new_articles:
         #     Article.objects.create(**fieldset)
-        self.assertEqual(len(Article.published.all()), 3)
+        self.assertEqual(len(Article.displayable.published()), 3)
         # a = Article.objects.get(slug="unified-field-theory")
         # a.status = PUBLICATION_STATUS['PUBLISHED_STATUS']
         # a.pub_date = "1957-04-18"

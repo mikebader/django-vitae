@@ -72,7 +72,7 @@ class BookTestCase(VitaePublicationTestCase, AuthorshipTestCase):
         set_up_books(cls)
 
     def unpublish_books(self):
-        for book in Book.published.all():
+        for book in Book.displayable.published():
             book.status = 20
             book.submission_date = book.pub_date
             book.pub_date = None
