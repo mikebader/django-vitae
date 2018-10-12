@@ -39,6 +39,11 @@ If you do not have experience with Django_, you might be interested in the :ref:
 Organization of the Documentation
 ---------------------------------
 
+* :doc:`Complete Vitae Views <views/index>`
+
+      * :ref:`HTML <views-html>` 
+      * :ref:`PDF <views-pdf>`
+
 * :doc:`CV Sections <topics/index>` documents the API to write lines on CV by 
   different sections on a CV
       
@@ -59,11 +64,6 @@ Organization of the Documentation
       * Teaching
       
       * Service 
-
-* :doc:`Views <views/index>`
-
-      * :ref:`HTML <views-html>` 
-      * :ref:`PDF <views-pdf>`
 
 * Templates 
 
@@ -102,8 +102,8 @@ Documentation Contents
    :name: fronttoc
    
    getting_started
-   topics/index
    views/index
+   topics/index
    shortcuts
    settings
    reference/index

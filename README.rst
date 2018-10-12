@@ -21,6 +21,7 @@ Django-Vitae is developed and tested in Python 3. It depends on several external
 * `Markdown <https://pypi.org/project/Markdown/>`_ (makes pretty HTML with simple text entries)
 * `citeproc-py <https://pypi.org/project/citeproc-py/>`_ (creates citations formatted according to desired `CSL`_ styles [not yet implemented])
 * `citeproc-py-styles <https://pypi.org/project/citeproc-py-styles/>`_ (adds library of `CSL`_ styles)
+* `reportlab <https://www.reportlab.com/>`_ (creates PDFs on-the-fly)
 
 .. _CSL: http://citationstyles.org/
 
