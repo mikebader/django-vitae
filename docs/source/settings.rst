@@ -2,6 +2,8 @@
 
 Settings
 ========
+.. _cv_publication_status_choices:
+
 .. setting:: CV_PUBLICATION_STATUS_CHOICES
 
 ``CV_PUBLICATION_STATUS_CHOICES``

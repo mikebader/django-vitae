@@ -20,13 +20,19 @@
 import os
 from os.path import abspath, dirname, join
 import sys
+
+# Appends ``cv`` module
+BASE_DIR = os.path.join(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(BASE_DIR))
+
 sys.path.append(abspath(join(dirname(__file__), "_ext")))
 
-
 HERE = os.path.abspath(os.path.dirname(__file__))
-
 sys.path.append(HERE)
 sys.path.append(os.path.join(HERE, '..'))
+
+
 os.environ['DJANGO_SETTINGS_MODULE'] = 'extensions.settings'
 
 import django
@@ -123,7 +129,7 @@ html_theme = 'alabaster'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+# html_static_path = ['_static']
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
@@ -193,8 +199,8 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'Django-Vitae', 'Django-Vitae Documentation',
-     author, 'Django-Vitae', 'One line description of project.',
-     'Miscellaneous'),
+     author, 'Django-Vitae',
+     'a CV generator that can be used with the Django web framework '),
 ]
 
 

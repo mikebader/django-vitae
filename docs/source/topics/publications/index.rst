@@ -8,10 +8,10 @@ element of CVs. Django-Vitae includes four types of publications: :ref:`books
 
 .. toctree::
    :name: pubstoc
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
+   :caption: Publications:
 
-   common 
+   common
    articles
    books
    chapters

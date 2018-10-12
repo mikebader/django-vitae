@@ -1,83 +1,104 @@
 .. _topics-pubs-articles:
 
 Articles
-^^^^^^^^
+--------
+
 Article Model
-"""""""""""""
-=======================                         ========================================
-Model field reference                           :class:`cv.models.publications.Article`
-Authorship set                                  :class:`cv.models.publications.ArticleAuthorship`
-=======================                         ========================================
+^^^^^^^^^^^^^
+=======================  =================================================
+Model field reference    :class:`cv.models.publications.Article`
+Authorship set           :class:`cv.models.publications.ArticleAuthorship`
+=======================  =================================================
 
-
-The :class:`Article` model contains two non-editable fields managed internally that can be 
-accessed for article instances: 
-
-* :attr:`abstract_html` that converts text entered in Markdown in :attr:`abstract` field 
-   to html, and 
-
-* :attr:`is_published` that indicates whether :attr:`status` field is one of 
-   "Forthcoming," "In Press," or "Published".   
-
-The functions :func:`get_previous_published` and :func:`get_next_published` will get the 
-next and previous *published* articles based on the :attr:`pub_date` field. 
+The :class:`~cv.models.publications.Article` model represents an instance
+of an article or other publications with similar characteristics as 
+articles (e.g., proceedings). 
 
 
 .. _topics-pubs-articles-views:
 
 Article Views
-"""""""""""""
+^^^^^^^^^^^^^
 
-**Article List** : :class:`cv.views.ArticleListView`
-   ===============  ================================================================   
-   Context object   ``{{article_objects}}``
+**Article List** : :class:`cv.views.CVListView`
+   ===============  ==================================================================  
+   Context object   ``{{object_list}}``
    Template         ``'cv/lists/article_list.html'``
-   URL              ``r'^articles/$'``
-   URL name			  ``'article_object_list'``
+   URL              ``'articles/'``
    MIME type        ``text/html``
-   ===============  ================================================================   
+   ===============  ================================================================== 
 	
-   Returns context ``{{article_objects}}`` with four objects on the dot path:
+   The article list view produces a page with a list of an author's 
+   articles. This may be helpful if an author does not wish to display
+   a full CV, but wants to list just their articles. The page renders
+   an instance of the :class:`cv.views.CVListView` view with the named 
+   parameter ``model_name`` set to ``'article'``. The view returns the 
+   ``{{object_list}}`` in the context with four objects on its dot path:
 
    ``total_articles``
       Integer of total number of article objects from all three status-based managers:
 
    ``article_published_list``
-      queryset of all published articles (uses the `published manager 
-      <topics-pubs-published-manager>`)
+      queryset of all published articles (uses the :attr:`published()`
+      method of the :class:`~cv.models.managers.PublicationManager`)
    
    ``article_revise_list``
-      queryset of all articles in the revision process (uses the `revise manager 
-      <topics-pubs-revise-manager>`)
+      queryset of all articles in the revision process (uses the 
+      :attr:`revise()` method of the 
+      :class:`~cv.models.managers.PublicationManager`)
    
    ``article_inprep_list`` 
-      queryset of all articles in preparation for submission (uses the `inprep manager 
-      <topics-pubs-published-manager>`)
+      queryset of all articles in preparation for submission (uses
+      the :attr:`inprep()` method of the 
+      :class:`~cv.models.managers.PublicationManager`)
 
-**Article Detail**: :class:`cv.views.ArticleDetailView`
+   The URL can be accessed in templates by using the `URL template 
+   filter`_ with the named URL ``section_list`` and ``model_name`` 
+   parameter equal to ``article``, i.e.::
+
+   {% url section_list model_name='article' %}
+
+.. _URL template filter: https://docs.djangoproject.com/en/2.1/ref/templates/builtins/#url
+
+
+**Article Detail**: :class:`cv.views.CVDetailView`
    ===============  ================================================================   
    Context object   ``{{article}}``
    Template         ``'cv/details/article_detail.html'``
    URL              ``'articles/<slug:slug>/``
-   URL name			  ``'article_object_detail'``
    MIME type        ``text/html``
    ===============  ================================================================
    
-   Returns context ``{{article}}`` that represents a single :class:`Article` instance.
+   The article detail view produces a page that represents a single 
+   article. The default template includes the title, the abstract, 
+   a link to the published version of the article (if published and 
+   a URL is defined), and links to download the citation in both 
+   RIS and BibTeX formats (described below). The page is rendered as 
+   an instance of the class :class:`cv.views.CVDetailView` with the 
+   named parameters ``model_name`` set to ``'article'`` and ``slug``
+   set to the article's slug attribute. The view returns the 
+   context ``{{article}}`` that represents the  :class:`Article` 
+   instance.
 
-**Article Citation**: :func:`cv.views.article_citation_view`
+   The URL can be accessed using the named URL ``item_detail`` with
+   ``model_name`` set to ``'article'`` and ``slug`` set to the 
+   article's slug attribute, i.e.::
+
+   {% url item_detail model_name='article' slug='slug-from-short-title' %}
+
+**Article Citation**: :func:`cv.views.citation_view`
    ===============  ================================================================   
    Context object   ``{{article}}``
    Templates        ``'cv/citations/article.ris'``
                     ``'cv/citations/article.bib'``
-   URL              ``'articles/<slug:slug>/citation/<str:format>/'``
-   URL name			  ``'article_citation'``
-   MIME type        ``application/x-research-info-systems``
+   URL              ``'articles/<slug:slug>/cite/<str:format>/'``
+   MIME type        ``application/x-research-info-systems`` or 
+                    ``application/x-bibtex``
    ===============  ================================================================
    
    Returns view to allow citation to be downloaded to citation management software.
    
-   The :attr:`(?P<format>[\w]+)` named parameter should be one of:
+   The :attr:`<str:format>` named parameter should be one of:
    
    ``'ris'``
       will create downloadable citation using Reference Manager format specification (see 

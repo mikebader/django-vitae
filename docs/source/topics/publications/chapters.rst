@@ -1,75 +1,92 @@
 .. _topics-pubs-chapters:
 
 Chapters
-^^^^^^^^
+--------
 
 Chapter Model
-"""""""""""""
+^^^^^^^^^^^^^
+=======================  =================================================
+Model field reference    :class:`cv.models.publications.Chapter`
+Authorship set           :class:`cv.models.publications.ChapterAuthorship`
+Editorship set           :class:`cv.models.publications.ChapterEditorship`
+=======================  =================================================
 
-The :class:`~cv.models.publications.Chapter` class stores instances of chapters. 
-
-Like Articles_, the :attr:`abstract` field takes Markdown_ input and saves 
-the converted HTML to the (non-editable) :attr:`summary_html` field. 
-
-In addition to the :attr:`authorship` attribute that saves authorship 
-information, the :class:`Chapter` class also has an :attr:`editorship` 
-attribute that contains information about editors of the volume in which the 
-chapter appears. Like the :attr:`authorship` attribute, the 
-:attr:`editorship` returns a foreign key 
-:class:`~django.db.models.fields.related.RelatedManager` (read more about 
-`related managers`_). 
-
-.. _Markdown: https://daringfireball.net/projects/markdown/syntax
-.. _related managers: https://docs.djangoproject.com/en/2.0/ref/models/relations/#django.db.models.fields.related.RelatedManager
-
-=======================                         ========================================
-Model field reference                           :class:`cv.models.publications.Chapter`
-Authorship set                                  :class:`cv.models.publications.ChapterAuthorship`
-Editorship set                                  :class:`cv.models.publications.ChapterEditorship`
-=======================                         ========================================
+The :class:`~cv.models.publications.Chapter` model represents an instance
+of a chapter. In addition to the :attr:`authorship` attribute that saves 
+authorship information, the :class:`Chapter` class also has an 
+:attr:`editorship` attribute that contains information about editors of 
+the volume in which the chapter appears. The editorship relationship 
+operates the same way as 
+:ref:`authorship sets <topics-pubs-collaboration-sets>` and include 
+the same fields, except that the ``editorship`` model does not contain a 
+``student_colleague`` field.
 
 Chapter Views
-"""""""""""""
+^^^^^^^^^^^^^
 
-**Chapter List** : :class:`cv.views.ChapterListView`
-
+**Chapter List** : :class:`cv.views.CVListView`
    ===============  ================================================================   
    Context object   ``{{chapter_objects}}``
    Template         ``'cv/lists/chapter_list.html'``
    URL              ``'chapters/'``
-   URL name         ``'chapter_object_list'``
    MIME type        ``text/html``
    ===============  ================================================================   
 
-   Returns context ``{{chapter_objects}}`` with four objects on the dot path: 
+   The chapter list view produces a page with a list of the author's 
+   chapters. The page renders an instance of the 
+   :class:`cv.views.CVListView` with the named parameter 
+   ``model_name`` set to ``'chapter'``. This view returns the object 
+   ``{{object_list}}`` in the context with four objects on its dot 
+   path: 
 
    ``total_chapters``
       Integer of total number of chapters from all three managers:
    
    ``chapter_published_list``
-      :class:`~django.db.models.query.QuerySet` of all published chapters (uses the 
-      `published manager <topics-pubs-published-manager>`)
+      queryset of all published chapters (uses the :attr:`published()`
+      method of the :class:`~cv.models.managers.PublicationManager`)
    
    ``chapter_revise_list``
-      :class:`~django.db.models.query.QuerySet` of all chapters in the 
-      revision process (uses the `revise manager <topics-pubs-revise-manager>`)
+      queryset of all chapters in the revision process (uses the 
+      :attr:`revise()` method of the 
+      :class:`~cv.models.managers.PublicationManager`)
    
    ``chapter_inprep_list`` 
-      :class:`~django.db.models.query.QuerySet` of all chapters in 
-      preparation for submission (uses the `inprep manager 
-      <topics-pubs-published-manager>`)
+      queryset of all chapters in preparation for submission (uses
+      the :attr:`inprep()` method of the 
+      :class:`~cv.models.managers.PublicationManager`)
+
+   The URL can be accessed in templates by using the `URL template 
+   filter`_ with the named URL ``section_list`` and ``model_name`` 
+   parameter equal to ``chapter``, i.e.::
+
+   {% url section_list model_name='chapter' %}
+
+.. _URL template filter: https://docs.djangoproject.com/en/2.1/ref/templates/builtins/#url
 
 **Chapter Detail**: :class:`cv.views.ChapterDetailView`
    ===============  ================================================================   
    Context object   ``{{chapter}}``
    Template         ``'cv/details/chapter_detail.html'``
    URL              ``'chapters/<slug:slug>/'``
-   URL name         ``'chapter_object_detail'``
    MIME type        ``text/html``
    ===============  ================================================================
    
-   Returns context ``{{chapter}}`` that represents a single 
+   The chapter detail view produces a page that represents a single
+   chapter. The default template includes the title, the abstract, 
+   and links to download the citation in both RIS and BibTeX formats 
+   (described below). The page is rendered as an instance of the 
+   :class:`cv.views.CVDetailView` view with the named parameters
+   ``model_name`` set to ``'chapter'`` and the ``slug`` set to the
+   value of the chapter's slug field. The view returns the context
+   ``{{chapter}}`` that represents a the
    :class:`~cv.models.publications.Chapter` instance.
+
+   The URL can be accessed using the named URL ``item_detail`` with
+   with ``model_name`` set to ``article`` and ``slug`` set to the 
+   article's slug attribute, i.e.::
+
+   {% url item_detail model_name='chapter' slug='slug-from-short-title' %}   
 
 **Chapter Citation**: :func:`cv.views.book_citation_view`
    ===============  ================================================================   
@@ -77,7 +94,6 @@ Chapter Views
    Templates        ``'cv/citations/chapter.ris'``
                     ``'cv/citations/chapter.bib'``
    URL              ``'chapter/<slug:slug>/citation/<str:format>/'``
-   URL name         ``'chapter_citation'``
    MIME types       ``application/x-research-info-systems``
                     ``application/x-bibtex``
    ===============  ================================================================

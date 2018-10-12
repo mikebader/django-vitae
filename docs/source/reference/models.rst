@@ -17,4 +17,3 @@ Base Models
 ===========
 .. automodule:: cv.models.base
    :members:
-

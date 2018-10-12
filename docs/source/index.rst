@@ -58,7 +58,12 @@ Organization of the Documentation
       
       * Teaching
       
-      * Service   
+      * Service 
+
+* :doc:`Views <views/index>`
+
+      * :ref:`HTML <views-html>` 
+      * :ref:`PDF <views-pdf>`
 
 * Templates 
 
@@ -98,6 +103,7 @@ Documentation Contents
    
    getting_started
    topics/index
+   views/index
    shortcuts
    settings
    reference/index
