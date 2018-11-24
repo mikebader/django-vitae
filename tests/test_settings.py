@@ -6,6 +6,8 @@ BASE_DIR = os.path.join(os.path.dirname(
 
 sys.path.append(os.path.dirname(BASE_DIR))
 
+DEBUG = False
+
 SECRET_KEY = 'fake-key'
 
 DATABASES = {

@@ -6,7 +6,7 @@ def long_description():
 
 setuptools.setup(
     name='django-vitae',
-    version='0.0.2.6',
+    version='0.1.0',
     author='Michael Bader',
     author_email='michaeldmbader@gmail.com',
     license='BSD Three Clause',

@@ -322,12 +322,14 @@ class Journal(models.Model):
         'ISSN',
         max_length=9,
         validators=[RegexValidator(r'\d{4}\-\d{3}[0-9X]')],
-        help_text='Enter ISSN in format: XXXX-XXXX')
+        help_text='Enter ISSN in format: XXXX-XXXX',
+        blank=True)
     website = models.URLField(blank=True)
     primary_discipline = models.ForeignKey(
         Discipline,
         related_name='primarydiscipline',
-        on_delete=models.CASCADE)
+        on_delete=models.CASCADE,
+        null=True, blank=True)
     other_disciplines = models.ManyToManyField(
         Discipline,
         related_name='otherdisciplines',

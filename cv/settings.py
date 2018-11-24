@@ -102,4 +102,5 @@ INPREP_RANGE = MinMax(0, 10)
 INREVISION_RANGE = MinMax(20, 50)
 PUBLISHED_RANGE = MinMax(50, 90)
 
-CSL_STYLE = getattr(settings,'CV_CSL_STYLE','harvard1')
+CITE_CSL_STYLE = getattr(settings, 'CV_CITE_CSL_STYLE', 'apa')
+LIST_CSL_STYLE = getattr(settings, 'CV_LIST_CSL_STYLE', 'apacv')
