@@ -1,11 +1,12 @@
 from django.conf import settings
 from django import template
 from django.contrib.humanize.templatetags.humanize import intcomma
-from django.utils.html import conditional_escape
+from django.utils.html import conditional_escape, format_html
 from django.utils.safestring import mark_safe
 
 import cv.settings
 from cv.models import Collaborator, GrantCollaboration, ChapterEditorship
+from cv.utils import CSLCitation
 
 register = template.Library()
 key_contributor_list = cv.settings.CV_KEY_CONTRIBUTOR_LIST
@@ -106,3 +107,39 @@ def grant_pi_list(value,filter_name=None):
 	return value.exclude(**param_vals)
 	
 	
+@register.filter
+def write_entry(instance):
+	parts = CSLCitation(instance).entry_parts()
+	year = parts[0].year if parts[0] else ''
+	entry_str = format_html((
+		'<span class="cv-entry-date col-xs-2 col-sm-1">{}</span>\n'
+		'<span class="cv-entry-text col-xs-9 col-sm-10">{}</span>\n'
+		),instance.slug, year, format_html(parts[1]))
+	return entry_str
+
+@register.inclusion_tag('cv/_publication_entries.html', takes_context=True)
+def publication_entries(context, publist, forthcoming='forth.'):
+	model_name = publist[0]._meta.model_name
+	publications = list()
+	for pub in publist:
+		parts = CSLCitation(pub).entry_parts()
+		year = parts[0].year if parts[0] else ''
+		if pub.get_status_display() == "Forthcoming":
+			year = forthcoming 
+		pubdict = dict(
+			publication=pub, date=year, 
+			entry=format_html(parts[1]))
+		publications.append(pubdict)
+	return{
+		'model_name': model_name,
+		'publications': publications,
+		'user': context['user']}
+
+@register.inclusion_tag('cv/_publication_add.html', takes_context=True)
+def add_publication(context, model_name):
+	return {
+		'model_name': model_name,
+		'user': context['user']
+	}
+
+

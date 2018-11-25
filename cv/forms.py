@@ -39,6 +39,7 @@ def editorship_formset_factory(**kwargs):
     return inlineformset_factory(
         Chapter, ChapterEditorship,
         fields=get_authorship_fields()[0:3],
+        min_num=1, validate_min=True,
         **kwargs
     )
 

@@ -7,8 +7,9 @@ from citeproc_styles import get_style_filepath
 from django.apps import apps
 from django.conf import settings
 
-from cv.settings import INREVISION_RANGE, CITE_CSL_STYLE, LINE_CSL_STYLE
+from cv.settings import INREVISION_RANGE, CITE_CSL_STYLE, ENTRY_CSL_STYLE
 
+import datetime
 import os
 from pathlib import Path
 
@@ -215,7 +216,7 @@ class CSLCitation(object):
                 })
                 fields.update(self._return_date_parts())
             else:
-                set.fields['type'] = 'manuscript'
+                fields['type'] = 'manuscript'
         elif model_name == 'report':
             if ((self.instance.pub_date or self.instance.submission_date) and
                self.instance.status >= INREVISION_RANGE.min):
@@ -254,3 +255,12 @@ class CSLCitation(object):
         """Returns plain-text citation of model instance."""
         return self.cite(formatter.plain, style, **kwargs)
 
+    def entry_parts(self, fmt='html', style=ENTRY_CSL_STYLE, **kwargs):
+        if 'issued' in self.fields:
+            date = self.fields.pop('issued')
+            date = datetime.datetime(*list(map(int, date['date-parts'][0])))
+        else:
+            date = None
+        if fmt == 'html':
+            return (date, self.cite_html(style, **kwargs))
+        return (date, self.cite_plain(style, **kwargs))

@@ -151,8 +151,7 @@ class Chapter(VitaePublicationModel):
     authors = models.ManyToManyField(
         Collaborator, through='ChapterAuthorship', related_name="chapters")
     editors = models.ManyToManyField(
-        Collaborator, through='ChapterEditorship', related_name='editors',
-        blank=True)
+        Collaborator, through='ChapterEditorship', related_name='editors')
     # abstract = models.TextField(blank=True)
     book_title = models.CharField(max_length=200)
     volume = models.CharField(max_length=50, null=True, blank=True)
@@ -174,7 +173,6 @@ class Chapter(VitaePublicationModel):
     abstract_html = models.TextField(blank=True, editable=False)
 
     objects = models.Manager()
-
 
 class ChapterAuthorship(CollaborationModel, StudentCollaborationModel):
     """Store object relating collaborators to article."""

@@ -1,0 +1,7 @@
+{% if user.is_authenticated %}
+<ul class="cv-entry">
+<li class="row">
+    <a class="col-12 col-sm-12 {{model_name}}-add cv-add" alt="Add new {{model_name}}" href="{% url 'cv:cv_add' model_name=model_name %}"><i class="far fa-plus-square"></i> Add new {{model_name}}</a>  
+</li>
+</ul>
+{% endif %}

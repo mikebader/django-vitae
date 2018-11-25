@@ -71,8 +71,11 @@ ul.presentations > li:before {
 		font-family: FontAwesome;
 		display: inline-block;
 		}
-	}
 
 .editable {
 	display: none;
+}
+
+.invalid-feedback {
+	font-size:1rem;
 }

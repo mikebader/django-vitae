@@ -141,7 +141,8 @@ class ChapterAuthorshipInline(admin.TabularInline):
 
 class ChapterEditorshipInline(admin.TabularInline):
 	model = ChapterEditorship
-	extra = 2 
+	extra = 2
+	min_num = 1
 
 class ChapterAdmin(admin.ModelAdmin):
 	
