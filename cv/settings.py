@@ -103,4 +103,4 @@ INREVISION_RANGE = MinMax(20, 50)
 PUBLISHED_RANGE = MinMax(50, 90)
 
 CITE_CSL_STYLE = getattr(settings, 'CV_CITE_CSL_STYLE', 'apa')
-LIST_CSL_STYLE = getattr(settings, 'CV_LIST_CSL_STYLE', 'apacv')
+LINE_CSL_STYLE = getattr(settings, 'CV_LINE_CSL_STYLE', 'apa-no-date')

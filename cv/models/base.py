@@ -293,9 +293,18 @@ class VitaePublicationModel(VitaeModel):
            INPREP_RANGE.min <= self.status < INPREP_RANGE.max):
                 self.is_inprep = True
 
-    def cite(self):
-        """Return citation based on format defined in CV_CSL_STYLE setting."""
-        return CSLCitation(self).cite()
+    def cite(self, style='html', doi=True):
+        """Return citation of instance.
+
+        The format used for the citation is set using the
+        CV_CITE_CSL_STYLE setting.
+        """
+        if style not in ['html', 'plain']:
+            raise ValueError(('Citation style must be either \'html\' or'
+                              ' \'plain\''))
+        if style == 'html':
+            return CSLCitation(self).cite_html(doi=doi)
+        return CSLCitation(self).cite_plain(doi=doi)
 
 
 # Journal

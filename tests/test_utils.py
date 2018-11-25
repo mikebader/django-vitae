@@ -142,6 +142,15 @@ class UtilsTestCase(VitaePublicationTestCase, AuthorshipTestCase):
             Path(csl_dir),
             CSLStyle('apa').retrieve_csl_style())
 
+    def test_citation_style(self):
+        """Test that `cite()` method accepts only html and plain styles."""
+        self.a.cite(style='html')
+        self.a.cite(style='plain')
+        with self.assertRaises(ValueError) as e:
+            self.a.cite(style='tex')
+            self.assertEqual(_('Citation style must be either \'html\' or'
+                               ' \'plain\''), str(e))
+
     def test_article_citation(self):
         """Test proper citation returned for article instance."""
         self.assertHTMLEqual(

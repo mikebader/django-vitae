@@ -7,7 +7,7 @@ from citeproc_styles import get_style_filepath
 from django.apps import apps
 from django.conf import settings
 
-from cv.settings import INREVISION_RANGE, CITE_CSL_STYLE
+from cv.settings import INREVISION_RANGE, CITE_CSL_STYLE, LINE_CSL_STYLE
 
 import os
 from pathlib import Path
@@ -165,7 +165,7 @@ class CSLCitation(object):
                     'container-title': '{}'.format(
                         '' if not self.instance.journal
                         else self.instance.journal.title),
-                    'doi': self.instance.doi,
+                    'DOI': self.instance.doi,
                     'issue': self.instance.issue,
                     'page': self._return_page_range(),
                     'PMCID': self.instance.pmcid,
@@ -196,7 +196,7 @@ class CSLCitation(object):
             else:
                 fields['type'] = 'manuscript'
         elif model_name == 'chapter':
-            if len(self.instance.editorship.all())<1:
+            if len(self.instance.editorship.all()) < 1:
                 raise CSLKeyError('chapter', 'editorship')
             if ((self.instance.pub_date or self.instance.submission_date) and
                self.instance.status >= INREVISION_RANGE.min):
@@ -217,7 +217,6 @@ class CSLCitation(object):
             else:
                 set.fields['type'] = 'manuscript'
         elif model_name == 'report':
-            print(fields['title'])
             if ((self.instance.pub_date or self.instance.submission_date) and
                self.instance.status >= INREVISION_RANGE.min):
                 fields.update({
@@ -235,13 +234,23 @@ class CSLCitation(object):
             fields[k] = v if v is not None else ''
         return fields
 
-    def cite(self, style=CITE_CSL_STYLE):
-        """Returns an HTML-formatted citation of model instance."""
+    def cite(self, fmtr, style=CITE_CSL_STYLE, doi=True):
+        if doi is False:
+            self.fields['DOI'] = ''
         style_path = CSLStyle(style).style_path
         bib_style = CitationStylesStyle(str(style_path), validate=False)
         bibliography = CitationStylesBibliography(
-            bib_style, CiteProcJSON([self.fields]), formatter.html)
+            bib_style, CiteProcJSON([self.fields]), fmtr)
         citation = Citation([CitationItem(self.instance.slug)])
         bibliography.register(citation)
-        cite = str(bibliography.bibliography()[0]).replace('..','.')
+        cite = str(bibliography.bibliography()[0]).replace('..', '.')
         return cite
+
+    def cite_html(self, style=CITE_CSL_STYLE, **kwargs):
+        """Returns an HTML-formatted citation of model instance."""
+        return self.cite(formatter.html, style, **kwargs)
+
+    def cite_plain(self, style=CITE_CSL_STYLE, **kwargs):
+        """Returns plain-text citation of model instance."""
+        return self.cite(formatter.plain, style, **kwargs)
+
