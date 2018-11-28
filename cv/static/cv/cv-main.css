@@ -35,6 +35,7 @@ ul.cv-primary-positions {
 	padding-left:0px;
 	}
 .cv-sublist li {
+	padding-left: 2rem;
 	display: inline;
 	}
 	
@@ -48,11 +49,14 @@ li.cv-primary-positions {
 	font-size: 1.5rem;
 /*	font-style:italic;	
 */	}
-	
-.cv-entry-date {
-	text-align:right;
-	}
 
+ul.cv-entry {
+/*	margin-left:-1.75rem;
+*/}
+	
+/*.cv-entry-date {
+	}
+*/
 .cv-entry-text > .author-emphasis {
 	font-weight: 600;
 	}

@@ -1,25 +1,30 @@
 {% load cvtags %}
 {% if talk_list or user.is_authenticated %}
-<h2 class="col-xs-12">Talk{{talk_list.count|pluralize}}</h2>
-<ul class="cv-entry">
-{% for talk in talk_list %}
-<li class="col-xs-offset-2 col-xs-9 col-sm-offset-1 col-sm-10">
-<span class="cv-entry-text">&#8220;{{talk.title}}.&#8221;</span> <a href="{{talk.get_absolute_url}}" title="Details about {{talk.short_title}}"><span class="fa fa-chevron-circle-right"><span></a>
-<ul class="row cv-sublist">
-<div class="col-xs-offset-2 col-xs-9 col-sm-offset-1 col-sm-11">
-{% for presentation in talk.presentations.all %}
-<li>{{presentation.event}} ({{presentation.presentation_date|date:"M Y"}}){% if presentation.get_type_display == "Invited" %}*{% endif %}{% if not forloop.last %},{% endif %}</li>
-{% endfor %}
-</div>
-</ul>
-</li>
-{% endfor %}
-{% if user.is_authenticated %}
-<li class="row">
-	<div class="noneditable">
-		<a class="col-12 col-sm-12 talk-add cv-add" alt="Add new talk" href="{% url 'cv:cv_add' model_name='talk' %}"><i class="far fa-plus-square"></i> Add new talk</a>
-	</div>
-</li>
+	<h2>Talk{{talk_list.count|pluralize}}</h2>
+	<ul class="cv-entry">
+	{% for talk in talk_list %}
+	{% spaceless %}
+		<li id="talk-{{talk.pk}}">
+			<div class="noneditable row">
+			<span class="cv-entry-text col-11">&#8220;{{talk.title}}.&#8221;<a href="{{talk.get_absolute_url}}" title="Details about {{talk.short_title}}"><span class="pl-4 fa fa-chevron-circle-right"></span></a></span> 
+			<ul class="cv-sublist col-11">
+					{% for presentation in talk.presentations.all %}
+					<li>{{presentation.event}} ({{presentation.presentation_date|date:"M Y"}}){% if presentation.get_type_display == "Invited" %}*{% endif %}{% if not forloop.last %}, {% endif %}
+					</li>
+					{% endfor %}
+			</ul>
+		</div>
+		</li>
+	{% endspaceless %}
+	{% endfor %}
+	{% if user.is_authenticated %}
+		<li>
+			<span class="noneditable row">
+				<span class="cv-entry-text col-11">
+					<a class="talk-add cv-add" alt="Add new talk" href="{% url 'cv:cv_add' model_name='talk' %}"><i class="far fa-plus-square"></i> Add new talk</a>
+				</span>
+			</span>
+		</li>
 {% endif %}
 </ul>
 {% endif %}

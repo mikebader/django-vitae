@@ -1,20 +1,20 @@
 {% load cvtags %}
 
 {% if total_chapters or user.is_authenticated %} 
-<h2 class="col-xs-12 cv-section">Chapter{{total_chapters|pluralize}}</h2>
+<h2>Chapter{{total_chapters|pluralize}}</h2>
 {% if chapter_published_list %}
 	{% if chapter_revise_list or chapter_inprep_list %}
-	<h3 class="col-xs-12">Published</h3>
+	<h3>Published</h3>
 	{% endif %}
 	{% publication_entries chapter_published_list %}
 {% endif %}
 {% if chapter_revise_list %}
-	<h3 class="col-xs-12">Under Review</h3>
+	<h3>Under Review</h3>
 	{% publication_entries chapter_revise_list %}
 {% endif %}
 
 {% if chapter_inprep_list %}
-	<h3 class="col-xs-12">In Preparation</h3>
+	<h3>In Preparation</h3>
 	{% publication_entries chapter_inprep_list %}
 {% endif %}
 

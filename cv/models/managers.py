@@ -73,22 +73,24 @@ class ServiceManager(DisplayManager):
     ``discipline_services`` for service work to different institutions.
     """
 
-    management_lists = ['department_services',
-                        'university_services',
-                        'discipline_services']
+    management_lists = ['department',
+                        'university',
+                        'discipline']
 
-    def department_services(self):
+    def department(self):
         return self.filter(
             type__in=[
                 SERVICE_TYPES['DEPARTMENT_SERVICE'],
+            ]).filter(display=True)
+
+    def university(self):
+        return self.filter(
+            type__in=[
+                SERVICE_TYPES['UNIVERSITY_SERVICE'],
                 SERVICE_TYPES['SCHOOL_SERVICE']
             ]).filter(display=True)
 
-    def university_services(self):
-        return self.filter(
-            type=SERVICE_TYPES['UNIVERSITY_SERVICE']).filter(display=True)
-
-    def discipline_services(self):
+    def discipline(self):
         return self.filter(
             type=SERVICE_TYPES['DISCIPLINE_SERVICE']).filter(display=True)
 

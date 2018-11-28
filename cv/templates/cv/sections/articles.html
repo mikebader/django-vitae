@@ -1,25 +1,23 @@
 {% load cvtags %} 
-
 {% if total_articles or user.is_authenticated %}
-<div id="article">
-<h2 class='col-xs-12 cv-section'>Article{{total_articles|pluralize}}</h2> 
-{% if article_published_list %} 
-	{% if article_revise_list or article_inprep_list %}
-    <h3 class='col-xs-12'>Published</h3>
+	<h2>Article{{total_articles|pluralize}}</h2> 
+	{% if article_published_list %} 
+		{% if article_revise_list or article_inprep_list %}
+    	<h3>Published</h3>
+		{% endif %}
+		{% publication_entries article_published_list %}
+		{% endif %} 
+
+	{% if article_revise_list %}
+	    <h3>Under Review</h3>
+	    {% publication_entries article_revise_list %}
 	{% endif %}
-{% publication_entries article_published_list %}
-{% endif %} 
 
-{% if article_revise_list %}
-    <h3>Under Review</h3>
-    {% publication_entries article_revise_list %}
-{% endif %}
-
-{% if article_inprep_list %}
-    <h3>In Preparation</h3>
-    {% publication_entries article_inprep_list %}
-{% endif %}
+	{% if article_inprep_list %}
+	    <h3>In Preparation</h3>
+	    {% publication_entries article_inprep_list %}
+	{% endif %}
 
 {% add_publication 'article' %}
-</div>
+
 {% endif %}

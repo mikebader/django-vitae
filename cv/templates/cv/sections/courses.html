@@ -1,22 +1,26 @@
 {% if course_list or user.is_authenticated %}
-<h2 class="col-xs-12">Teaching</h2>
+<h2>Teaching</h2>
 <ul class="cv-entry">
     {% for course in course_list %}
+    {% spaceless %}
     <li id="course-{{course.pk}}" class="row">
     	<div class="noneditable">
-	        <span class="cv-entry-text col-xs-11"><em>{{course.title}}</em> ({{course.get_student_level_display}}{% if course.offerings.all %}; {% for offering in course.offerings.all %}{% if not forloop.first %}, {% endif %}{{offering.get_term_display}} {{offering.start_date|date:"Y"}}{% endfor %}{% endif %})
-			</span>
+	        <span class="cv-entry-text col-11">
+	        	<em>{{course.title}}</em> 
+        		({{course.get_student_level_display}}{% if course.offerings.all %}; {% for offering in course.offerings.all %}{% if not forloop.first %}, {% endif %}{{offering.get_term_display}} {{offering.start_date|date:"Y"}}{% endfor %}{% endif %})
 			{% if user.is_authenticated %}
-				<a class="ml-4 course-edit cv-edit" href="#course"><i class="far fa-edit"></i></a>
+				<a class="pl-4 course-edit cv-edit" href="#course"><i class="far fa-edit"></i></a>
 			{% endif %}
+			</span>
 		</div>
 		<div class="editable"></div>
     </li>
+    {% endspaceless %}
     {% endfor %}
 {% if user.is_authenticated %}
 	<li class="row">
 		<div class="noneditable">
-			<a class="col-12 col-sm-12 course-add cv-add" alt="Add new course" href="#course"><i class="far fa-plus-square"></i> Add new course</a>
+			<a class="course-add cv-add col-11" alt="Add new course" href="#course"><i class="far fa-plus-square"></i> Add new course</a>
 		</div>
 	</li>
 {% endif %}</ul>

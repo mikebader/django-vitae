@@ -1,21 +1,21 @@
 {% load cvtags %}
 
 {% if total_books or user.is_authenticated %} 
-<h2 class='col-xs-12 cv-section'>Book{{total_books|pluralize}}</h2>
+<h2>Book{{total_books|pluralize}}</h2>
 {% if book_published_list %}
 	{% if book_revise_list or book_inprep_list %}
-	<h3 class='col-xs-12'>Published</h3>
+	<h3>Published</h3>
 	{% endif %}
 	{% publication_entries book_published_list %}
 {% endif %}
 
 {% if book_revise_list %}
-	<h3 class="col-xs-12">Under Review</h3>
+	<h3>Under Review</h3>
 	{% publication_entries book_revise_list %}
 {% endif %}
 
 {% if book_inprep_list %}
-	<h3 class="col-xs-12">In Preparation</h3>
+	<h3>In Preparation</h3>
 	{% publication_entries book_inprep_list %}
 {% endif %}
 

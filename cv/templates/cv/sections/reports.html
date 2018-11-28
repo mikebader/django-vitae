@@ -1,23 +1,23 @@
 {% load cvtags %}
 
 {% if total_reports or user.is_authenticated %} 
-<h2 class='col-xs-12 cv-section'>Report{{total_reports|pluralize}}</h2>
+<h2>Report{{total_reports|pluralize}}</h2>
 {% if report_published_list %}
 {% if report_revise_list or report_inprep_list %}
-	<h3 class='col-xs-12'>Published</h3>
+	<h3>Published</h3>
 {% endif %}
 	{% publication_entries report_published_list %}
 {% endif %}
 
 {% if report_revise_list %}
-	<h3 class="col-xs-12">Under Review</h3>
+	<h3>Under Review</h3>
 	{% publication_entries report_revise_list %}
 {% endif %}
 
 {% if report_inprep_list %}
-	<h3 class="col-xs-12">In Preparation</h3>
+	<h3>In Preparation</h3>
 	{% publication_entries report_inprep_list %}
 {% endif %}
 
-{% add_publication 'chapter' %}
+{% add_publication 'report' %}
 {% endif %}
