@@ -1,50 +1,43 @@
 from markdown import markdown
 
-from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
-from django.db.models import Max
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.urls import reverse
-from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from cv.settings import PUBLICATION_STATUS_CHOICES, \
     STUDENT_LEVELS_CHOICES, \
-    SERVICE_TYPES_CHOICES, SERVICE_TYPES, \
     FILE_TYPES_CHOICES, \
-    TERMS_CHOICES, \
     INPREP_RANGE, INREVISION_RANGE, PUBLISHED_RANGE
 from cv.utils import CSLCitation, check_isbn
 
 from .files import CVFile
-from .managers import (
-    DisplayManager, PublicationManager, ServiceManager,
-    PrimaryPositionManager
-)
+from .managers import DisplayManager, PublicationManager
 
 
-class DisplayableModel(models.Model):  
+
+class DisplayableModel(models.Model):
     """Abstract class including fields shared by all CV models.
-    
-    :class:`DisplayableModel` makes the ``displayable`` manager available 
-    to all models that inherit from it that returns all instances where 
-    ``display==True``.  
+
+    :class:`DisplayableModel` makes the ``displayable`` manager available
+    to all models that inherit from it that returns all instances where
+    ``display==True``.
 
         display : boolean (required)
-        Indicates whether model instance should be displayed and returned by 
+        Indicates whether model instance should be displayed and returned by
         :class:`cv.models.DisplayManager`. Defaults to ``True``.
-    
+
     extra : string
-        Text to be included with instance of model. Should be written in final format. 
-    
+        Text to be included with instance of model. Should be written in html.
+
     files : :class:`GenericRelation` to :class:`cv.models.CVFile`
-        Relates files to model. 
-    
-    .. note:: 
-      due to rules that Django uses to load managers, it will be defined as the 
+        Relates files to model.
+
+    .. note::
+      due to rules that Django uses to load managers, it will be defined as the
       default manager)
-    
     """
     display = models.BooleanField(default=True)
     extra = models.TextField(blank=True)
@@ -56,16 +49,17 @@ class DisplayableModel(models.Model):
         abstract = True
 
 
-## Collaborator
+# Collaborator
 class Collaborator(models.Model):
     """
     Store object representing collaborator.
-    
-    By default, collaborators are ordered (in ascending order) by last name. Internally, 
-    Django-CV uses the :attr:`email` attribute to identify collaborators. For example, the 
-    template filter :func:`~cv.templatetags.cvtags.print_authors` matches collaborators on 
-    e-mails to emphasize key contributors in the list of CV entries based on the list 
-    defined in the :setting:`CV_KEY_CONTRIBUTORS_LIST` setting. 
+
+    By default, collaborators are ordered (in ascending order) by last name.
+    Internally, Django-Vitae uses the :attr:`email` attribute to identify
+    collaborators. For example, the template filter 
+    :func:`~cv.templatetags.cvtags.print_authors` matches collaborators on 
+    e-mails to emphasize key contributors in the list of CV entries based on
+    the list defined in the :setting:`CV_KEY_CONTRIBUTORS_LIST` setting. 
     """
     
     first_name = models.CharField('First (given) name', max_length=100)
@@ -353,315 +347,3 @@ class Journal(models.Model):
 
 
         
-## C.V. HONORS, AWARDS, AND POSITIONS
-# Awards
-class Award(DisplayableModel):
-    
-    """Store object representing an award earned."""
-    
-    name = models.CharField(max_length=200)
-    organization = models.CharField('Granting institution or organization',max_length=200)
-    date = models.DateField()
-    description = models.TextField(blank=True)
-    # book = models.ForeignKey(Book,null=True,blank=True,on_delete=models.PROTECT)
-    # article = models.ForeignKey(Article,null=True,blank=True,on_delete=models.PROTECT)
-    
-    class Meta: 
-        ordering = ['-date']
-        get_latest_by = 'date'
-    
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return '%s#award-%s' % (reverse('cv:cv_list'),self.pk)
-    
-    objects = models.Manager()
-
-## Degrees
-class Degree(DisplayableModel):
-    
-    """Store object representing degree earned.
-    
-    Degrees are sorted by ``end_date``. 
-    
-    This class contains two managers:
-    * ``objects``: return all positions
-    * ``displayable``: return only positions for which ``display==True``
-    
-    """
-    
-    degree = models.CharField(max_length=10)
-    major = models.CharField(max_length=100,null=True,blank=True)
-    date_earned = models.DateField('Date Earned')
-    institution = models.CharField(max_length=100)
-    city = models.CharField(max_length=100)
-    state = models.CharField('State or Province',max_length=100)
-    country = models.CharField(max_length=100)
-    honors = models.CharField(max_length=100,null=True,blank=True)
-    
-    class Meta: 
-        ordering = ('-date_earned',)
-        get_latest_by = 'date_earned'
-        
-    def __str__(self):
-        return self.degree
-
-    def get_absolute_url(self):
-        return '%s#degree-%s' % (reverse('cv:cv_list'),self.pk)
-
-    objects = models.Manager()
-
-class Position(DisplayableModel):
-
-    """
-    Store single position object representing employment or research experience.
-    
-    Positions are sorted by ``end_date``. 
-    
-    This class contains three managers:
-    * ``objects``: return all positions
-    
-    * ``displayable``: return only positions for which ``display==True``
-    
-    * ``primarypositions``: return only positions for which ``primary_position==True``      
-      (indicating a primary position should be used sparingly since it will be used, for 
-      example, in the heading of a CV)
-    
-    """
-    
-    title = models.CharField(max_length=100)
-    start_date = models.DateField()
-    end_date = models.DateField(
-        help_text='If current, set date to future (by default positions will be ordered by end date'
-        )
-    project = models.CharField(max_length=100, blank=True)
-    department = models.CharField(max_length=100, blank=True)
-    institution = models.CharField(max_length=100)
-    current_position = models.BooleanField('Current position?',
-        help_text='Are you currently in this position?')
-    primary_position = models.BooleanField('Primary position?',
-        help_text='Should this position be displayed as the main position (e.g., on heading of CV)?'
-        )
-    
-    def clean(self):
-        """Ensure start date is before end date."""
-        if self.start_date > self.end_date:
-            raise ValidationError({'end_date':_('End date cannot be before start date')} )
-
-    def get_absolute_url(self):
-        return '%s#position-%s' % (reverse('cv:cv_list'),self.pk)
-    
-    class Meta:
-        ordering = ('-end_date',)
-        get_latest_by = 'end_date'
-    
-    def __str__(self):
-        return '%s' % (self.title)
-    
-    objects = models.Manager()
-    primarypositions = PrimaryPositionManager()
-
-        
-class MediaMention(DisplayableModel):
-    
-    """Store object containing media mention."""
-    
-    ## TODO: Possibly refactor into separate app with generic relations to any model
-    outlet = models.CharField(max_length=200,help_text='Publication or station')
-    section = models.CharField(max_length=200,
-                help_text='Section of publication or program', null=True, blank=True)
-    title = models.CharField(max_length=200,null=True,blank=True)
-    date = models.DateField()
-    url = models.URLField(blank=True, null=True)
-    author = models.CharField(max_length=200, blank=True, null=True,
-                            help_text='E.g., author of written piece or interviewer on visual medium')
-    description = models.TextField(blank=True)
-    snapshot = models.FileField(null=True,blank=True)
-    
-    # article = models.ForeignKey(Article,null=True,blank=True,on_delete=models.CASCADE)
-    # book = models.ForeignKey(Book,null=True,blank=True,on_delete=models.CASCADE)
-    # talk = models.ForeignKey(Talk,null=True,blank=True,on_delete=models.CASCADE)
-    
-    class Meta:
-        ordering = ['-date']
-    
-    def __str__(self):
-        return '%s (%s)' % (self.outlet, self.date.strftime('%b %d, %Y'))
-    
-    objects = models.Manager()
-
-## SERVICE
-## Managers of different levels of service
-class DepartmentServiceManager(models.Manager):
-    """Return queryset of services perfomed for department."""
-    
-    def get_queryset(self):
-        return super(DepartmentServiceManager, self).get_queryset().filter(
-            type__in=[SERVICE_TYPES['DEPARTMENT_SERVICE'],SERVICE_TYPES['SCHOOL_SERVICE']]
-            ).filter(
-                display=True
-            )
-
-class UniversityServiceManager(models.Manager):
-    """Return queryset of services perfomed for university."""
-    
-    def get_queryset(self):
-        return super(UniversityServiceManager, self).get_queryset().filter(
-                type=SERVICE_TYPES['UNIVERSITY_SERVICE']
-            ).filter(
-                display=True
-            )
-
-class DisciplineServiceManager(models.Manager):
-    """Return queryset of services perfomed for university."""
-    
-    def get_queryset(self):
-        return super(DisciplineServiceManager, self).get_queryset().filter(
-            type=SERVICE_TYPES['DISCIPLINE_SERVICE']
-            ).filter(
-                display=True
-            )
-
-## Services
-class Service(DisplayableModel):
-    
-    """Add object to record service commitments."""
-    
-    role = models.CharField(max_length=200)
-    group = models.CharField(max_length=200, blank=True, null=True,
-        help_text=_('Group or committee on which service was performed'))
-    organization = models.CharField(_('Organization or department'),
-        max_length=200)
-    type = models.IntegerField(choices=SERVICE_TYPES_CHOICES)
-    start_date = models.DateField(blank=True,null=True,
-        help_text=_("Leave blank of one-time service"))
-    end_date = models.DateField(blank=True,null=True,
-        help_text=_("Leave blank if service is ongoing"))
-    description = models.TextField(blank=True)
-    
-    class Meta:
-        ordering = ['-end_date','-start_date']
-    
-    def __str__(self):
-        return '%s: %s (%s)' % (self.role, self.group, self.organization)
-    
-    def clean(self):
-        check = [self.start_date,self.end_date]
-        if not any(check):
-            raise ValidationError(_('Must select at least one date field.'))
-    
-    objects = models.Manager()
-    displayable = ServiceManager()
-    # department_services = DepartmentServiceManager()
-    # university_services = UniversityServiceManager()
-    # discipline_services = DisciplineServiceManager()
-
-## Reviews
-class JournalService(DisplayableModel):
-    """Objects representing journals for which one has reviewed."""
-    
-    journal = models.OneToOneField(Journal,
-                    on_delete=models.CASCADE,blank=True,null=True,unique=True)
-    is_reviewer = models.BooleanField(default=True)
-    
-    class Meta:
-        ordering = ['journal']
-    
-    def __str__(self):
-        return '%s' % self.journal.title
-    
-    objects = models.Manager()
-    
-## Students
-class Student(DisplayableModel):
-    
-    """Add object to represent students that have been advised."""
-    
-    first_name = models.CharField(max_length=200,null=True)
-    last_name = models.CharField(max_length=200,null=True)
-    middle_name = models.CharField(max_length=200,null=True,blank=True)
-    student_level = models.IntegerField(
-        choices=STUDENT_LEVELS_CHOICES,null=True,blank=True
-        )
-    role = models.CharField(max_length=200,null=True)
-    thesis_title = models.CharField(max_length=200,null=True, blank=True)
-    is_current_student = models.BooleanField(default=True)
-    graduation_date = models.DateField(null=True, blank=True)
-    first_position = models.CharField(max_length=200,null=True,blank=True)
-    current_position = models.CharField(max_length=200,null=True,blank=True)
-    
-    class Meta: 
-        ordering = ['student_level','graduation_date']
-    
-    def __str__(self):
-        return '%s, %s' % (self.last_name, self.first_name)
-    
-    objects = models.Manager()
-    
-
-class Course(DisplayableModel):
-    """Instance of a class or course prepared."""
-
-    title = models.CharField(_('title'), max_length=150)
-    slug = models.SlugField(_('slug'), blank=True)
-    short_description = models.TextField(_('short description'), blank=True)
-    full_description = models.TextField(_('full description'), blank=True)
-    student_level = models.IntegerField(choices=STUDENT_LEVELS_CHOICES,
-        null=True, blank=True)
-
-    # Fields used to store html from Markdown input
-    short_description_html = models.TextField(editable=False)
-    description_html = models.TextField(editable=False)
-
-    last_offered = models.DateField(_('last offered'), null=True, blank=True)
-    # is_current_offering = models.BooleanField(
-    #     _('is current offering?'), default=False)
-
-    class Meta:
-        ordering = ['-last_offered', 'title']
-
-    def __str__(self):
-        return("{0}".format(self.title))
-
-    def save(self, force_insert=False, force_update=False):
-        """Prepares html versions and records last offering.
-
-        Saves the markdown input into html to reduce load on
-        templates and updates `last_offered` field to latest
-        `CourseOffering` instance associated with the class.
-        """
-        self.short_description_html = markdown(self.short_description)
-        self.full_description_html = markdown(self.full_description)
-    #     # self.last_offered = self.courseoffering_set.filter(
-    #     #     start_date__lte=timezone.now()).aggregate(
-    #     #     last_offering=Max('end_date'))['last_offering']
-        super(Course, self).save(force_insert, force_update)
-
-    objects = models.Manager()
-
-
-class CourseOffering(models.Model):
-    """Instance of a term when a course was taught."""
-
-    course = models.ForeignKey(
-        Course, on_delete=models.CASCADE, verbose_name=_('course'),
-        related_name='offerings')
-    term = models.IntegerField(_('term'), choices=TERMS_CHOICES)
-    start_date = models.DateField(_('start date'), blank=True)
-    end_date = models.DateField(_('end date'), blank=True)
-    institution = models.CharField(
-        _('institution'), max_length=100, blank=True)
-    course_number = models.CharField(
-        _('course number'), max_length=50, blank=True)
-    is_current_offering = models.BooleanField(
-        _('is current offering?'), default=False)
-
-    def __str__(self):
-        return u"%s (%s %s)" % (
-            str(self.course), self.get_term_display(), self.start_date.year)
-
-    class Meta:
-        ordering = ['-start_date']
-
-    objects = models.Manager()
