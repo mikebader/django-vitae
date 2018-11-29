@@ -1,5 +1,6 @@
 from django.conf import settings
 from django import template
+from django.template.loader import get_template
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.utils.html import conditional_escape, format_html
 from django.utils.safestring import mark_safe
@@ -138,6 +139,7 @@ def write_entry(instance):
 @register.inclusion_tag(
     'cv/_publication_entries.html', takes_context=True)
 def publication_entries(context, publist, forthcoming='forth.'):
+    """Applies template formatting to publication models."""
     model_name = publist[0]._meta.model_name
     publications = list()
     for pub in publist:
@@ -155,10 +157,24 @@ def publication_entries(context, publist, forthcoming='forth.'):
         'user': context['user']}
 
 
-@register.inclusion_tag(
-    'cv/_publication_add.html', takes_context=True)
+@register.simple_tag(takes_context=True)
 def add_publication(context, model_name):
-    return {
-        'model_name': model_name,
-        'user': context['user']
-    }
+    """Create link to create new instance of model in template.
+
+    Returns:
+        if user is authenticated:
+            Rendered context of link to add using cv/_publication_add.html
+            template
+        else: 
+            Empty string
+    """
+    user = context['user']
+    if user.is_authenticated:
+        t = get_template('cv/_publication_add.html')
+        context = {
+            'model_name': model_name,
+            'user': context['user']
+        }
+        return t.render(context)
+    return ''
+

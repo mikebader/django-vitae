@@ -8,7 +8,7 @@
 		{% publication_entries article_published_list %}
 		{% endif %} 
 
-	{% if article_revise_list %}
+	{% if article_revise_list and user.is_authenticated %}
 	    <h3>Under Review</h3>
 	    {% publication_entries article_revise_list %}
 	{% endif %}
