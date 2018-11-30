@@ -107,36 +107,3 @@ class Position(DisplayableModel):
 
     objects = models.Manager()
     primary_positions = PrimaryPositionManager()
-
-
-class MediaMention(DisplayableModel):
-    """Mention in media outlet."""
-
-    # TODO: Possibly refactor into separate app with generic relations
-    #       to any model
-    outlet = models.CharField(
-        max_length=200, help_text=_('Publication or station'))
-    section = models.CharField(
-        max_length=200, null=True, blank=True,
-        help_text=_('Section of publication or program'))
-    title = models.CharField(max_length=200, null=True, blank=True)
-    date = models.DateField()
-    url = models.URLField(blank=True, null=True)
-    author = models.CharField(
-        max_length=200, blank=True, null=True,
-        help_text=_('E.g., author of written piece or interviewer on '
-                    'visual medium'))
-    description = models.TextField(blank=True)
-    snapshot = models.FileField(null=True, blank=True)
-
-    # article = models.ForeignKey(Article,null=True,blank=True,on_delete=models.CASCADE)
-    # book = models.ForeignKey(Book,null=True,blank=True,on_delete=models.CASCADE)
-    # talk = models.ForeignKey(Talk,null=True,blank=True,on_delete=models.CASCADE)
-
-    class Meta:
-        ordering = ['-date']
-
-    def __str__(self):
-        return '%s (%s)' % (self.outlet, self.date.strftime('%b %d, %Y'))
-
-    objects = models.Manager()

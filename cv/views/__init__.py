@@ -8,7 +8,7 @@ from sys import modules
 from cv.models import Award, Position, Degree, \
     Article, Book, Chapter, Report, \
     Grant, Talk, OtherWriting, Dataset, \
-    MediaMention, Service, JournalService, Student, Course
+    Service, JournalService, Student, Course
 from .pdf import cv_pdf
 from .forms import CVCreateView, CVUpdateView, CVDeleteView
 
@@ -16,7 +16,7 @@ from .forms import CVCreateView, CVUpdateView, CVDeleteView
 MODELS = [Award, Position, Degree,
           Article, Book, Chapter, Report,
           Grant, Talk, OtherWriting, Dataset,
-          MediaMention, Service, JournalService,
+          Service, JournalService,
           Student, Course]
 
 

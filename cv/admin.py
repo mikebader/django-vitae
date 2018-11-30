@@ -9,8 +9,9 @@ from .models import Collaborator, CVFile, Journal, Discipline, Award, \
 					Book, BookAuthorship, BookEdition, \
 					Report, ReportAuthorship, \
 					Talk, Presentation, OtherWriting, \
-					MediaMention, Service, JournalService, Student, \
+					Service, JournalService, Student, \
 					Course, CourseOffering 
+					# MediaMention, 
 
 ## Uncomment the following two lines if you would like to use the `researchprojects` app
 ## to link lines in CV to research projects
@@ -265,13 +266,13 @@ class PresentationAdmin(admin.ModelAdmin):
 		(None, {'fields':(('city','state','country'))})
 		)
 
-class MediaMentionAdmin(admin.ModelAdmin):
-	fieldsets = (
-		('Media mention information', {'fields':(('title','date','url'),)}),
-		('Media outlet information',{'fields':(('outlet','section','author'),)}),
-		('Content of mention', {'fields':('description','snapshot')}),
-		('Relevant product', {'fields':('article','book','talk')})
-		)
+# class MediaMentionAdmin(admin.ModelAdmin):
+# 	fieldsets = (
+# 		('Media mention information', {'fields':(('title','date','url'),)}),
+# 		('Media outlet information',{'fields':(('outlet','section','author'),)}),
+# 		('Content of mention', {'fields':('description','snapshot')}),
+# 		('Relevant product', {'fields':('article','book','talk')})
+# 		)
 
 class OtherWritingAdmin(admin.ModelAdmin):
 	fieldsets = (
@@ -385,7 +386,7 @@ admin.site.register(Report,ReportAdmin)
 admin.site.register(Talk,TalkAdmin)
 admin.site.register(OtherWriting,OtherWritingAdmin)
 admin.site.register(Presentation,PresentationAdmin)
-admin.site.register(MediaMention,MediaMentionAdmin)
+# admin.site.register(MediaMention,MediaMentionAdmin)
 admin.site.register(Service,ServiceAdmin)
 admin.site.register(JournalService,JournalServiceAdmin)
 admin.site.register(Student,StudentAdmin)
