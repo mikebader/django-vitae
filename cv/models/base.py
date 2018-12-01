@@ -1,11 +1,13 @@
-from markdown import markdown
-
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+
+from copy import copy
+from markdown import markdown
+import re
 
 from cv.settings import PUBLICATION_STATUS_CHOICES, \
     STUDENT_LEVELS_CHOICES, \
@@ -56,24 +58,24 @@ class Collaborator(models.Model):
 
     By default, collaborators are ordered (in ascending order) by last name.
     Internally, Django-Vitae uses the :attr:`email` attribute to identify
-    collaborators. For example, the template filter 
-    :func:`~cv.templatetags.cvtags.print_authors` matches collaborators on 
+    collaborators. For example, the template filter
+    :func:`~cv.templatetags.cvtags.print_authors` matches collaborators on
     e-mails to emphasize key contributors in the list of CV entries based on
-    the list defined in the :setting:`CV_KEY_CONTRIBUTORS_LIST` setting. 
+    the list defined in the :setting:`CV_KEY_CONTRIBUTORS_LIST` setting.
     """
-    
+
     first_name = models.CharField('First (given) name', max_length=100)
     last_name = models.CharField('Last (family) name', max_length=100)
     email = models.EmailField(unique=True)
     middle_initial = models.CharField(max_length=100, blank=True)
-    suffix = models.CharField(max_length=100,blank=True)
+    suffix = models.CharField(max_length=100, blank=True)
     institution = models.CharField(max_length=150, blank=True)
     website = models.URLField(blank=True)
     alternate_email = models.EmailField(blank=True)
-    
+
     class Meta:
-        ordering = ['last_name']
-    
+        ordering = ['last_name', 'first_name']
+
     def __str__(self):
         """String representation of collaborator.
 
@@ -148,7 +150,7 @@ class Discipline(models.Model):
         >>> str(d)
         'Being Zany'
         """
-        return '%s' % self.name
+        return self.name
 
 
 # C.V. PRODUCTS MODELS
@@ -305,7 +307,7 @@ class VitaePublicationModel(VitaeModel):
 class Journal(models.Model):
     """Store object representing journal/periodical in field.
 
-    Three  fields are required: 
+    Three  fields are required:
     * ``title`` (the title of journal)
 
     * ``issn`` (the `International Standard Serial Number`_ ,
@@ -320,7 +322,8 @@ class Journal(models.Model):
     abbreviated_title = models.CharField(
         max_length=100,
         blank=True,
-        help_text='Abbreviated journal title; use style you wish to display in views')
+        help_text=_('Abbreviated journal title; '
+                    'use style you wish to display in views'))
     issn = models.CharField(
         'ISSN',
         max_length=9,
@@ -338,12 +341,21 @@ class Journal(models.Model):
         related_name='otherdisciplines',
         blank=True)
 
+    title_no_article = models.CharField(
+        max_length=200, blank=True, editable=False)
+
     class Meta:
-        ordering = ['title']
+        ordering = ['title_no_article']
 
     def __str__(self):
         """Return string representation of :class:`Journal`"""
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.title_no_article = re.sub(
+            '^An |^A |^The |^a |^an |^the ', '', self.title).strip()
+        super(Journal, self).save(*args, **kwargs)
+
 
 
 # class MediaMention(DisplayableModel):
