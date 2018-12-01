@@ -21,22 +21,12 @@ from .managers import DisplayManager, PublicationManager
 
 
 class DisplayableModel(models.Model):
-    """Abstract class including fields shared by all CV models.
+    """Abstract class that includes fields shared by all models.
 
-    :class:`DisplayableModel` makes the ``displayable`` manager available
-    to all models that inherit from it that returns all instances where
-    ``display==True``.
-
-    display : boolean (required)
-        Indicates whether model instance should be displayed and returned by
-        :class:`cv.models.DisplayManager`. Defaults to ``True``.
-
-    extra : string
-        Text to be included with instance of model. Should be written in html.
-
-    files : :class:`GenericRelation` to :class:`cv.models.CVFile`
-        Relates files to model.
-
+    The abstract class defines three fields common to all models in
+    Django-Vitae. The model is managed by
+    ``cv.models.managers.DisplayManager``, which is the default manager
+    for all models that inherit from DisplayableModel
     """
     display = models.BooleanField(default=True)
     extra = models.TextField(blank=True)
@@ -48,17 +38,15 @@ class DisplayableModel(models.Model):
         abstract = True
 
 
-# Collaborator
 class Collaborator(models.Model):
-    """
-    Store object representing collaborator.
+    """Representation of collaborator on publications or projects.
 
-    By default, collaborators are ordered (in ascending order) by last name.
-    Internally, Django-Vitae uses the :attr:`email` attribute to identify
-    collaborators. For example, the template filter
-    :func:`~cv.templatetags.cvtags.print_authors` matches collaborators on
-    e-mails to emphasize key contributors in the list of CV entries based on
-    the list defined in the :setting:`CV_KEY_CONTRIBUTORS_LIST` setting.
+    Collaborators represent all people listed in entries of a CV that are
+    not the user. Django-Vitae uses the ``email`` attribute to identify
+    and manage collaborators internally and must, therefore, be unique
+    to each collaborator.
+
+    Collaborators are ordered alphabetically by last name by default.
     """
 
     first_name = models.CharField('First (given) name', max_length=100)
@@ -74,33 +62,33 @@ class Collaborator(models.Model):
         ordering = ['last_name', 'first_name']
 
     def __str__(self):
-        """String representation of collaborator.
-
-        >>> from cv.models import Collaborator
-        >>> info = {"first_name":"Yakko","last_name":"Warner"}
-        >>> info.update({"email":"yakko.warner@wbwatertower.com"})
-        >>> author = Collaborator.objects.create(**info)
-        >>> str(author)
-        'Warner, Yakko '
-        """
         name = '%s, %s %s' % (
             self.last_name,
             self.first_name,
             self.middle_initial)
         return name.strip()
 
-## Collaboration
+
 class CollaborationModel(models.Model):
-    """Abstract model to connect collaborators to products.
+    """Abstract model connecting collaborators to products.
 
-        collaborator : :class:`models.ForeignKey` relationship to 
-        :class:`Collaborator` Foreign key of collaborator. 
+    Collaborators are tied to the user through specific collaborations. For
+    example, a paper with two authors--the user and a 
+    collaborator--represents one *collaboration* that has unique 
+    characteristics such as the order of authorship. A second paper by the
+    same two authors would represent a new collaboration. The abstract
+    collaboration model allows for these connections across a variety of
+    different collaboration types.
 
-    print_middle : boolean
-        Indicates that the collaborator's middle initial should be included.
+    Fields:
 
-    display_order : integer (required)
-        Order that collaborators should be listed when printed.
+    collaborator : ForeignKey field to the Collaborator model.
+
+    print_middle : Should the collaborator's middle initial be inlcuded in
+    the CV entry?
+
+    display_order : Integer representing the order in which
+    collaborators are listed. 
     """
     collaborator = models.ForeignKey(Collaborator, on_delete=models.CASCADE)
     print_middle = models.BooleanField(
@@ -116,7 +104,13 @@ class CollaborationModel(models.Model):
         return str(self.collaborator)
 
 class StudentCollaborationModel(models.Model):
-    """Abstract model to include whether collaborator was a student."""
+    """Abstract collaboration model to note collaborations with students.
+
+    Often advisors wish to highlight collaborations with students on CVs.
+    This abstract class adds a single field that allows the user to
+    indicate whether a collaborator was a student and, if so, the level
+    of the student (e.g., undergrad, masters, doctoral).
+    """
 
     student_colleague = models.IntegerField(
         choices=STUDENT_LEVELS_CHOICES, blank=True, null=True)
@@ -126,12 +120,11 @@ class StudentCollaborationModel(models.Model):
 
 ## Discipline
 class Discipline(models.Model):    
-    """
-    Store object representing disciplines in which work can be published.
+    """Model that represents academic discipline. 
     
-    Some models include a Foreign Key relationship to Discipline to allow instances to be
-    classified by discipline (e.g., to sort CV by discipline in which articles are 
-    published)    
+    Some models include a Foreign Key relationship to Discipline to allow 
+    instances to be classified by discipline (e.g., to sort CV by discipline
+    in which articles are published).
     """
 
     name = models.CharField(max_length=40, unique=True)
@@ -150,11 +143,8 @@ class Discipline(models.Model):
         return self.name
 
 
-# C.V. PRODUCTS MODELS
-# The following models pertain to knowledge products
-# (e.g., grants, articles, books, etc.)
 class VitaeModel(DisplayableModel):
-    """Create reusable model containing basic titling and discipline fields."""
+    """Reusable model containing basic titling and discipline fields."""
 
     title = models.CharField(max_length=200,
         validators=[RegexValidator(r'\S+')])
@@ -178,9 +168,29 @@ class VitaeModel(DisplayableModel):
 
 
 class VitaePublicationModel(VitaeModel):
-    """
-    Create reusable model containing managers for different types
-    of publications based on `VitaeModel` fields
+    """Reusable model with fields common to all types of publications.
+
+    The model uses ``cv.models.managers.PublicationManger`` to manage instances
+    of the model. The ``PublicationManager`` is named ``displayable``.
+
+    Internally managed fields: ``VitaePublicationModel`` instances
+    include three fields managed internally related to publication
+    status: ``is_published``, ``is_inrevision``, and ``is_inprep``.
+    The values of each of these boolean fields are set when cleaning the
+    model instance. Django-Vitae also manages an ``abstract_html`` field
+    internally to save an HTML version of markdown text saved in the
+    ``abstract`` field.
+
+    Custom methods:
+
+    ``get_next_by_status()`` and ``get_previous_by_status`` mimic Django's
+    built-in methods ``get_next_by()`` and ``get_previous_by`` but inlcudes
+    a constraint that the publication status must be the same as that of
+    the current model instance.
+
+    ``cite()`` prints the instance's citation using the CSL format defined
+    in the ``CV_CITE_CSL_STYLE`` setting.
+
     """
     abstract = models.TextField(blank=True)
     status = models.IntegerField(
@@ -197,9 +207,7 @@ class VitaePublicationModel(VitaeModel):
     is_inrevision = models.BooleanField(default=False, editable=False)
     is_inprep = models.BooleanField(default=False, editable=False)
 
-    # published = PublishedManager()
-    # inprep = InprepManager()
-    # revise = ReviseManager()
+    abstract_html = models.TextField(blank=True, editable=False)
 
     displayable = PublicationManager()
 
@@ -211,11 +219,13 @@ class VitaePublicationModel(VitaeModel):
         return '%s' % self.short_title
 
     def save(self, *args, **kwargs):
-        self.set_status_fields()
+        """Sets publication status booleans and abstract text in HTML."""
+        self._set_status_fields()
         self.abstract_html = markdown(self.abstract)
         super(VitaePublicationModel, self).save(*args, **kwargs)
 
     def clean(self, *args, **kwargs):
+        """Checks ISBN validity."""
         if getattr(self, 'isbn', ''):
             if self.isbn:
                 try:
@@ -230,7 +240,22 @@ class VitaePublicationModel(VitaeModel):
             kwargs={'model_name': self._meta.model_name, 'slug': self.slug}
         )
 
+    def _set_status_fields(self):
+        """Sets boolean values for each of three publication statuses."""
+        for status in ['is_published', 'is_inrevision', 'is_inprep']:
+            setattr(self, status, False)
+        if (self.status and
+           PUBLISHED_RANGE.min <= self.status < PUBLISHED_RANGE.max):
+                self.is_published = True
+        if (self.status and
+           INREVISION_RANGE.min <= self.status < INREVISION_RANGE.max):
+                self.is_inrevision = True
+        if (self.status is not None and
+           INPREP_RANGE.min <= self.status < INPREP_RANGE.max):
+                self.is_inprep = True
+
     def get_next_previous_by_status(self, direc):
+        """Retrieves next or previous instance with same publication status."""
         if direc not in ["previous", "next"]:
             raise SyntaxError("'direc' must be 'previous' or 'next'")
         if (self.status < INREVISION_RANGE.min or
@@ -240,8 +265,6 @@ class VitaePublicationModel(VitaeModel):
                     % self._meta.object_name))
         sign, db_filter = ("-", "__lt") if direc == "previous" else ("", "__gt")
 
-        # Is it possible to add method to manager to filter by values based
-        # on correct date field whether it is the revise or published manager?
         if self.status < PUBLISHED_RANGE.min:
             mgr_name, filter_var = ("revise", "submission_date")
         else:
@@ -273,19 +296,6 @@ class VitaePublicationModel(VitaeModel):
         as "primary files" associated with article."""
         return self.files.filter(is_primary__exact=True)
 
-    def set_status_fields(self):
-        for status in ['is_published', 'is_inrevision', 'is_inprep']:
-            setattr(self, status, False)
-        if (self.status and
-           PUBLISHED_RANGE.min <= self.status < PUBLISHED_RANGE.max):
-                self.is_published = True
-        if (self.status and
-           INREVISION_RANGE.min <= self.status < INREVISION_RANGE.max):
-                self.is_inrevision = True
-        if (self.status is not None and
-           INPREP_RANGE.min <= self.status < INPREP_RANGE.max):
-                self.is_inprep = True
-
     def cite(self, style='html', doi=True):
         """Return citation of instance.
 
@@ -304,18 +314,23 @@ class VitaePublicationModel(VitaeModel):
 class Journal(models.Model):
     """Store object representing journal/periodical in field.
 
-    Three  fields are required:
-    * ``title`` (the title of journal)
+    The model contains one internally managed field, ``title_no_article``,
+    which stores the name of the title without the leading articles
+    'A', 'An' or 'The'. The field is used to alphabetize journals by
+    titles without the leading article, `per APA style`_.
 
-    * ``issn`` (the `International Standard Serial Number`_ ,
-      written in the format XXXX-XXXX), and
+    .. _per APA style: https://blog.apastyle.org/apastyle/2010/05/alphabetization-in-apa-style.html 
 
-    * ``primary_discipline`` (a Foreign Key to :class:`cv.Discipline`)
+
+    The model includes an ``issn`` field that stores the
+    `International Standard Serial Number`_  for the journal. Future
+    versions might require the issn field to prevent duplicate journal
+    entries and to allow automatic updating of journal lists.
 
     .. _International Standard Serial Number: http://www.issn.org/understanding-the-issn/what-is-an-issn/
     """
-    
-    title = models.CharField(max_length=200)
+
+    title = models.CharField(max_length=200, unique=True)
     abbreviated_title = models.CharField(
         max_length=100,
         blank=True,

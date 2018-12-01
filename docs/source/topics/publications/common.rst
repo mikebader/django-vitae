@@ -7,7 +7,7 @@ Publications, regardless of type, all have some common traits such as titles and
 authors. Django-Vitae defines a number of common features across the four different types of 
 publications. Internally, Django-Vitae does this by defining a series of abstract classes. 
 The different publication models inherit from the 
-:class:`~cv.models.VitaePublicationModel` abstract model. 
+:class:`~cv.models.base.VitaePublicationModel` abstract model. 
 
 .. _topics-pubs-common-fields:
 
@@ -31,6 +31,11 @@ The following fields are common across the four types of publications:
 	
 	The slugs are automatically constructed from the :attr:`short_title` in 
 	:class:`~cv.admin`.
+
+:attr:`abstract`
+	An abstract or summary of the publication. Expects markdown_ formatting.
+
+.. _markdown: https://daringfireball.net/projects/markdown/syntax
 
 .. _topics-pubs-status-table:
 
@@ -81,14 +86,15 @@ The following fields are common across the four types of publications:
 	A :class:`~django:django.db.models.ManyToManyField` relationship to  
 	:class:`cv.models.Discipline` objects. 
 
-Each publication model contains two non-editable fields managed 
+Each publication model contains non-editable fields managed 
 internally that can be accessed for instances of the model: 
 
 * :attr:`abstract_html` that converts text entered in Markdown in 
    :attr:`abstract` field to html, and 
 
-* :attr:`is_published` that indicates whether :attr:`status` field is 
-   one of "Forthcoming," "In Press," or "Published".   
+* | :attr:`is_published` 
+  | :attr:`is_inrevision`
+  | :attr:`is_inprep`: set as booleans based on the status of the publication when saved.
 
 
 .. _topics-pubs-ordering: 

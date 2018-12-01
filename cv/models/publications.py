@@ -15,7 +15,6 @@ from .works import Grant, Talk
 
 class Article(VitaePublicationModel):
     """Store instance representing an article."""
-    abstract = models.TextField(blank=True)
     authors = models.ManyToManyField(
         Collaborator, through='ArticleAuthorship', related_name='articles')
     journal = models.ForeignKey(
@@ -36,8 +35,6 @@ class Article(VitaePublicationModel):
         'PMID', max_length=40, blank=True,
         help_text=_('PubMed Central reference number (for more info see: '
                     'https://publicaccess.nih.gov/include-pmcid-citations.htm#Difference)'))
-
-    abstract_html = models.TextField(blank=True, editable=False)
 
     grants = models.ManyToManyField(Grant, blank=True)
     # talks = models.ManyToManyField(Talk, blank=True)
@@ -76,7 +73,6 @@ class Book(VitaePublicationModel):
 
     authors = models.ManyToManyField(
         Collaborator, through='BookAuthorship', related_name="books")
-    abstract = models.TextField(blank=True)
     publisher = models.CharField(max_length=100, blank=True)
     place = models.CharField(max_length=100, blank=True)
     volume = models.IntegerField(blank=True, null=True)
@@ -89,8 +85,6 @@ class Book(VitaePublicationModel):
         validators=[RegexValidator(r'^\d+[0-9\-]+[Xx0-9]$')])
     url = models.URLField(_('URL'), blank=True)
     grants = models.ManyToManyField(Grant, blank=True)
-
-    abstract_html = models.TextField(blank=True, editable=False)
 
     def add_edition(self, **kwargs):
         """Add edition to book."""
@@ -152,7 +146,6 @@ class Chapter(VitaePublicationModel):
         Collaborator, through='ChapterAuthorship', related_name="chapters")
     editors = models.ManyToManyField(
         Collaborator, through='ChapterEditorship', related_name='editors')
-    # abstract = models.TextField(blank=True)
     book_title = models.CharField(max_length=200)
     volume = models.CharField(max_length=50, null=True, blank=True)
     volumes = models.CharField(
@@ -201,7 +194,6 @@ class Report(VitaePublicationModel):
 
     authors = models.ManyToManyField(
         Collaborator, through='ReportAuthorship', related_name="reports")
-    # abstract = models.TextField(blank=True)
     report_number = models.CharField(max_length=100, blank=True, null=True)
     report_type = models.CharField(max_length=200, blank=True, null=True)
     series_title = models.CharField(max_length=200, blank=True, null=True)
