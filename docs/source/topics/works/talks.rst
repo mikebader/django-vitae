@@ -26,7 +26,7 @@ The :class:`~cv.models.works.Talk` class contains a foreign key field, :attr:`ar
 
 The :class:`~cv.models.works.Talk` model also contains a convenience method, :meth:`~cv.models.works.Talk.get_latest_presenation` that returns the :class:`~cv.models.works.Presentation` instance of the talk that was most recently performed (using the :attr:`presentation_date` field). 
 
-.. _topics_talks_views
+.. _topics-talks-views:
 
 Talk Views
 ^^^^^^^^^^

@@ -3,6 +3,11 @@
 
 Reference for :mod:`cv.models` generated from docstrings.
 
+Achievements
+============
+.. automodule:: cv.models.achievements
+   :members:
+
 Publications
 ============
 .. automodule:: cv.models.publications

@@ -27,7 +27,7 @@ class DisplayableModel(models.Model):
     to all models that inherit from it that returns all instances where
     ``display==True``.
 
-        display : boolean (required)
+    display : boolean (required)
         Indicates whether model instance should be displayed and returned by
         :class:`cv.models.DisplayManager`. Defaults to ``True``.
 
@@ -37,9 +37,6 @@ class DisplayableModel(models.Model):
     files : :class:`GenericRelation` to :class:`cv.models.CVFile`
         Relates files to model.
 
-    .. note::
-      due to rules that Django uses to load managers, it will be defined as the
-      default manager)
     """
     display = models.BooleanField(default=True)
     extra = models.TextField(blank=True)

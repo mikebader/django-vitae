@@ -103,6 +103,7 @@ class PrimaryPositionManager(models.Manager):
     """
 
     def get_queryset(self):
+        """Return positions user indicated as 'primary' positions."""
         return super(PrimaryPositionManager, self).get_queryset().filter(
             primary_position=True)
 

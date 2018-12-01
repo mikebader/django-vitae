@@ -28,7 +28,7 @@ The latest development version can be obtained from `GitHub`_::
     $ cd django-vitae
     $ python setup.py install
 
-.. _GitHub: https://github.com/mikebader/django-vitae
+.. _GitHub: https://github.com/mikebader/django-vitae/tree/dev
 
 If you do not have experience with Django_, you might be interested in the :ref:`Getting Started <getting-started>` guide. 
 
@@ -47,16 +47,19 @@ Organization of the Documentation
 * :doc:`CV Sections <topics/index>` documents the API to write lines on CV by 
   different sections on a CV
       
-      * Education & Employment
+      * :doc:`Achievements <topics/achievements/index/>` 
+        (:ref:`Degrees <topics-achievements-degrees>` |
+        :ref:`Positions <topics-achievements-positions>` |
+        :ref:`Awards <topics-achievements-awards>`)
       
-      * :doc:`Publications <topics/publications/index/>` ( 
-        :ref:`Articles <topics-pubs-articles>` |
+      * :doc:`Publications <topics/publications/index/>` 
+        (:ref:`Articles <topics-pubs-articles>` |
         :ref:`Books <topics-pubs-books>` |
         :ref:`Chapters <topics-pubs-chapters>` |
         :ref:`Reports <topics-pubs-reports>`)
    
-      * :doc:`Other Works <topics/works/index/>` (
-        :ref:`Grants <topics-works-grants>` |
+      * :doc:`Other Works <topics/works/index/>`
+        (:ref:`Grants <topics-works-grants>` |
         :ref:`Talks <topics-works-talks>` |
         :ref:`Other Writing <topics-works-otherwriting>` |
         :ref:`Datasets <topics-works-datasets>`)

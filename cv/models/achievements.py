@@ -39,7 +39,7 @@ class Degree(DisplayableModel):
     major = models.CharField(max_length=100, null=True, blank=True)
     date_earned = models.DateField(_('Date Earned'))
     institution = models.CharField(max_length=100)
-    city = models.CharField(max_length=100)
+    city = models.CharField(max_length=100, blank=True)
     state = models.CharField(
         _('State or Province'), max_length=100, blank=True)
     country = models.CharField(max_length=100, blank=True)
@@ -63,7 +63,7 @@ class Position(DisplayableModel):
 
     Positions are sorted by ``end_date``.
 
-    In addition to default managers of ``DisplayableModel``s, ``Position``
+    In addition to default managers of ``DisplayableModel``, ``Position``
     also has a ``primarypositions`` manager that only returns positions
     for which ``primary_position==True``. This manager can be used, for
     example, to list positions in the heading of CVs.

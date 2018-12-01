@@ -2,7 +2,7 @@ from .base import VitaeModel, VitaePublicationModel, DisplayableModel, \
     Collaborator, CollaborationModel, StudentCollaborationModel, \
     Discipline, Journal
 
-from .accomplishments import Award, Degree, Position
+from .achievements import Award, Degree, Position
 
 from .files import CVFile
 

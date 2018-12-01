@@ -6,5 +6,6 @@ CV Sections
    :maxdepth: 1
    :caption: Contents:
 
+   achievements/index
    publications/index
    works/index
