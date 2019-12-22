@@ -236,6 +236,7 @@ class CSLCitation(object):
         return fields
 
     def cite(self, fmtr, style=CITE_CSL_STYLE, doi=True):
+        """Creates citation representation of a model instance."""
         if doi is False:
             self.fields['DOI'] = ''
         style_path = CSLStyle(style).style_path

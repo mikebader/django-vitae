@@ -4,24 +4,28 @@ from django.template.loader import get_template
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.utils.html import conditional_escape, format_html
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
 
 import cv.settings
 from cv.models import Collaborator, GrantCollaboration, ChapterEditorship
 from cv.utils import CSLCitation
 
+import re
+
 register = template.Library()
 key_contributor_list = cv.settings.CV_KEY_CONTRIBUTOR_LIST
 
 
-def return_start_end_strings(collab):
-    if (collab.email) in key_contributor_list:
+def return_highlight(collab):
+    if collab.email in key_contributor_list:
         return "<span class='author-emphasis'>", "</span>"
     return "", ""
 
 
-def construct_name(obj, first="given", highlight_key_authors=True):
-    """Create string of authors name in conventional order
-    (first, middle, last)."""
+def construct_name(obj,
+                   given_first=True, highlight_key_authors=True,
+                   initials=False, initial_char='.'):
+    """Constructs a formatted string representation of a name."""
     print_middle = False
     # Following checks to see if the object passed is a Collaborator
     if type(obj) != Collaborator:
@@ -29,35 +33,70 @@ def construct_name(obj, first="given", highlight_key_authors=True):
         print_middle = obj.print_middle
     else:
         collab = obj
+    given_part = collab.first_name
+    if print_middle and collab.middle_initial:
+        given_part = '{} {}'.format(given_part, collab.middle_initial)
+    if initials:
+        initial_sep = '{}'.format(initial_char)
+        given_part = initial_sep.join(re.findall(r'(?:^|\s)(\w)', given_part))
+        given_part = '{}{}'.format(given_part, initial_char)
+
     start_text, end_text = "", ""
     if highlight_key_authors:
-        start_text, end_text = return_start_end_strings(collab)
-    if first == "given":
-        if print_middle:
-            return '{}{} {} {}{}'.format(
-                start_text, collab.first_name, collab.middle_initial,
-                collab.last_name, end_text)
-        return '{}{} {}{}}'.format(
-            start_text, collab.first_name, collab.last_name, end_text)
-    if print_middle:
-        return '{}{}, {} {}{}'.format(
-            start_text, collab.last_name, collab.first_name,
-            end_text, collab.middle_initial)
-    return '{}{}, {}{}' % (
-        start_text, collab.last_name, collab.first_name, end_text)
+        start_text, end_text = return_highlight(collab)
+
+    if given_first:
+        return '{}{} {}{}'.format(
+            start_text, given_part, collab.last_name, end_text)
+    return '{}{}, {}{}'.format(
+        start_text, collab.last_name, given_part, end_text)
+
+    # if given_first:
+    #     if print_middle:
+    #         return '{}{} {} {}{}'.format(
+    #             start_text, collab.first_name, collab.middle_initial,
+    #             collab.last_name, end_text)
+    #     return '{}{} {}{}'.format(
+    #         start_text, collab.first_name, collab.last_name, end_text)
+    # if print_middle:
+    #     return '{}{}, {} {}{}'.format(
+    #         start_text, collab.last_name, collab.first_name,
+    #         end_text, collab.middle_initial)
+    # return '{}{}, {}{}' % (
+    #     start_text, collab.last_name, collab.first_name, end_text)
 
 
-@register.filter
-def print_authors(value, first="given"):
-    '''Print author list for publications and grants.'''
-    if not value:
-        return ''
-    name_list = [construct_name(author) for author in value]
-    if len(name_list) > 1:
-        name_list[-1] = 'and {}'.format(name_list[-1])
-    if len(name_list) >= 3:
-        return mark_safe(', '.join(name_list))
-    return mark_safe(' '.join(name_list))
+@register.simple_tag
+def print_authors(obj, sep=', ', two_sep='and ', last_sep=', and ',
+                  et_al_after=None, **kwargs):
+    if hasattr(obj, 'authorship'):
+        authors = obj.authorship.all()
+    elif hasattr(obj, 'authors'):
+        authors = obj.authors.all()
+    else:
+        raise TypeError(_('Object of type {} does not have an authors '
+                          'or authorship attribute').format(type(obj)))
+    num = et_al_after if et_al_after else len(authors)
+    authors = [construct_name(a, **kwargs) for a in authors[0:num]]
+    print(authors)
+    if len(authors) == 1:
+        return authors[0]
+    final_sep = last_sep if len(authors)>2 else two_sep
+    return '{}{}{}'.format(
+        sep.join(authors[:-1]), final_sep, authors[-1])
+
+
+# @register.filter
+# def print_authors(value, first="given"):
+#     '''Print author list for publications and grants.'''
+#     if not value:
+#         return ''
+#     name_list = [construct_name(author) for author in value]
+#     if len(name_list) > 1:
+#         name_list[-1] = 'and {}'.format(name_list[-1])
+#     if len(name_list) >= 3:
+#         return mark_safe(', '.join(name_list))
+#     return mark_safe(' '.join(name_list))
 
 
 @register.filter

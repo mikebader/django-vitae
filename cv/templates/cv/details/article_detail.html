@@ -12,7 +12,7 @@
 {% endblock next-previous %}
 
 {% block formatted-citation %}
-<p>{{article.authorship.all|print_authors}} ({{article.pub_date.year}}). &#8220;{{ article.title}}.&#8221; {% if article.journal %} <cite>{{article.journal}}</cite>{% endif %} {% if article.volume %}<span class="volume-issue">{{article.volume}}{% if article.issue %}({{article.issue}}){% endif %}</span>{% endif %}{%if article.start_page %}:<span class='page-numbers'>{{article.start_page}}{%if article.end_page %}-{{article.end_page}}{% endif %}</span>{% endif %}.</p>
+<p>{% print_authors article given_first=False %} ({{article.pub_date.year}}). &#8220;{{ article.title}}.&#8221; {% if article.journal %} <cite>{{article.journal}}</cite>{% endif %} {% if article.volume %}<span class="volume-issue">{{article.volume}}{% if article.issue %}({{article.issue}}){% endif %}</span>{% endif %}{%if article.start_page %}:<span class='page-numbers'>{{article.start_page}}{%if article.end_page %}-{{article.end_page}}{% endif %}</span>{% endif %}.</p>
 {% endblock formatted-citation %}
 
 {% block object-citation-url-ris %}

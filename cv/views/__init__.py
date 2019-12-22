@@ -45,7 +45,7 @@ class CVListMixin:
 
     def get_cv_primary_positions(self):
         """Return dictionary of CV data with current positions."""
-        return {'primary_positions': Position.primarypositions.all()}
+        return {'primary_positions': Position.primary_positions.all()}
 
 
 class CVView(generic.TemplateView, CVListMixin):
