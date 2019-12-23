@@ -66,7 +66,7 @@ def construct_name(obj,
     #     start_text, collab.last_name, collab.first_name, end_text)
 
 
-@register.simple_tag
+@register.filter
 def print_authors(obj, sep=', ', two_sep='and ', last_sep=', and ',
                   et_al_after=None, **kwargs):
     if hasattr(obj, 'authorship'):
@@ -81,6 +81,9 @@ def print_authors(obj, sep=', ', two_sep='and ', last_sep=', and ',
     print(authors)
     if len(authors) == 1:
         return authors[0]
+    elif len(authors) == 0:  # Publication models need to check for 
+                             # at least one author!!!
+        return []
     final_sep = last_sep if len(authors)>2 else two_sep
     return '{}{}{}'.format(
         sep.join(authors[:-1]), final_sep, authors[-1])
