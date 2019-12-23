@@ -66,9 +66,25 @@ def construct_name(obj,
     #     start_text, collab.last_name, collab.first_name, end_text)
 
 
+def print_collaborators(collaborators, sep=', ', two_sep='and ',
+                        last_sep=', and ', et_al_after=None, **kwargs):
+    """Creates a formatted string of a queryset of collaborators."""
+    num = et_al_after if et_al_after else len(collaborators)
+    collaborators = [construct_name(a, **kwargs) for a in collaborators[0:num]]
+    # print(authors)
+    if len(collaborators) == 1:
+        return collaborators[0]
+    elif len(collaborators) == 0:   # Publication models need to check for
+                                    # at least one author!!!
+        return []
+    final_sep = last_sep if len(collaborators) > 2 else two_sep
+    return '{}{}{}'.format(
+        sep.join(collaborators[:-1]), final_sep, collaborators[-1])
+
+
 @register.filter
-def print_authors(obj, sep=', ', two_sep='and ', last_sep=', and ',
-                  et_al_after=None, **kwargs):
+def print_authors(obj, **kwargs):
+    """Creates a formatted string of an object's authors."""
     if hasattr(obj, 'authorship'):
         authors = obj.authorship.all()
     elif hasattr(obj, 'authors'):
@@ -76,30 +92,18 @@ def print_authors(obj, sep=', ', two_sep='and ', last_sep=', and ',
     else:
         raise TypeError(_('Object of type {} does not have an authors '
                           'or authorship attribute').format(type(obj)))
-    num = et_al_after if et_al_after else len(authors)
-    authors = [construct_name(a, **kwargs) for a in authors[0:num]]
-    print(authors)
-    if len(authors) == 1:
-        return authors[0]
-    elif len(authors) == 0:  # Publication models need to check for 
-                             # at least one author!!!
-        return []
-    final_sep = last_sep if len(authors)>2 else two_sep
-    return '{}{}{}'.format(
-        sep.join(authors[:-1]), final_sep, authors[-1])
+    return print_collaborators(authors, **kwargs)
 
 
-# @register.filter
-# def print_authors(value, first="given"):
-#     '''Print author list for publications and grants.'''
-#     if not value:
-#         return ''
-#     name_list = [construct_name(author) for author in value]
-#     if len(name_list) > 1:
-#         name_list[-1] = 'and {}'.format(name_list[-1])
-#     if len(name_list) >= 3:
-#         return mark_safe(', '.join(name_list))
-#     return mark_safe(' '.join(name_list))
+@register.filter
+def print_editors(obj, **kwargs):
+    """Creates a formatted string of an object's editors."""
+    if hasattr(obj, 'editors'):
+        editors = obj.editors.all()
+    else:
+        raise TypeError(_('Object of type {} does not have an editors '
+                          'attribute').format(type(obj)))
+    return print_collaborators(editors, **kwargs)
 
 
 @register.filter
@@ -129,14 +133,6 @@ def year_range(value, arg="–", autoescape=True):
 def monetize(value, sign="$"):
     '''Return value with currency sign and number with commas'''
     return "{}{}".format(sign, intcomma(int(value)))
-
-
-@register.filter
-def editors(value):
-    if not value:
-        return ''
-    editors = value.editors.all()
-    return print_authors(editors)
 
 
 def make_param_values(name):
