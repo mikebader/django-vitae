@@ -245,7 +245,7 @@ class CVPdf(CVPdfStyle):
 
     def build_primary_positions(self):
         """Append formatted list of primary positions to CV."""
-        for position in Position.primarypositions.all():
+        for position in Position.primary_positions.all():
             lines = ['{}'.format(position.title)]
             if position.department:
                 lines += [position.department]
