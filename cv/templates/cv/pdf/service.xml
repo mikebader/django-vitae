@@ -1,0 +1,1 @@
+{% load cvtags %}{{service.role}}, {% if service.group %}{{service.group}}, {% endif %}{{service.organization}}

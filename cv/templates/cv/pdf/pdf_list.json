@@ -64,8 +64,8 @@
      "display_name": "Service",
      "date_field": ["start_date", "end_date"],
      "subsections": [
-        ["Discipline", "discipline_services"],
-        ["University", "university_services"],
-        ["Department", "department_services"]
+        ["Discipline", "discipline"],
+        ["University", "university"],
+        ["Department", "department"]
      ]}
 ]
