@@ -7,6 +7,7 @@ from tests.cvtests import VitaePublicationTestCase, AuthorshipTestCase
 
 from cv.models import Article, ArticleAuthorship, Journal
 from cv.settings import PUBLICATION_STATUS
+import cv.templatetags as cvtags
 
 @attr('cvtags')
 class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
@@ -16,6 +17,8 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
         super(TemplateTagTestCase, cls).setUp()
 
         j = Journal.objects.create(title='Scientific American')
+        j2 = Journal.objects.create(title='Annalen der Physik')
+        j3 = Journal.objects.create(title='Physical Review')
 
         a = {
             'title': 'On the Generalized Theory of Gravitation',
@@ -28,11 +31,43 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
             'status': PUBLICATION_STATUS['PUBLISHED_STATUS'],
         }
 
-        a = Article.objects.create(**a)
+        a2 = {
+            'title': 'On the Fundamental Electromagnetic Equations '
+                     'for Moving Bodies',
+            'short_title': 'Fundemental Electromagnetic Equations',
+            'slug': 'fundamental-electromagnetic-equations',
+            'journal': j2,
+            'issue': 26, 'start_page': 532, 'end_page': 540,
+            'status': PUBLICATION_STATUS['PUBLISHED_STATUS']
+        }
+
+        a3 = {
+            'title': 'Knowledge of past and future in quantum mechanics',
+            'short_title': 'Past and Future in Quantum Mechanics',
+            'slug': 'past-future-quantum-mechanics',
+            'journal': j3,
+            'issue': 37, 'start_page':780, 'end_page':781,
+            'status': PUBLICATION_STATUS['PUBLISHED_STATUS']
+        }
+
+        cls.a = Article.objects.create(**a)
         auth = ArticleAuthorship(
-            collaborator=cls.einstein, article=a, display_order=1)
+            collaborator=cls.einstein, article=cls.a, display_order=1)
         auth.save()
-        cls.a = a
+
+        cls.a2 = Article.objects.create(**a2)
+        for i, x in enumerate([cls.einstein, cls.laub]):
+            auth = ArticleAuthorship(
+                collaborator=x, article=cls.a2,
+                display_order=i)
+            auth.save()
+
+        cls.a3 = Article.objects.create(**a3)
+        for i, x in enumerate([cls.einstein, cls.tolman, cls.podolsky]):
+            auth = ArticleAuthorship(
+                collaborator=x, article=cls.a3,
+                display_order=i)
+            auth.save()
 
     def test_publication_entries(self):
         """Test contents of publication_entries inclusion tag."""
@@ -98,5 +133,55 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
         rendered_template = template.render(context)
         self.assertHTMLEqual('', rendered_template)
 
+    def test_print_authors_returns_formatted_text_one_author(self):
+        """Tests print_authors filter provides author list with formats."""
+        user = AnonymousUser()
+        template = Template(
+            '{% load cvtags %}'
+            '{{article|print_authors}}'
+        )
+        context = Context({
+            'article': self.a,
+            'user': user
+        })
+        rendered_template = template.render(context)
+        html_test_text = ('Albert Einstein')
+        self.assertEqual(html_test_text, rendered_template,
+                         'Default print_authors with two authors '
+                         'incorrectly formatted')
 
+    def test_print_authors_returns_formatted_text_two_authors(self):
+        """Tests print_authors filter provides author list with formats."""
+        user = AnonymousUser()
+        template = Template(
+            '{% load cvtags %}'
+            '{{article|print_authors}}'
+        )
+        context = Context({
+            'article': self.a2,
+            'user': user
+        })
+        rendered_template = template.render(context)
+        html_test_text = ('Albert Einstein and Jakob Laub')
+        self.assertEqual(html_test_text, rendered_template,
+                         'Default print_authors with two authors '
+                         'incorrectly formatted')
+
+
+    def test_print_authors_returns_formatted_text_three_authors(self):
+        """Tests print_authors filter provides author list with formats."""
+        user = AnonymousUser()
+        template = Template(
+            '{% load cvtags %}'
+            '{{article|print_authors}}'
+        )
+        context = Context({
+            'article': self.a3,
+            'user': user
+        })
+        rendered_template = template.render(context)
+        html_test_text = ('Albert Einstein, Richard C. Tolman, and Boris Podolsky')
+        self.assertEqual(html_test_text, rendered_template,
+                         'Default print_authors with three authors '
+                         'incorrectly formatted')
 

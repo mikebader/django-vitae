@@ -159,6 +159,16 @@ class AuthorshipTestCase(TestCase):
         cls.murray = Collaborator.objects.create(
             first_name="Pauli", last_name="Murray",
             email="pauli.murray@example.com")
+        cls.laub = Collaborator.objects.create(
+            first_name="Jakob", last_name="Laub",
+            email="jl@example.edu")
+        cls.tolman = Collaborator.objects.create(
+            first_name="Richard", last_name="Tolman",
+            middle_initial="C.",
+            email="rct@example.edu")
+        cls.podolsky = Collaborator.objects.create(
+            first_name="Boris", last_name="Podolsky",
+            email="bp@example.edu")
 
     def assertAuthorshipLength(self, instance, num_authors):
         """Test that authorship set returns proper length of authors."""

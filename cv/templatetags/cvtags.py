@@ -66,7 +66,7 @@ def construct_name(obj,
     #     start_text, collab.last_name, collab.first_name, end_text)
 
 
-def print_collaborators(collaborators, sep=', ', two_sep='and ',
+def print_collaborators(collaborators, sep=', ', two_sep=' and ',
                         last_sep=', and ', et_al_after=None, **kwargs):
     """Creates a formatted string of a queryset of collaborators."""
     num = et_al_after if et_al_after else len(collaborators)
