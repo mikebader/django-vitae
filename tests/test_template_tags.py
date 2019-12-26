@@ -185,3 +185,19 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
                          'Default print_authors with three authors '
                          'incorrectly formatted')
 
+    def test_print_authors_arguments(self):
+        """Tests arguments on print_authors filter."""
+        # Need to fix to splice argument list, see here:
+        # https://stackoverflow.com/a/55056123/12586249
+        user = AnonymousUser()
+        template = Template(
+            '{% load cvtags %}'
+            '{{article|print_authors:\' & \'}}'
+        )
+        context = Context({
+            'article': self.a3,
+            'user': user
+        })
+        rendered_template = template.render(context)
+
+
