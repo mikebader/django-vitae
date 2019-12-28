@@ -146,8 +146,13 @@ class Discipline(models.Model):
 class VitaeModel(DisplayableModel):
     """Reusable model containing basic titling and discipline fields."""
 
-    title = models.CharField(max_length=200,
-        validators=[RegexValidator(r'\S+')])
+    title = models.CharField(
+        max_length=200,
+        validators=[RegexValidator(
+            r'\S+',
+            message='Title must contain non-whitespace characters'
+        )],
+    )
     short_title = models.CharField(max_length=80)
     slug = models.SlugField(
         unique=True,
@@ -224,7 +229,7 @@ class VitaePublicationModel(VitaeModel):
         self.abstract_html = markdown(self.abstract)
         super(VitaePublicationModel, self).save(*args, **kwargs)
 
-    def clean(self, *args, **kwargs):
+    def clean(self, *args, **kwargs): # Move to book model
         """Checks ISBN validity."""
         if getattr(self, 'isbn', ''):
             if self.isbn:
@@ -260,7 +265,7 @@ class VitaePublicationModel(VitaeModel):
             raise SyntaxError("'direc' must be 'previous' or 'next'")
         if (self.status < INREVISION_RANGE.min or
            self.status > PUBLISHED_RANGE.max):
-            raise self.DoesNotExist(
+            raise ValueError(
                 _('%s must be in revision or publication status'
                     % self._meta.object_name))
         sign, db_filter = ("-", "__lt") if direc == "previous" else ("", "__gt")
