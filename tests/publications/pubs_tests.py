@@ -1,7 +1,8 @@
 from django.test import TestCase
 
-from cv.models import Article, ArticleAuthorship, Collaborator, Journal, \
-    Discipline
+from cv.models import (Article, ArticleAuthorship,
+                       Book, BookAuthorship, BookEdition,
+                       Collaborator, Journal, Discipline)
 from cv.settings import PUBLICATION_STATUS
 
 
@@ -31,9 +32,9 @@ class PublicationTestCase(TestCase):
         cls.aut_podolsky = Collaborator.objects.create(
             first_name="Boris", last_name="Podolsky",
             email="bp@example.edu")
-        # cls.dubois = Collaborator.objects.create(
-        #     first_name="William", last_name="Du Bois",
-        #     middle_initial="E.B.", email="dubois@example.com")
+        cls.aut_dubois = Collaborator.objects.create(
+            first_name="William", last_name="Du Bois",
+            middle_initial="E.B.", email="dubois@example.com")
         # cls.dill = Collaborator.objects.create(
         #     first_name="Augustus", middle_initial="G.",
         #     last_name="Dill", email="dill@example.com")
@@ -49,6 +50,7 @@ class PublicationTestCase(TestCase):
         cls.jou_annphys = Journal.objects.create(title='Annalen der Physik')
         cls.jou_physrev = Journal.objects.create(title='Physical Review')
 
+        # ARTICLES
         a1 = {
             'title': 'On the Fundamental Electromagnetic Equations '
                      'for Moving Bodies',
@@ -119,3 +121,59 @@ class PublicationTestCase(TestCase):
                 collaborator=x,
                 display_order=i + 2)
             auth.save()
+
+        # BOOKS
+        books = list([
+            {
+                'title': 'The Philadelphia Negro',
+                'short_title': 'Philadelphia Negro',
+                'slug': 'philadelphia-negro',
+                'pub_date': '1899-01-01',
+                'place': 'Philadelphia, Pennsylvania',
+                'publisher': 'University of Pennsylvania Press',
+                'isbn': '9780812215731',
+                'status': PUBLICATION_STATUS['PUBLISHED_STATUS']
+            },
+            {
+                'title': 'The Souls of Black Folk',
+                'short_title': 'Souls of Black Folk',
+                'slug': 'souls-black-folk',
+                'pub_date': '1903-01-01',
+                'place': 'New York',
+                'publisher': 'Penguin',
+                'isbn': '978-0140189988',
+                'status': PUBLICATION_STATUS['PUBLISHED_STATUS']
+            },
+            {
+                'title': 'Black Reconstruction in America',
+                'short_title': 'Black Reconstruction',
+                'slug': 'black-reconstruction',
+                'pub_date': '1935-01-01',
+                'place': 'New York',
+                'publisher': 'Harcourt Brace',
+                'status': PUBLICATION_STATUS['PUBLISHED_STATUS']
+            }
+        ])
+
+        # EDITIONS (of The Philadelphia Negro)
+        first_ed = {
+            "edition": "1st",
+            "pub_date": "1899-01-01",
+            "publisher": "University of Pennsylvania Press"
+        }
+
+        second_ed = {
+            "edition": "1996 edition",
+            "pub_date": "1996-01-01",
+            "publisher": "University of Pennsylvania Press"
+        }
+
+        for book in books:
+            b = Book.objects.create(**book)
+            authorship = BookAuthorship(
+                collaborator=cls.aut_dubois, book=b, display_order=1)
+            authorship.save()
+
+        book = Book.objects.get(slug='philadelphia-negro')
+        BookEdition(book=book, **first_ed).save()
+        BookEdition(book=book, **second_ed).save()

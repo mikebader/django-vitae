@@ -12,7 +12,6 @@ from cv.settings import PUBLICATION_STATUS, INPREP_RANGE, INREVISION_RANGE, \
     PUBLISHED_RANGE
 
 
-@attr('article')
 class ArticleTestCase(PublicationTestCase):
 
     def test_article_string(self):
@@ -102,8 +101,8 @@ class ArticleTestCase(PublicationTestCase):
         )
 
 
-@attr('article-rollback')
-class ArticleRollbackTestCase(ArticleTestCase):
+@attr('article')
+class ArticleTransactionTestCase(ArticleTestCase):
 
     @classmethod
     def setUp(cls):

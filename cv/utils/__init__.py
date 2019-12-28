@@ -21,7 +21,7 @@ def check_isbn(isbn_raw):
     isbn = re.findall('[\dX]', isbn_raw.upper())
     isbn = "".join(isbn)
     if not re.fullmatch(r'\d{9}[0-9xX]|\d{13}', isbn):
-        raise ISBNError(_("Improperly formatted ISBN"))
+        raise ISBNError(_('Improperly formatted ISBN'))
     # isbn = m.group()
     if len(isbn) == 13:
         mult = [i for item in range(6) for i in [1, 3]]
@@ -35,7 +35,7 @@ def check_isbn(isbn_raw):
         # check_digit = str(check_digit) if check_digit != 10 else "X"
         if check_digit == isbn[-1]:
             return isbn_raw
-    raise ISBNError(_("Inproper checksum digit for ISBN, check "
-                      "that you entered the ISBN correctly"))
+    raise ISBNError(_('Inproper checksum digit for ISBN, check '
+                      'that you entered the ISBN correctly'))
     
 

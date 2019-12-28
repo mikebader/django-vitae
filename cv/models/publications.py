@@ -89,7 +89,7 @@ class Book(VitaePublicationModel):
     def add_edition(self, **kwargs):
         """Add edition to book."""
         if 'edition' not in kwargs.keys():
-            raise ValidationError(_("The field 'edition' cannot be blank"))
+            raise ValidationError(_('The field "edition" cannot be blank'))
         kwargs['book'] = self
         BookEdition.objects.create(**kwargs)
 
@@ -127,11 +127,8 @@ class BookEdition(DisplayableModel):
         blank=True, validators=[RegexValidator(r'^\d+[0-9\-]+[Xx0-9]$')])
 
     def clean(self):
-        if self.isbn:
-            try:
-                self.isbn = check_isbn(self.isbn)
-            except ValueError as e:
-                raise ValidationError({'isbn': _(str(e))})
+        if getattr(self, 'isbn', ''):
+            self.isbn = check_isbn(self.isbn)
 
     def __str__(self):
         return '%s ed. of %s' % (self.edition, str(self.book))

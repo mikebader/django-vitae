@@ -13,7 +13,7 @@ from cv.settings import PUBLICATION_STATUS_CHOICES, \
     STUDENT_LEVELS_CHOICES, \
     FILE_TYPES_CHOICES, \
     INPREP_RANGE, INREVISION_RANGE, PUBLISHED_RANGE
-from cv.utils import CSLCitation, check_isbn
+from cv.utils import CSLCitation, ISBNError, check_isbn
 
 from .files import CVFile
 from .managers import DisplayManager, PublicationManager
@@ -229,14 +229,10 @@ class VitaePublicationModel(VitaeModel):
         self.abstract_html = markdown(self.abstract)
         super(VitaePublicationModel, self).save(*args, **kwargs)
 
-    def clean(self, *args, **kwargs): # Move to book model
+    def clean(self, *args, **kwargs):
         """Checks ISBN validity."""
         if getattr(self, 'isbn', ''):
-            if self.isbn:
-                try:
-                    self.isbn = check_isbn(self.isbn)
-                except ValueError as e:
-                    raise ValidationError({'isbn': _(str(e))})
+            self.isbn = check_isbn(self.isbn)
         super(VitaePublicationModel, self).clean(*args, **kwargs)
 
     def get_absolute_url(self):

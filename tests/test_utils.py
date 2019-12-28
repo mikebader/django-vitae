@@ -22,8 +22,8 @@ from tests.cvtests import VitaePublicationTestCase, AuthorshipTestCase
 class IsbnTestCase(TestCase):
     def test_check_isbn_function_well_formed(self):
         """Test that well-formed ISBNs pass check_isbn()."""
-        real_isbn_13s = ['9780553418811', '9780553418811', '9780143127536', 
-                         '9780520271425', ]
+        real_isbn_13s = ['9780553418811', '9780553418811', '9780143127536',
+                         '9780520271425', '978-0140189988']
         real_isbn_10s = ['0553418831', '0143127535', '0520271424',
                          '014200068X', '014200068x']
         for isbn in real_isbn_13s:
@@ -31,6 +31,7 @@ class IsbnTestCase(TestCase):
             self.assertEqual(isbn, check_isbn(isbn))
         for isbn in real_isbn_10s:
             self.assertEqual(isbn, check_isbn(isbn))
+        self.assertTrue(False)
 
     def test_check_isbn_bad_checksum(self):
         """
