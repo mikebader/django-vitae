@@ -217,7 +217,7 @@ class ArticleRollbackTestCase(ArticleTestCase):
             short_title='Next Article',
             slug='decoy-next-article',
             status=PUBLICATION_STATUS['PUBLISHED_STATUS'],
-            pub_date='1951-01-27'
+            pub_date='2051-01-27'
         )
         next_decoy.save()
 
@@ -226,7 +226,7 @@ class ArticleRollbackTestCase(ArticleTestCase):
             short_title='Previous Article',
             slug='decoy-previous-article',
             status=PUBLICATION_STATUS['PUBLISHED_STATUS'],
-            pub_date='1951-01-25'
+            pub_date='2051-01-25'
         )
         prev_decoy.save()
 
