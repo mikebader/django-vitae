@@ -66,6 +66,7 @@ def construct_name(obj,
     #     start_text, collab.last_name, collab.first_name, end_text)
 
 
+@register.simple_tag()
 def print_collaborators(collaborators, sep=', ', two_sep=' and ',
                         last_sep=', and ', et_al_after=None, **kwargs):
     """Creates a formatted string of a queryset of collaborators."""
@@ -215,4 +216,3 @@ def add_publication(context, model_name):
         }
         return t.render(context)
     return ''
-
