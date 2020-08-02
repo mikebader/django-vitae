@@ -1,3 +1,4 @@
+{% load cvtags %}
 {% if student_list or user.is_authenticated %}
     <h2>Student{{student_list.count|pluralize}}</h2>
     <ul class="cv-entry">
@@ -15,14 +16,6 @@
         </li>
     {% endspaceless %}
     {% endfor %}
-    {% if user.is_authenticated %}
-        <li>
-    		<div class="noneditable row">
-                <span class="cv-entry-text col-11">
-        			<a class="student-add cv-add" alt="Add new student" href="#student"><i class="far fa-plus-square"></i> Add new student</a>
-                </span>
-    		</div>
-    	</li>
-{% endif %}
 </ul>
+{% add_publication 'student' %}
 {% endif %}

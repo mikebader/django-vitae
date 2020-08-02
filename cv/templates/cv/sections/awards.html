@@ -1,3 +1,4 @@
+{% load cvtags %}
 {% if award_list or user.is_authenticated %} 
 	<h2>Honors &amp; Awards</h2>
 	<ul class="cv-entry">
@@ -19,14 +20,6 @@
 		</li>
 		{% endspaceless %}
 		{% endfor %}
-		{% if user.is_authenticated %}
-		<li>
-			<span class="noneditable row">
-				<span class="cv-entry-text offset-xs-2 offset-sm-1 col-9 col-sm-10">
-					<a class="award-add cv-add" alt="Add new honor or award" href="#award"><i class="far fa-plus-square"></i> Add new honor or award</a>
-				</span>
-			</span>
-		</li>
-		{% endif %}
 	</ul>
+	{% add_publication 'award' %}
 {% endif %}

@@ -1,3 +1,4 @@
+{% load cvtags %}
 {% if degree_list or user.is_authenticated %} 
 	<h2>Education</h2>
 	<ul class="cv-entry">
@@ -17,14 +18,6 @@
 		</li>
 	{% endspaceless %}
 	{% endfor %}
-	{% if user.is_authenticated %}
-		<li>
-			<span class="noneditable row">
-				<span class="cv-entry-text offset-xs-2 offset-sm-1 col-9 col-sm-10">
-					<a class="degree-add cv-add" alt="Add new degree" href="#degree"><i class="far fa-plus-square"></i> Add new degree</a>
-				</span>
-			</span>
-		</li>
 	</ul>
-	{% endif %}
+	{% add_publication 'degree' %}
 {% endif %}

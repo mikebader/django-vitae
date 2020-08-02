@@ -17,14 +17,6 @@
 		</li>
 	{% endspaceless %}
 	{% endfor %}
-	{% if user.is_authenticated %}
-		<li>
-			<span class="noneditable row">
-				<span class="cv-entry-text col-11">
-					<a class="talk-add cv-add" alt="Add new talk" href="{% url 'cv:cv_add' model_name='talk' %}"><i class="far fa-plus-square"></i> Add new talk</a>
-				</span>
-			</span>
-		</li>
-{% endif %}
 </ul>
+{% add_publication 'talk' %}
 {% endif %}

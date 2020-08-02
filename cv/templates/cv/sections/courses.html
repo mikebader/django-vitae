@@ -1,3 +1,4 @@
+{% load cvtags %}
 {% if course_list or user.is_authenticated %}
 <h2>Teaching</h2>
 <ul class="cv-entry">
@@ -17,11 +18,6 @@
     </li>
     {% endspaceless %}
     {% endfor %}
-{% if user.is_authenticated %}
-	<li class="row">
-		<div class="noneditable">
-			<a class="course-add cv-add col-11" alt="Add new course" href="#course"><i class="far fa-plus-square"></i> Add new course</a>
-		</div>
-	</li>
-{% endif %}</ul>
+</ul>
+{% add_publication 'course' %}
 {% endif %} 

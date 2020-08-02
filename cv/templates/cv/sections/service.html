@@ -63,13 +63,5 @@
 	{% endfor %}
 	</ul>
 {% endif %}
-{% if user.is_authenticated %}
-<ul class="mt-0 cv-entry">
-	<li class="row">
-		<div class="noneditable">
-			<a class="col-12 col-sm-12 service-add cv-add" alt="Add new service" href="#service"><i class="far fa-plus-square"></i> Add new service</a>
-		</div>
-	</li>
-</ul>
-{% endif %}
+{% add_publication 'service' %}
 {% endif %}

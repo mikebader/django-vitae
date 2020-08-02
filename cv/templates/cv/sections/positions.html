@@ -1,3 +1,4 @@
+{% load cvtags %}
 {% if position_list or user.is_authenticated %} 
 	<h2>Employment</h2>
 	<ul class="cv-entry">
@@ -22,14 +23,6 @@
 		</li>
 	{% endspaceless %}
 	{% endfor %}
-	{% if user.is_authenticated %}
-		<li>
-			<div class="noneditable row">
-				<span class="cv-entry-text offset-xs-2 offset-sm-1 col-9 col-sm-10">
-					<a class="position-add cv-add" alt="Add new position" href="#position"><i class="far fa-plus-square"></i> Add new position</a>
-				</span>
-			</div>
-		</li>
-	{% endif %}
 	</ul>
+	{% add_publication 'position' %}
 {% endif %}
