@@ -14,10 +14,8 @@
 					<em class="cv-entry-position-title">{{position.title}}</em>, 
 					{% if position.project %}{{position.project}},{% endif %} 
 					{{position.department}}, {{position.institution}}
-				{% if user.is_authenticated %}
-						<a class="pl-4 position-edit cv-edit" href="#position"><i class="far fa-edit"></i></a>
-				{% endif %}
-				</span>
+
+					{% edit_item 'position' %}
 			</div>
 			<div class="editable"></div>
 		</li>

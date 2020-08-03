@@ -204,7 +204,7 @@ def add_item(context, model_name):
         if user is authenticated:
             Rendered context of link to add using cv/_publication_add.html
             template
-        else: 
+        else:
             Empty string
     """
     user = context['user']
@@ -213,6 +213,30 @@ def add_item(context, model_name):
         context = {
             'model_name': model_name,
             'user': context['user']
+        }
+        return t.render(context)
+    return ''
+
+
+@register.simple_tag(takes_context=True)
+def edit_item(context, model_name, display_name=None):
+    """Create link to form to edit existing instance of model in template.
+
+    Returns:
+        if user is authenticated:
+            Rendered context to load form using cv/_item_edit.html
+        else:
+            Empty string
+    """
+    user = context['user']
+    if user.is_authenticated:
+        t = get_template('cv/_edit_item.html')
+        if not display_name:
+            display_name = model_name
+        context = {
+            'model_name': model_name,
+            'display_name': display_name,
+            'user': user
         }
         return t.render(context)
     return ''

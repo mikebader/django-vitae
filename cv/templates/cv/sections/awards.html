@@ -11,9 +11,7 @@
 					<em class="cv-entry-award-name">{{award.name}}</em>, {{award.organization}}
 				<span class="cv-entry-award-extra hide">{{award.description}}
 				</span>
-				{% if user.is_authenticated %}
-					<a class="pl-4 award-edit cv-edit" href="#award"><i class="far fa-edit"></i></a>
-				{% endif %}
+				{% edit_item 'award' %}
 				</span>
 			</div>
 			<div class="editable"></div>

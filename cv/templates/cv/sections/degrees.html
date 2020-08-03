@@ -9,9 +9,7 @@
 				<span class="cv-entry-date col-2 col-sm-1">{{degree.date_earned|date:"Y"}} </span>
 				<span class="cv-entry-text col-9 col-sm-10">
 					{{degree.degree}}, <em class="cv-entry-degree-major">{{degree.major}}</em>, {{degree.institution}}, {{degree.city}}, {{degree.state}}, {{degree.country}}
-				{% if user.is_authenticated %}
-						<a class="pl-4 degree-edit cv-edit" href="#degree"><i class="far fa-edit"></i></a>
-				{% endif %}
+					{% edit_item 'degree' %}
 				</span>
 			</div>
 			<div class="editable"></div>
