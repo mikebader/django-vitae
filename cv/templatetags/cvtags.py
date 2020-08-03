@@ -197,7 +197,7 @@ def publication_entries(context, publist, forthcoming='forth.'):
 
 
 @register.simple_tag(takes_context=True)
-def add_publication(context, model_name):
+def add_item(context, model_name):
     """Create link to create new instance of model in template.
 
     Returns:
@@ -209,7 +209,7 @@ def add_publication(context, model_name):
     """
     user = context['user']
     if user.is_authenticated:
-        t = get_template('cv/_publication_add.html')
+        t = get_template('cv/_item_add.html')
         context = {
             'model_name': model_name,
             'user': context['user']
