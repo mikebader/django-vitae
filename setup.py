@@ -20,7 +20,9 @@ setuptools.setup(
         'markdown>=2.6.11',
         'citeproc-py>=0.4.0',
         'citeproc-py-styles>=0.1.1',
-        'django-widgets>=-0.1.16'
+        'django-widgets>=-0.1.16',
+        'django-widget-tweaks>=1.4.9',
+        'reportlab>=3.6.3'
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',

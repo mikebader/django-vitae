@@ -4,7 +4,7 @@ from django.template.loader import get_template
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.utils.html import conditional_escape, format_html
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 import cv.settings
 from cv.models import Collaborator, GrantCollaboration, ChapterEditorship
