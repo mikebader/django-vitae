@@ -112,7 +112,7 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
             'testuser', 'test@example.com', 's3krit')
         template = Template(
             '{% load cvtags %}'
-            '{% add_publication "article" %}'
+            '{% add_item "article" %}'
         )
         context = Context({'user': user})
         rendered_template = template.render(context)
@@ -127,7 +127,7 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
         user = AnonymousUser()
         template = Template(
             '{% load cvtags %}'
-            '{% add_publication "article" %}'
+            '{% add_item "article" %}'
         )
         context = Context({'user': user})
         rendered_template = template.render(context)
