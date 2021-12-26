@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from cv.models import Collaborator, PublicationLookupException
 from cv.settings import INPREP_RANGE, INREVISION_RANGE, PUBLISHED_RANGE
+from cv.utils import ISBNError
 
 class VitaePublicationTestCase(TestCase):
         def assess_status_values(self, a, value):
@@ -119,8 +120,8 @@ class VitaePublicationTestCase(TestCase):
                     instance.save()
                     raise ValidationError("%s should not have been updated"
                                           "with invalid ISBN" % str(instance))
-                except ValidationError:
-                    self.assertRaisesMessage(ValidationError,
+                except ISBNError:
+                    self.assertRaisesMessage(ISBNError,
                                              _("Improperly formatted ISBN"))
 
         def assertDoesNotAcceptMalformedISBN(self, instance):
@@ -132,9 +133,9 @@ class VitaePublicationTestCase(TestCase):
                     instance.save()
                     raise ValidationError("%s should not have been created"
                                           "with invalid ISBN" % str(instance))
-                except ValidationError:
+                except ISBNError:
                     self.assertRaisesMessage(
-                        ValidationError,
+                        ISBNError,
                         _("Inproper checksum digit for ISBN, "
                           "check that you entered the ISBN "
                           "correctly"))

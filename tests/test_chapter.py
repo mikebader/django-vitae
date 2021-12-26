@@ -16,7 +16,7 @@ from tests.cvtests import VitaePublicationTestCase, AuthorshipTestCase
 # #######################################
 @attr('chapter')
 class ChapterTestCase(VitaePublicationTestCase, AuthorshipTestCase):
-    """Run tests of Django-CV :class:`~cv.models.Book` model."""
+    """Run tests of Django-CV :class:`~cv.models.Chapter` model."""
 
     @classmethod
     def setUp(cls):
