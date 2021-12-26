@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils.translation import gettext_lazy as _
 
-from cv.models import Collaborator
+from cv.models import Collaborator, PublicationLookupException
 from cv.settings import INPREP_RANGE, INREVISION_RANGE, PUBLISHED_RANGE
 
 class VitaePublicationTestCase(TestCase):
@@ -85,12 +85,12 @@ class VitaePublicationTestCase(TestCase):
             model = type(pub)
             DoesNotExist = model.DoesNotExist
             self.assertRaisesMessage(
-                DoesNotExist,
+                PublicationLookupException,
                 _('%s must be in revision or publication status') %
                 pub._meta.object_name,
                 pub.get_next_by_status)
             self.assertRaisesMessage(
-                DoesNotExist,
+                PublicationLookupException,
                 _('%s must be in revision or publication status') %
                 pub._meta.object_name,
                 pub.get_previous_by_status)

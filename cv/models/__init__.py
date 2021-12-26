@@ -1,6 +1,6 @@
 from .base import VitaeModel, VitaePublicationModel, DisplayableModel, \
     Collaborator, CollaborationModel, StudentCollaborationModel, \
-    Discipline, Journal
+    Discipline, Journal, PublicationLookupException
 
 from .achievements import Award, Degree, Position
 

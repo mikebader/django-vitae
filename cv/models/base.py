@@ -19,6 +19,10 @@ from .files import CVFile
 from .managers import DisplayManager, PublicationManager
 
 
+class PublicationLookupException(Exception):
+    """Raised when looking up method not available for publication type."""
+    pass
+
 
 class DisplayableModel(models.Model):
     """Abstract class that includes fields shared by all models.
@@ -261,7 +265,7 @@ class VitaePublicationModel(VitaeModel):
             raise SyntaxError("'direc' must be 'previous' or 'next'")
         if (self.status < INREVISION_RANGE.min or
            self.status > PUBLISHED_RANGE.max):
-            raise ValueError(
+            raise PublicationLookupException(
                 _('%s must be in revision or publication status'
                     % self._meta.object_name))
         sign, db_filter = ("-", "__lt") if direc == "previous" else ("", "__gt")
