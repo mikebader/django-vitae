@@ -157,7 +157,7 @@
 
                 <div class="save-group btn-group col-12" role="group" aria-label="{{method}} {{model}}">
                     <button id="{{model}}FormSubmit" type="submit" class="btn btn-light">Save</button>
-                    <a id="cancel" class="btn btn-light" href="{% url 'cv:cv_list' %}#{{model}}s">Cancel</a>
+
 {% if method == "Edit" %}
                     <a href="{% url 'cv:cv_delete' model_name=model pk=form.instance.pk%}" class="btn btn-danger alert-danger cv-delete">Delete</a>
 {% endif %}
