@@ -1,3 +1,5 @@
+{% extends 'cv/base.html' %}
+
 {% block centerbar %}
 <form method="POST" id="{{model}}-form" class="post-form small" action="{{action_url}}">{% csrf_token %}
 {% block formcontent %}

@@ -9,9 +9,11 @@
 		<span class="form-text invalid-feedback">{{error}}</span>
 	{% endfor %}
 {% else %}
+	<div id="{{model}}_{{field.name}}">
 	{% if inputwidth  %}<span class="{{inputwidth}}">{% endif %}
 		{% render_field field class="form-control form-control-sm" %}
 	{% if inputwidth %}</span>{% endif %}
+	</div>
 {% endif %}
 
 {% if field.help_text and not noprinthelp %}
