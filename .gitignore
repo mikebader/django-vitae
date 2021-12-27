@@ -24,6 +24,8 @@ wheels/
 *.egg-info/
 *.egg
 
+.venv
+
 
 .coverage
 tests/html
