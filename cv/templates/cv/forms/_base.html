@@ -1,6 +1,8 @@
 {% extends 'cv/base.html' %}
 
 {% block centerbar %}
+<div id="{{model}}-add" class="alert alert-primary">
+<h2 class="display-4">{{method}} {{model|title}}</h2>    
 <form method="POST" id="{{model}}-form" class="post-form small" action="{{action_url}}">{% csrf_token %}
 {% block formcontent %}
     <span class="invalid-feedback">{{form.non_field_errors}}</span>
@@ -25,4 +27,5 @@
 {% endif %}
 	</div>
 </form>
+</div>
 {% endblock %}
