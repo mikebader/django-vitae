@@ -1,12 +1,8 @@
-{% extends 'cv/base.html' %}
+{% extends 'cv/forms/_base.html' %}
 
 {% load widget_tweaks %}
 
-{% block centerbar %}
-<div id="{{model}}-add" class="alert alert-primary small">
-<h2 class="display-4">{{method}} {{model|title}}</h2>    
-	<form method="POST" id="{{model}}Form" class="post-form" action="" >{% csrf_token %}
-    {{ form.non_field_errors }}
+{% block formcontent %}
     <div class="form-group row align-items-start">
 
         {% include 'cv/forms/_title_group.html' %}
@@ -14,17 +10,17 @@
         <div class="col-12 col-lg-6 form-row">
             <span class="col-12 col-lg-7">
                 {% with form.status as field %}
-                        {% include "cv/forms/_publication_field.html" %}
+                        {% include "cv/forms/_form_field.html" %}
                 {% endwith %}
             </span>
             <span class="col-12 col-lg-7">
                 {% with form.submission_date as field %}
-                        {% include "cv/forms/_publication_field.html" %}
+                        {% include "cv/forms/_form_field.html" %}
                 {% endwith %}
             </span>
             <span class="col-12 col-lg-7">
                 {% with form.pub_date as field %}
-                        {% include "cv/forms/_publication_field.html" %}
+                        {% include "cv/forms/_form_field.html" %}
                 {% endwith %}
             </span>
             <span class="col-12">
@@ -40,7 +36,7 @@
             <h5 class="col-12 form-title">Abstract</h5>
             <span class="col-12">
                 {% with form.abstract as field %}
-                    {% include "cv/forms/_publication_field.html" %}
+                    {% include "cv/forms/_form_field.html" %}
                 {% endwith %}
                 <span class="form-text text-muted">Use <a href="https://daringfireball.net/projects/markdown/syntax" alt="Markdown syntax">Markdown syntax</a>: e.g., **<b>bold</b>**, *<i>italics</i>*, `<code>code</code>`, [link text]&lt;url&gt;</span>
             </span>
@@ -104,14 +100,14 @@
         <div class="col-12 col-lg-6 form-row">
             <span class="col-12">
                 {% with form.primary_discipline as field %}
-                    {% include "cv/forms/_publication_field.html" %}
+                    {% include "cv/forms/_form_field.html" %}
                 {% endwith %}
             </span>
         </div>
         <div class="col-12 col-lg-6 form-row">
             <span class="col-12">
                 {% with form.other_disciplines as field %}
-                    {% include "cv/forms/_publication_field.html" %}
+                    {% include "cv/forms/_form_field.html" %}
                 {% endwith %}
             </span>
         </div>
@@ -123,19 +119,19 @@
         <div class="col-12 col-lg-6 form-row">
             <span class="col-12">
                 {% with form.grants as field %}
-                    {% include "cv/forms/_publication_field.html" %}
+                    {% include "cv/forms/_form_field.html" %}
                 {% endwith %}
             </span>
         </div>
         <div class="col-12 col-lg-6 form-row">
             <span class="col-12">
                 {% with form.pmcid as field %}{% with noprinthelp=True %}
-                    {% include "cv/forms/_publication_field.html" %}
+                    {% include "cv/forms/_form_field.html" %}
                 {% endwith %}{% endwith %}
             </span>
             <span class="col-12">
                 {% with form.pmid as field %}{% with noprinthelp=True %}
-                    {% include "cv/forms/_publication_field.html" %}
+                    {% include "cv/forms/_form_field.html" %}
                 {% endwith %}{% endwith %}
             </span>
             {% if form.pmid or form.pmcid %}
@@ -148,18 +144,7 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="save-group btn-group col-12" role="group" aria-label="{{method}} {{model}}">
-            <button id="{{model}}FormSubmit" type="submit" class="btn btn-light">Save</button>
-
-        {% if method == "Edit" %}
-            <a href="{% url 'cv:cv_delete' model_name=model pk=form.instance.pk%}" class="btn btn-danger alert-danger cv-delete">Delete</a>
-        {% endif %}
-        </div>
-    </div>
-    </form>
-</div>
-{% endblock centerbar %}
+{% endblock formcontent %}
 
 {% block endscripts %}
 {{ block.super }}

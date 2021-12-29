@@ -1,34 +1,34 @@
-{% extends 'cv/forms/_publication_base.html' %}
+{% extends 'cv/forms/_base_publication.html' %}
 
 {% block citation_information %}
                 <span class="col-12">
                     {% with form.publisher as field %}
-                        {% include "cv/forms/_publication_field.html" %}
+                        {% include "cv/forms/_form_field.html" %}
                     {% endwith %}
                 </span>
                 <span class="col-12">
                     {% with form.place as field %}
-                        {% include "cv/forms/_publication_field.html" %}
+                        {% include "cv/forms/_form_field.html" %}
                     {% endwith %}
                 </span>
                 <span class="col-9">
                     {% with form.isbn as field %}
-                        {% include "cv/forms/_publication_field.html" %}
+                        {% include "cv/forms/_form_field.html" %}
                     {% endwith %}
                 </span>
                 <span class="col-3">
                     {% with form.volume as field %}
-                        {% include "cv/forms/_publication_field.html" %}
+                        {% include "cv/forms/_form_field.html" %}
                     {% endwith %}
                 </span>
                 <span class="col-6">
                         {% with form.series as field %}
-                            {% include "cv/forms/_publication_field.html" %}
+                            {% include "cv/forms/_form_field.html" %}
                         {% endwith %}
                 </span>
                 <span class="col-6">
                     {% with form.series_number as field %}
-                        {% include "cv/forms/_publication_field.html" %}
+                        {% include "cv/forms/_form_field.html" %}
                     {% endwith %}
                 </span>
 {% endblock citation_information %}

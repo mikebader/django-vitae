@@ -1,49 +1,49 @@
-{% extends 'cv/forms/_publication_base.html' %}
+{% extends 'cv/forms/_base_publication.html' %}
 
 {% block citation_information %}
                 <span class="col-12 row">
                     <span class="col-12 col-md-8">
                         {% with form.report_type as field %}
-                            {% include "cv/forms/_publication_field.html" %}
+                            {% include "cv/forms/_form_field.html" %}
                         {% endwith %}
                     </span>
                     <span class="col-12 col-md-4">
                         {% with form.report_number as field %}
-                            {% include "cv/forms/_publication_field.html" %}
+                            {% include "cv/forms/_form_field.html" %}
                         {% endwith %}
                     </span>
                     <span class="col-12 col-md-8">
                         {% with form.series_title as field %}
-                            {% include "cv/forms/_publication_field.html" %}
+                            {% include "cv/forms/_form_field.html" %}
                         {% endwith %}
                     </span>
                     <span class="col-12 col-md-4">
                         {% with form.pages as field %}
-                            {% include "cv/forms/_publication_field.html" %}
+                            {% include "cv/forms/_form_field.html" %}
                         {% endwith %}
                     </span>
                 </span>
                 <span class="col-12 row">
                    <span class="col-12 col-md-6">
                         {% with form.institution as field %}
-                            {% include "cv/forms/_publication_field.html" %}
+                            {% include "cv/forms/_form_field.html" %}
                         {% endwith %}
                     </span>
                    <span class="col-12 col-md-6">
                         {% with form.place as field %}
-                            {% include "cv/forms/_publication_field.html" %}
+                            {% include "cv/forms/_form_field.html" %}
                         {% endwith %}
                    </span>
                 </span>
                 <span class="col-12 row">
                     <span class="col-12">
                         {% with form.url as field %}
-                            {% include "cv/forms/_publication_field.html" %}
+                            {% include "cv/forms/_form_field.html" %}
                         {% endwith %}
                     </span>
                     <span class="col-12">
                         {% with form.doi as field %}
-                            {% include "cv/forms/_publication_field.html" %}
+                            {% include "cv/forms/_form_field.html" %}
                         {% endwith %}
                     </span>
                 </span>

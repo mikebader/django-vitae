@@ -10,7 +10,7 @@
         <div class="col-12 col-lg-6 form-row">
             <span class="col-12">
                 {% with form.abstract as field %}
-                    {% include "cv/forms/_publication_field.html" %}
+                    {% include "cv/forms/_form_field.html" %}
                 {% endwith %}
                 <span class="form-text text-muted">Use <a href="https://daringfireball.net/projects/markdown/syntax" alt="Markdown syntax">Markdown syntax</a>: e.g., **<b>bold</b>**, *<i>italics</i>*, `<code>code</code>`, [link text]&lt;url&gt;</span>
             </span>
@@ -49,14 +49,14 @@
         <div class="col-12 col-lg-6 form-row">
             <span class="col-12">
                 {% with form.primary_discipline as field %}
-                    {% include "cv/forms/_publication_field.html" %}
+                    {% include "cv/forms/_form_field.html" %}
                 {% endwith %}
             </span>
         </div>
         <div class="col-12 col-lg-6 form-row">
             <span class="col-12">
                 {% with form.other_disciplines as field %}
-                    {% include "cv/forms/_publication_field.html" %}
+                    {% include "cv/forms/_form_field.html" %}
                 {% endwith %}
             </span>
         </div>
@@ -68,19 +68,19 @@
         <div class="col-12 col-lg-6 form-row">
             <span class="col-12">
                 {% with form.grants as field %}
-                    {% include "cv/forms/_publication_field.html" %}
+                    {% include "cv/forms/_form_field.html" %}
                 {% endwith %}
             </span>
         </div>
         <div class="col-12 col-lg-6 form-row">
             <span class="col-12">
                 {% with form.pmcid as field %}{% with noprinthelp=True %}
-                    {% include "cv/forms/_publication_field.html" %}
+                    {% include "cv/forms/_form_field.html" %}
                 {% endwith %}{% endwith %}
             </span>
             <span class="col-12">
                 {% with form.pmid as field %}{% with noprinthelp=True %}
-                    {% include "cv/forms/_publication_field.html" %}
+                    {% include "cv/forms/_form_field.html" %}
                 {% endwith %}{% endwith %}
             </span>
             {% if form.pmid or form.pmcid %}
