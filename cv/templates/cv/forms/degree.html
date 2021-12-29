@@ -1,0 +1,55 @@
+{% extends 'cv/forms/_base.html' %}
+
+{% load widget_tweaks %}
+
+{% block formcontent %}
+    <span class="invalid-feedback">{{form.non_field_errors}}</span>
+            <div class="form-group row align-items-start">
+                <div class="form-row col-12 col-lg-6">
+                    <h5 class="form-title col-12">Degree Information</h5>
+                    <span class="col-6">
+                        {% with form.degree as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                    <span class="col-6">
+                        {% with form.date_earned as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                    <span class="col-8 pt-2">
+                        {% with form.major as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                    <span class="col-4 pt-2">
+                        {% with form.honors as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                </div>
+                <div class="form-row col-12 col-lg-6">
+                    <h5 class="form-title col-12">Institution Information</h5>
+                    <span class="col-12">
+                        {% with form.institution as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                    <span class="col-12 pt-2">
+                        {% with form.city as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                    <span class="col-8">
+                        {% with form.state as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                    <span class="col-4">
+                        {% with form.country as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                </div>
+            </div>
+{% endblock formcontent %}

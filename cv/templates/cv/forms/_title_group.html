@@ -1,0 +1,24 @@
+{% load widget_tweaks %}
+
+        <div class="col-12 col-lg-6 form-row">
+            <span class="col-12">
+                {% with form.title as field %}
+                    {% include "cv/forms/_publication_field.html" %}
+                {% endwith %}
+            </span>
+            <span class="col-12">
+                {% with form.short_title as field %}
+                    {% with "slugify" as class %}
+                        {% include "cv/forms/_publication_field.html" %}
+                    {% endwith %}
+                {% endwith %}
+            </span>
+            <span class="col-12">
+                {% with form.slug as field %}
+                    {% include "cv/forms/_publication_field.html" %}
+                {% endwith %}
+            </span>
+            <span class="col-3 align-items-center pt-4">
+                Display: {{form.display}}
+            </span>
+        </div>

@@ -1,16 +1,9 @@
-{% extends 'cv/forms/_publication_base.html' %}
+{% extends 'cv/forms/_base.html' %}
 
 {% load widget_tweaks %}
 {% load static %}
 
-{% block userstyles %}
-{{block.super}}
-<link rel="stylesheet" type="text/css" href="{% static 'cv/cv-forms.css' %}" />  
-{% endblock userstyles %}
-{% block centerbar %}
-<div class="alert alert-primary small">
-<h2 class="display-4">{{method}} {{model|title}}</h2>    
-    <form method="POST" id="{{model}}Form" class="post-form" action="{{action_url}}" >{% csrf_token %}
+{% block formcontent %}
     <div class="form-group row align-items-start ">
         <div class="col-12 col-lg-6 form-row">
             <span class="col-12">
@@ -27,6 +20,9 @@
                 {% with form.slug as field %}
                     {% include "cv/forms/_publication_field.html" %}
                 {% endwith %}
+            </span>
+            <span class="col-6 align-items-center">
+                Display: {{form.display}}
             </span>
         </div>
         <div class="col-12 col-lg-6 form-row">
@@ -50,19 +46,8 @@
                     {% include "cv/forms/_publication_field.html" %}
                 {% endwith %}
             </span>
-            <span class="col-12 pt-2 form-row">
-                {% with form.display as field %}
-                    {% with labelwidth="col-2" inputwidth="col-1" %}
-                        {% include "cv/forms/_publication_field.html" %}
-                    {% endwith %}
-                {% endwith %}
-            </span>
-            <span class="col-12 pt-2 form-row">
-                {% with form.is_current as field %}
-                    {% with labelwidth="col-2" inputwidth="col-1" %}
-                        {% include "cv/forms/_publication_field.html" %}
-                    {% endwith %}
-                {% endwith %}
+            <span class="col-6 align-items-center">
+                Is currently funded: {{form.is_current}}
             </span>
         </div>
 
@@ -115,8 +100,8 @@
         </div>
 
 
-        <!-- AUTHORSHIP INFORMATION -->
-         <div class="col-12 row mt-3">
+        <!-- COLLABORATION INFORMATION -->
+         <div class="col-12 col-lg-12 mt-3 form-row align-content-start">
             <h5 class="col-12">Collaborators</h5>
             <div class="col-12 row">
                 {{grant_collaboration_formset.management_form}}
@@ -148,16 +133,27 @@
                 </span>
                 {% endfor %}
             </div>
-                <div class="save-group btn-group col-12" role="group" aria-label="{{method}} {{model}}">
-                    <button id="{{model}}FormSubmit" type="submit" class="btn btn-light">Save</button>
-                    <a id="cancel" class="btn btn-light" href="{% url 'cv:cv_list' %}#{{model}}s">Cancel</a>
-{% if method == "Edit" %}
-                    <button href="{% url 'cv:cv_delete' model_name=model pk=form.instance.pk%}" class="btn btn-detail alert-danger cv-delete">Delete</button>
-{% endif %}
-                </div>
 
+            <!-- DISCIPLINARY INFORMATION -->
+            <div class="col-12 col-lg-12 mt-3 form-row align-content-start">
+                <h5 class="col-12 form-title">Disciplinary information</h5>
+                <div class="col-12 col-lg-6 form-row">
+                    <span class="col-12">
+                        {% with form.primary_discipline as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                </div>
+                <div class="col-12 col-lg-6 form-row">
+                    <span class="col-12">
+                        {% with form.other_disciplines as field %}
+                            {% include "cv/forms/_publication_field.html" %}
+                        {% endwith %}
+                    </span>
+                </div>
+            </div>
 
     </div>
     </form>
 </div>
-{% endblock centerbar %}
+{% endblock formcontent %}

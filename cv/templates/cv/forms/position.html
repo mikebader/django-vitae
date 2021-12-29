@@ -1,0 +1,56 @@
+{% extends 'cv/forms/_base.html' %}
+
+{% block formcontent %}
+    <div class="form-group row align-items-start">
+        <div class="col-12 col-lg-6 form-row">
+            <span class="col-12">
+                {% with form.title as field %}
+                    {% include "cv/forms/_publication_field.html" %}
+                {% endwith %}
+            </span>
+            <span class="col-12 col-lg-6">
+                {% with form.start_date as field %}
+                    {% include "cv/forms/_publication_field.html" %}
+                {% endwith %}
+            </span>
+            <span class="col-12 col-lg-6">
+                {% with form.end_date as field %}
+                    {% include "cv/forms/_publication_field.html" %}
+                {% endwith %}
+            </span>
+            <span class="col-12 col-lg-6 align-items-center pt-lg-3">
+                {% with form.current_position as field %}
+                    {{field.label}}: {{field}}<br/>
+                    <span class="form-text text-muted">
+                        {{field.help_text}}
+                    </span>
+                {% endwith %}
+            </span>
+            <span class="col-12 col-lg-6 align-items-center pt-lg-3">
+                {% with form.primary_position as field %}
+                    {{field.label}}: {{field}}<br/>
+                    <span class="form-text text-muted">
+                        {{field.help_text}}
+                    </span>
+                {% endwith %}
+            </span>
+        </div>
+        <div class="col-12 col-lg-6 form-row align-content-start">
+            <span class="col-12">
+                {% with form.institution as field %}
+                    {% include "cv/forms/_publication_field.html" %}
+                {% endwith %}
+            </span>
+            <span class="col-12">
+                {% with form.department as field %}
+                    {% include "cv/forms/_publication_field.html" %}
+                {% endwith %}
+            </span>
+            <span class="col-9">
+                {% with form.project as field %}
+                    {% include "cv/forms/_publication_field.html" %}
+                {% endwith %}
+            </span>
+        </div>
+    </div>
+{% endblock formcontent %}

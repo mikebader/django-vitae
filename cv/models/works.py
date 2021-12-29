@@ -200,7 +200,7 @@ class OtherWriting(VitaeModel):
     date = models.DateField()
     pages = models.CharField(
         _('Pages or section'), max_length=200, null=True, blank=True)
-    url = models.URLField(blank=True)
+    url = models.URLField(_('URL'), blank=True)
     place = models.CharField(max_length=100, blank=True)
     volume = models.CharField(max_length=20, blank=True)
     issue = models.CharField(max_length=20, blank=True)
@@ -210,6 +210,8 @@ class OtherWriting(VitaeModel):
     class Meta:
         """Orders other writings in reverse chronological order."""
         ordering = ['-date']
+        verbose_name = 'Other Writing'
+        verbose_name_plural = 'Other Writing'
 
     def __str__(self):
         """Returns string representation of other writing."""

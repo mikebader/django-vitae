@@ -1,14 +1,11 @@
 {% extends 'cv/forms/_publication_base.html' %}
 
 {% block citation_information %}
-                <span class="col-12 row">
                     <span class="col-12">
                         {% with form.book_title as field %}
                             {% include "cv/forms/_publication_field.html" %}
                         {% endwith %}
                     </span>
-                </span>
-                <span class="col-12 row">
                     <span class="col-6 col-md-6">
                         {% with form.start_page as field %}
                             {% include "cv/forms/_publication_field.html" %}
@@ -29,8 +26,6 @@
                             {% include "cv/forms/_publication_field.html" %}
                         {% endwith %}
                     </span>
-                </span>
-                <span class="col-12 row">
                    <span class="col-6 col-md-4">
                         {% with form.edition as field %}
                             {% include "cv/forms/_publication_field.html" %}
@@ -56,8 +51,6 @@
                             {% include "cv/forms/_publication_field.html" %}
                         {% endwith %}
                     </span>
-                </span>
-                <span class="col-12 row">
                     <span class="col-12">
                         {% with form.isbn as field %}
                             {% include "cv/forms/_publication_field.html" %}
@@ -68,19 +61,19 @@
                             {% include "cv/forms/_publication_field.html" %}
                         {% endwith %}
                     </span>
-                </span>
 
 {% endblock citation_information %}
 
 {% block editorship_information %}
-             <div class="col-12 row mt-3">
-                <h5 class="col-12">Editors</h5>
-                <div class="col-12 row">
-                    {{editorship_formset.management_form}}
-                    <span class="form-text invalid-feedback text-large">
-                        {{editorship_formset.non_form_errors}}
-                    </span>
-                    {% for editor_form in editorship_formset %}
+    <div class="form-group row">
+         <div class="col-12 row mt-3">
+            <h5 class="col-12 form-title">Editors</h5>
+            <div class="col-12 row">
+                {{editorship_formset.management_form}}
+                <span class="form-text invalid-feedback text-large">
+                    {{editorship_formset.non_form_errors}}
+                </span>
+                {% for editor_form in editorship_formset %}
                     {{editor_form.non_field_errors}}
                     <span class="col-12 d-flex flex-row flex-wrap justify-content-left justify-content-md-left ml-3 mr-3 mt-2 mb-2 author">
                     {% for field in editor_form.visible_fields %}
@@ -94,20 +87,23 @@
                         {% endif %}
                         ">
                         {% endspaceless %}
-                            <label for="{{field.id_for_label}}" class="p-0  mt-0 align-self-center 
-                                {% if field.field.required %}font-weight-bold{% endif %}">
-                            {{field.label}}</label>
-                            {{field}}
-                            {% if field.errors %}
-                                <span class="invalid-feedback">{% for error in field.errors %}{{error}}{% endfor %}</span>
-                            {% endif %}
+                        <label for="{{field.id_for_label}}" class="p-0  mt-0 align-self-center 
+                            {% if field.field.required %}font-weight-bold{% endif %}">
+                        {{field.label}}
+                        </label>
+                        {{field}}
+                        {% if field.errors %}
+                            <span class="invalid-feedback">{% for error in field.errors %}{{error}}{% endfor %}</span>
+                        {% endif %}
                         </span>                       
-                        {% endfor %}
-        {% for field in editor_form.hidden_fields %}
-            {{field}}
-        {% endfor %}
-                    </span>
                     {% endfor %}
-                </div>
+                    {% for field in editor_form.hidden_fields %}
+                        {{field}}
+                    {% endfor %}
+                    </span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

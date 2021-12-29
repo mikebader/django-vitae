@@ -2,30 +2,31 @@
 
 {% block centerbar %}
 <div id="{{model}}-add" class="alert alert-primary">
-<h2 class="display-4">{{method}} {{model|title}}</h2>    
+<h2 class="display-4">{{method}} {{model_verbose_name|title}}</h2>    
 <form method="POST" id="{{model}}-form" class="post-form small" action="{{action_url}}">{% csrf_token %}
-{% block formcontent %}
     <span class="invalid-feedback">{{form.non_field_errors}}</span>
-    <div class="form-group row form-row">
-        {% for field in form %}
-            <span class="col-12 col-lg-6">
-                {% include "cv/forms/_publication_field.html" %}
-            </span>
-        {% endfor %}
-        <br>
-    </div>
-{% block formsets %}{% endblock %}
-{% endblock formcontent %}
-    <div class="btn-toolbar justify-content-between row" role="toolbar" aria-label="Toolbar for editing {{model}}">
-         <div class="save-group btn-group" role="group" aria-label="Edit degree">
-        	<button id="degree-form-{{form.instance.pk}}" type="submit" class="btn btn-light">Save</button>
-    	</div>
-{% if method == "Edit" %}
-    	<div class="btn-group" role="group" aria-label="Delete degree">
-        	<a href="{{delete_url}}" class="btn btn-danger alert-danger cv-delete">Delete</a>
+
+    {% block formcontent %}
+        <div class="form-group row form-row">
+            {% for field in form %}
+                <span class="col-12 col-lg-6">
+                    {% include "cv/forms/_publication_field.html" %}
+                </span>
+            {% endfor %}
+            <br>
         </div>
-{% endif %}
-	</div>
+    {% block formsets %}{% endblock %}
+    {% endblock formcontent %}
+    <div class="row">
+        <div class="save-group btn-group col-12" role="group" aria-label="{{method}} {{model}}">
+            <button id="{{model}}FormSubmit" type="submit" class="btn btn-light">Save</button>
+            <a id="cancel" class="btn btn-light" href="{% url 'cv:cv_list' %}#{{model}}s">Cancel</a>
+
+        {% if method == "Edit" %}
+            <a href="{% url 'cv:cv_delete' model_name=model pk=form.instance.pk%}" class="btn btn-danger alert-danger cv-delete">Delete</a>
+        {% endif %}
+        </div>
+    </div>
 </form>
 </div>
 {% endblock %}

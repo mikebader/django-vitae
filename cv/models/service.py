@@ -21,7 +21,7 @@ class Service(DisplayableModel):
     type = models.IntegerField(choices=SERVICE_TYPES_CHOICES)
     start_date = models.DateField(
         blank=True, null=True,
-        help_text=_("Leave blank of one-time service"))
+        help_text=_("Leave blank if one-time service"))
     end_date = models.DateField(
         blank=True, null=True,
         help_text=_("Leave blank if service is ongoing"))
@@ -29,6 +29,7 @@ class Service(DisplayableModel):
 
     class Meta:
         ordering = ['-end_date', '-start_date']
+        verbose_name_plural = 'Service'
 
     def __str__(self):
         return '%s: %s (%s)' % (self.role, self.group, self.organization)

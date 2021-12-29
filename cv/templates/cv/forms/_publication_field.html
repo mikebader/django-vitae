@@ -2,18 +2,18 @@
 
 <label class="form-label form-label-sm mt-0 {% if field.field.required %}font-weight-bold{% endif %}" for="{{field.id_for_label}}">{{field.label}}</label>
 {% if field.errors %}
-	<span class="{{inputwidth}}">
+	<span class="{{class}}">
 		{% render_field field class="form-control form-control-sm is-invalid" %}
 	</span>
 	{% for error in field.errors %}
 		<span class="form-text invalid-feedback">{{error}}</span>
 	{% endfor %}
 {% else %}
-	<div id="{{model}}_{{field.name}}">
-	{% if inputwidth  %}<span class="{{inputwidth}}">{% endif %}
+	<span id="{{model}}_{{field.name}}">
+	{% if class  %}<span class="{{class}}">{% endif %}
 		{% render_field field class="form-control form-control-sm" %}
-	{% if inputwidth %}</span>{% endif %}
-	</div>
+	{% if class %}</span>{% endif %}
+	</span>
 {% endif %}
 
 {% if field.help_text and not noprinthelp %}

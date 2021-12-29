@@ -1,4 +1,8 @@
 /* CV Form Styles */
+h5.form-title {
+    height: 1.5rem;
+}
+
 .invalid-feedback {
     display:block;
 }

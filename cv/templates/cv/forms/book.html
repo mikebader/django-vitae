@@ -1,35 +1,33 @@
 {% extends 'cv/forms/_publication_base.html' %}
 
 {% block citation_information %}
-                <span class="col-12 row">
+                <span class="col-12">
                     {% with form.publisher as field %}
                         {% include "cv/forms/_publication_field.html" %}
                     {% endwith %}
                 </span>
-                <span class="col-12 row">
+                <span class="col-12">
                     {% with form.place as field %}
                         {% include "cv/forms/_publication_field.html" %}
                     {% endwith %}
                 </span>
-                <span class="col-12 row">
+                <span class="col-9">
+                    {% with form.isbn as field %}
+                        {% include "cv/forms/_publication_field.html" %}
+                    {% endwith %}
+                </span>
+                <span class="col-3">
                     {% with form.volume as field %}
                         {% include "cv/forms/_publication_field.html" %}
                     {% endwith %}
                 </span>
-                <span class="col-12 row">
-                    <span>
+                <span class="col-6">
                         {% with form.series as field %}
                             {% include "cv/forms/_publication_field.html" %}
                         {% endwith %}
-                    </span>
-                    <span>
-                        {% with form.series_number as field %}
-                            {% include "cv/forms/_publication_field.html" %}
-                        {% endwith %}
-                    </span>
                 </span>
-                <span class="col-12 row">
-                    {% with form.isbn as field %}
+                <span class="col-6">
+                    {% with form.series_number as field %}
                         {% include "cv/forms/_publication_field.html" %}
                     {% endwith %}
                 </span>
@@ -37,35 +35,30 @@
 
 
 {% block edition_information %}
-<div class="col-12 row mt-3">
-    <h5 class="col-12">Editions</h5>
-    <div class="col-12 row">
-        {{edition_formset.management_form}} 
-        {% for edition_form in edition_formset %}
-        {{edition_form.non_field_errors}}
-        <span class="col-12 d-flex flex-row flex-wrap justify-content-left justify-content-md-left ml-3 mr-3 mt-2 mb-2 author">
-        {% for field in edition_form.visible_fields %}
-            {% spaceless %}
-            <span class="d-flex flex-row justify-content-left align-items-center 
-
-            {% if forloop.first %}
-                col-12 col-md-3
-            {% else %}
-                col-12 col-md-3
-            {% endif %}
-            ">                            
-            {% endspaceless %}
-                <label for="{{field.id_for_label}}" class="p-0 mt-0 align-self-center {%if field.field.required %}font-weight-bold{% endif %}" style="width:80px">{{field.label}}
-                </label>{{field}}
-                {% if field.errors %}
-                    <span class="invalid-feedback">{% for error in field.errors %}{{error}} {% endfor %}</span> {% endif %}
-            </span>
-        {% endfor %}
-        {% for field in edition_form.hidden_fields %}
-            {{field}}
-        {% endfor %}
-        </span>
-    {% endfor %}
+    <div class="form-group row">
+        <div class="col-12 row mt-3">
+            <h5 class="col-12">Editions</h5>
+            <div class="col-12 row">
+                {{edition_formset.management_form}} 
+                {% for edition_form in edition_formset %}
+                    {{edition_form.non_field_errors}}
+                    <span class="col-12 d-flex flex-row flex-wrap justify-content-left justify-content-md-left ml-3 mr-3 mt-2 mb-2 author">
+                    {% for field in edition_form.visible_fields %}
+                        {% spaceless %}
+                        <span class="d-flex flex-row justify-content-left align-items-center col-12 col-md-4">
+                        {% endspaceless %}
+                            <label for="{{field.id_for_label}}" class="p-0 mt-0 align-self-center {%if field.field.required %}font-weight-bold{% endif %}" style="width:80px">{{field.label}}</label>{{field}}
+                            {% if field.errors %}
+                                <span class="invalid-feedback">{% for error in field.errors %}{{error}} {% endfor %}</span> 
+                            {% endif %}
+                        </span>
+                    {% endfor %}
+                    {% for field in edition_form.hidden_fields %}
+                        {{field}}
+                    {% endfor %}
+                    </span>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-</div>
 {% endblock edition_information %}

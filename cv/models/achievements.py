@@ -10,7 +10,7 @@ from .managers import PrimaryPositionManager
 class Award(DisplayableModel):
     """Award or honor earned."""
 
-    name = models.CharField(max_length=200)
+    name = models.CharField(_('Name of award'), max_length=200)
     organization = models.CharField(
         _('Granting institution or organization'), max_length=200)
     date = models.DateField()
@@ -36,7 +36,8 @@ class Degree(DisplayableModel):
     """
 
     degree = models.CharField(max_length=10)
-    major = models.CharField(max_length=100, null=True, blank=True)
+    major = models.CharField(_('Major/Field of Study'),
+                             max_length=100, null=True, blank=True)
     date_earned = models.DateField(_('Date Earned'))
     institution = models.CharField(max_length=100)
     city = models.CharField(max_length=100, blank=True)

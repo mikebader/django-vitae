@@ -197,7 +197,7 @@ class Report(VitaePublicationModel):
     place = models.CharField(max_length=100, blank=True, null=True)
     institution = models.CharField(max_length=100, blank=True, null=True)
     pages = models.CharField(max_length=20, blank=True, null=True)
-    url = models.URLField(blank=True)
+    url = models.URLField(_('URL'), blank=True)
     doi = models.CharField('DOI', max_length=200, blank=True)
 
     abstract_html = models.TextField(blank=True, editable=False)

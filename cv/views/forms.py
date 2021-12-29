@@ -49,14 +49,16 @@ fieldsets = {
               'is_current', 'abstract', 'primary_discipline',
               'other_disciplines'],
     'otherwriting': ['title', 'short_title', 'slug', 'type', 'venue', 'date',
-                     'pages', 'url', 'place', 'volume', 'issue', 'abstract'],
+                     'pages', 'url', 'place', 'volume', 'issue', 'abstract',
+                     'display'],
     'talk': ['title', 'short_title', 'slug', 'display', 'abstract','grants',
              'primary_discipline', 'other_disciplines'],
     'service': ['role', 'group', 'organization', 'type', 'start_date',
-                'end_date', 'description'],
+                'end_date', 'description', 'display'],
     'student': ['first_name', 'last_name', 'middle_name', 'student_level',
                 'role', 'thesis_title', 'is_current_student',
-                'graduation_date', 'first_position', 'current_position'],
+                'graduation_date', 'first_position', 'current_position',
+                'display'],
     'course': ['title', 'slug', 'short_description', 'full_description', 
                'student_level'],
     'collaborator': ['first_name', 'middle_initial', 'last_name', 'suffix',
@@ -99,6 +101,7 @@ class CVSingleObjectMixin(SingleObjectTemplateResponseMixin):
         context = super(CVSingleObjectMixin, self).get_context_data(**kwargs)
         context['method'] = self.method.title()
         context['model'] = self.model_name
+        context['model_verbose_name'] = self.model._meta.verbose_name
         self.factories = self.get_formset_factories()
 
         return context
