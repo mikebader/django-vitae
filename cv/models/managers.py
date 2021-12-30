@@ -20,7 +20,9 @@ class PublicationManager(DisplayManager):
     querysets of publications at stages in the publication process.
     """
 
-    management_lists = ['published', 'revise', 'inprep']
+    @property
+    def management_lists(self):
+        return ['published', 'revise', 'inprep']
 
     def published(self):
         """Return queryset of articles accepted for publication

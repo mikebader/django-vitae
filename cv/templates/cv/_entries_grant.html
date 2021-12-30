@@ -1,0 +1,11 @@
+{% load cvnew %}
+
+{% for grant in grants %}
+    <li class="row">
+        <span class="cv-entry-date col-xs-2 col-sm-1">{% if grant.start_date and grant.end_date%}{{grant|year_range}}{% endif %}</span>
+        <span class="cv-entry-text col-xs-9 col-sm-10">{{grant.title}}. {% if grant.agency %}{{grant.agency}}{% endif %}{% if grant.division %}, {{grant.division}}{% endif %} ({{grant.amount|monetize}}). {% if grant.role %}<em>{{grant.role}}</em>. {% endif %}{% if grant.get_pi %}{% print_collaborators grant.get_pi %} Principal Investigator{{grant.get_pi.count|pluralize}}.{% endif %}</span>
+
+        {% edit_item grant %}
+        
+    </li>
+{% endfor %}

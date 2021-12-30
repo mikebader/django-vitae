@@ -1,0 +1,21 @@
+{% load cvnew %}
+
+{% for position in position_list %}
+{% spaceless %}
+    <li id="position-{{position.pk}}">
+        <div class="noneditable row">
+            <span class="cv-entry-date col-2 col-sm-1">
+                {{ position|year_range }}
+            </span>
+            <span class="cv-entry-text col-9 col-sm-10">
+                <em class="cv-entry-position-title">{{position.title}}</em> 
+                {% if position.project %}, {{position.project}},{% endif %} 
+                {% if position.department %}, {{position.department}}{% endif %}
+                , {{position.institution}}
+
+                {% edit_item position %}
+        </div>
+        <div class="editable"></div>
+    </li>
+{% endspaceless %}
+{% endfor %}

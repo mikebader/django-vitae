@@ -220,7 +220,7 @@ intersphinx_mapping = {
 # (based on https://djangosnippets.org/snippets/2533/#c5977)
 import inspect
 from django.utils.html import strip_tags
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 
 def process_docstring(app, what, name, obj, options, lines):
     # This causes import errors if left outside the function
@@ -237,11 +237,11 @@ def process_docstring(app, what, name, obj, options, lines):
                 continue
 
             # Decode and strip any html out of the field's help text
-            help_text = strip_tags(force_text(field.help_text))
+            help_text = strip_tags(force_str(field.help_text))
 
             # Decode and capitalize the verbose name, for use if there isn't
             # any help text
-            verbose_name = force_text(field.verbose_name)
+            verbose_name = force_str(field.verbose_name)
             
             req_text = ""
             if hasattr(field,"blank"):

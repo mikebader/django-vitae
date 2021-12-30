@@ -1,64 +1,32 @@
-{% load cvtags %}
-{% if total_services or user.is_authenticated %}
-<h2>Service</h2>
-{% if service_discipline_list %}
-<h3>Professional Service</h3>
-	<ul class="cv-entry">
-	{% for service in service_discipline_list %}
-	{% spaceless %}
-		<li id="service-{{service.pk}}">
-			<div class="noneditable row">
-				<span class="cv-entry-date col-2 col-sm-1">{{service|year_range:"-"}}</span>
-				<span class="cv-entry-text col-9 col-sm-10"><em>{{service.role}}</em>, {% if service.group %}{{service.group}}, {% endif %}{{service.organization}}.
+{% load cvnew %}
 
-				{% edit_item 'service' %}
-				</span>
-			</div>
-			<div class="editable"></div>
-		</li>
-	{% endspaceless %}
-	{% endfor %}
-	</ul>
-{% endif %}
+{% if service_list.total_grants or user.is_authenticated %}
+    <h2>Service</h2>
 
-{% if service_university_list %}
-<h3>University Service</h3>
-	<ul class="cv-entry">
-	{% for service in service_university_list %}
-	{% spaceless %}
-		<li id="service-{{service.pk}}">
-			<div class="noneditable row">
-				<span class="cv-entry-date col-2 col-sm-1">{{service|year_range}}</span>
-				<span class="cv-entry-text col-9 col-sm-10"><em>{{service.role}}</em>, {% if service.group %}{{service.group}}, {% endif %}{{service.organization}}.
+    {% if service.discipline %}
+        <h3>Professional Service</h3>
+        <ul class="cv-entry">
+            {% with service.discipline as services %}
+                {% include 'cv/_entries_service.html' %}
+            {% endwith %}
+        </ul>
+    {% endif %}
 
-				{% edit_item 'service' %}
-				</span>
-			</div>
-			<div class="editable"></div>
-		</li>
-	{% endspaceless %}
-	{% endfor %}
-	</ul>
-{% endif %}
+    {% if service.university %}
+        <h3>University Service</h3>
+        <ul class="cv-entry">
+            {% with service.university as services %}
+                {% include 'cv/_entries_service.html' %}
+            {% endwith %}
+        </ul>
+    {% endif %}
 
-{% if service_department_list %}
-<h3>Department Service</h3>
-	<ul class="cv-entry mb-0">
-	{% for service in service_department_list %}
-	{% spaceless %}
-		<li id="service-{{service.pk}}">
-			<div class="noneditable row">
-				<span class="cv-entry-date col-2 col-sm-1">{{service|year_range}}</span>
-				<span class="cv-entry-text col-9 col-sm-10"><em>{{service.role}}</em>, {% if service.group %}{{service.group}}, {% endif %}{{service.organization}}.
-
-				{% edit_item 'service' %}
-				</span>
-			</div>
-			<div class="editable"></div>
-		</li>
-	{% endspaceless %}
-	{% endfor %}
-	</ul>
-{% endif %}
-{% add_item 'service' %}
+    {% if service.department %}
+        <h3>Department Service</h3>
+        <ul class="cv-entry">
+            {% with service.department as services %}
+                {% include 'cv/_entries_service.html' %}
+            {% endwith %}
+        </ul>
+    {% endif %}
 {% endif %}

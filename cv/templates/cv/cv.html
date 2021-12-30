@@ -1,85 +1,59 @@
 {% extends 'cv/base.html' %}
 
+{% load cvnew %}
+
 {% block contact %}
 {% include 'cv/contact.html' %}
 {% endblock %}
 
-{% block degrees %}
-<div id="degrees" class="cv-section">
-{% include 'cv/sections/degrees.html' %}
-</div>
-{% endblock %}
-
-{% block positions %}
-<div id="positions" class="cv-section">
-{% include 'cv/sections/positions.html' %}
-</div>
-{% endblock %}
-
 {% block awards %}
-<div id="awards" class="cv-section">
-{% include 'cv/sections/awards.html' %}
-</div>
-{% endblock %}
-
-{% block books %}
-<div id="books" class="cv-section">
-{% include 'cv/sections/books.html' %}
-</div>
+    {% section_list 'award' award_list %}
 {% endblock %}
 
 {% block articles %}
-<div id="articles" class="cv-section">
-{% include 'cv/sections/articles.html' %}
-</div>
+    {% publication_list 'article' article_list %}
+{% endblock %}
+
+{% block books %}
+    {% publication_list 'book' book_list %}
 {% endblock %}
 
 {% block chapters %}
-<div id="chapters" class="cv-section">
-{% include 'cv/sections/chapters.html' %}
-</div>
-{% endblock %}
-
-{% block reports %}
-<div id="reports" class="cv-section">
-{% include 'cv/sections/reports.html' %}
-</div>
-{% endblock %}
-
-{% block grants %}
-<div id="grants" class="cv-section">
-{% include 'cv/sections/grants.html' %}
-</div>
-{% endblock %}
-
-{% block otherwriting %}
-<div id="otherwriting" class="cv-section">
-{% include 'cv/sections/otherwriting.html' %}
-</div>
-{% endblock %}
-
-
-{% block talks %}
-<div id="talks" class="cv-section">
-{% include 'cv/sections/talks.html' %}
-</div>
+    {% publication_list 'chapter' chapter_list %}
 {% endblock %}
 
 {% block courses %}
-<div id="courses" class="cv-section">
-{% include 'cv/sections/courses.html' %}
-</div>
+    {% section_list 'course' course_list 'Teaching' %}
+{% endblock %}
+
+{% block degrees %}
+    {% section_list 'degree' degree_list %}
+{% endblock %}
+
+{% block grants %}
+    {% include 'cv/sections/grant.html' %}
+{% endblock %}
+
+{% block otherwriting %}
+    {% section_list 'otherwriting' 'cv/sections/otherwriting.html' 'Essays, op-eds, and other writing' %}
+{% endblock %}
+
+{% block positions %}
+    {% section_list 'position' 'cv/sections/position.html' 'Employment' %}
+{% endblock %}
+
+{% block reports %}
+    {% publication_list 'report' report_list %}
 {% endblock %}
 
 {% block service %}
-<div id="service" class="cv-section">
-{% include 'cv/sections/service.html' %}
-</div>
+    {% include 'cv/sections/service.html' %}
 {% endblock %}
 
 {% block students %}
-<div id="students" class="cv-section">
-{% include 'cv/sections/students.html' %}
-</div>
+    {% section_list 'student' talk_list %}
 {% endblock %}
 
+{% block talks %}
+    {% section_list 'talk' talk_list %}
+{% endblock %}

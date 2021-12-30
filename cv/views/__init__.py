@@ -3,8 +3,6 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import generic
 
-from sys import modules
-
 from cv.models import Award, Position, Degree, \
     Article, Book, Chapter, Report, \
     Grant, Talk, OtherWriting, Dataset, \
@@ -30,18 +28,18 @@ class CVListMixin:
     def get_cv_list(self, model):
         """Gather data for CV section into dictionaries."""
         model_name = model._meta.model_name.lower()
-        model_plural = model._meta.verbose_name_plural.lower()
+        list_name = '{}_list'.format(model_name)
+        # model_plural = model._meta.verbose_name_plural.lower()
         if hasattr(model.displayable, 'management_lists'):
             management_lists = model.displayable.management_lists
-            data_dict = dict()
+            data_dict = {}
             for mgr in management_lists:
                 method = getattr(model.displayable, mgr)
-                context_key = '{0}_{1}_list'.format(model_name, mgr)
+                context_key = '{}'.format(mgr)
                 data_dict[context_key] = method()
-            total_key = 'total_{}'.format(model_plural)
-            data_dict[total_key] = self.sum_items(data_dict)
-            return data_dict
-        return {'{}_list'.format(model_name): model.displayable.all()}
+            data_dict['total'] = self.sum_items(data_dict)
+            return {list_name: data_dict}
+        return {list_name: model.displayable.all()}
 
     def get_cv_primary_positions(self):
         """Return dictionary of CV data with current positions."""
@@ -62,27 +60,23 @@ class CVView(generic.TemplateView, CVListMixin):
         return context
 
 
-# Views
-DETAIL_VIEWS_AVAILABLE = [
-    'article', 'book', 'chapter', 'report', 'talk', 'dataset'
-]
-CITATION_VIEWS_AVAILABLE = DETAIL_VIEWS_AVAILABLE
-
-
 class CVListView(generic.ListView, CVListMixin):
     """Creates view of all instances for a particular section."""
 
     def dispatch(self, request, *args, **kwargs):
-        """Set class parameters based on URL and dispatch."""
+    #     """Set class parameters based on URL and dispatch."""
         self.model_name = kwargs['model_name']
         self.model = apps.get_model('cv', self.model_name)
-        self.context_object_name = (
-            '%s' % ''.join(self.model._meta.verbose_name_plural))
         return super().dispatch(request, *args, **kwargs)
 
+    def get_context_data(self,**kwargs):
+        context = super(CVListView, self).get_context_data(**kwargs)
+        context['model_name'] = self.model._meta.verbose_name
+        context['model_name_plural'] = self.model._meta.verbose_name_plural
+        return context
+
     def get_queryset(self):
-        mod = modules[__name__]
-        return self.get_cv_list(self.model)
+        return self.get_cv_list(self.model)['{}_list'.format(self.model_name)]
 
     def get_template_names(self):
         """
@@ -94,6 +88,11 @@ class CVListView(generic.ListView, CVListMixin):
         """
         return ['cv/lists/%s_list.html' % (self.model_name)]
 
+
+DETAIL_VIEWS_AVAILABLE = [
+    'article', 'book', 'chapter', 'report', 'talk', 'dataset'
+]
+CITATION_VIEWS_AVAILABLE = DETAIL_VIEWS_AVAILABLE
 
 class CVDetailView(generic.DetailView):
     """Creates view of a single instance of a CV item."""

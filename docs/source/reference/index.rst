@@ -9,3 +9,4 @@ Module Reference
    models
    managers
    views
+   templatetags

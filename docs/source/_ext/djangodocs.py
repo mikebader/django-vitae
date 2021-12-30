@@ -44,12 +44,12 @@ def setup(app):
         rolename="lookup",
         indextemplate="pair: %s; field lookup type",
     )
-    app.add_description_unit(
-        directivename="django-admin",
-        rolename="djadmin",
-        indextemplate="pair: %s; django-admin command",
-        parse_node=parse_django_admin_node,
-    )
+    # app.add_description_unit(
+    #     directivename="django-admin",
+    #     rolename="djadmin",
+    #     indextemplate="pair: %s; django-admin command",
+    #     parse_node=parse_django_admin_node,
+    # )
     app.add_directive('django-admin-option', Cmdoption)
     app.add_config_value('django_next_version', '0.0', True)
 #     app.add_directive('versionadded', VersionDirective)
