@@ -1,0 +1,31 @@
+{% load widget_tweaks %}
+
+    <div class="form-group row">
+        <h5 class="col-12 form-title">Grant information</h5>
+        <div class="col-12 col-lg-6 form-row">
+            <span class="col-12">
+                {% with form.grants as field %}
+                    {% include "cv/forms/_form_field.html" %}
+                {% endwith %}
+            </span>
+        </div>
+        <div class="col-12 col-lg-6 form-row">
+            <span class="col-12">
+                {% with form.pmcid as field %}{% with noprinthelp=True %}
+                    {% include "cv/forms/_form_field.html" %}
+                {% endwith %}{% endwith %}
+            </span>
+            <span class="col-12">
+                {% with form.pmid as field %}{% with noprinthelp=True %}
+                    {% include "cv/forms/_form_field.html" %}
+                {% endwith %}{% endwith %}
+            </span>
+            {% if form.pmid or form.pmcid %}
+            <span class="col-12">
+                <span class="form-text text-muted">
+                    For information on the above see <a href="https://publicaccess.nih.gov/include-pmcid-citations.htm#Difference" title="The Difference Between a PMCID and a PMID">explanation from NIH</a>
+                </span>
+            </span>
+            {% endif %}
+        </div>
+    </div>

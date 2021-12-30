@@ -1,36 +1,8 @@
-{% extends 'cv/forms/_base.html' %}
+{% extends 'cv/forms/_base_person.html' %}
 
 {% load widget_tweaks %}
 
-{% block formcontent %}
-            <div class="form-group row">
-                <span class="col-4 align-items-center pt-lg-4">
-                    Display: {{form.display}}
-                </span>
-            </div>
-            <div class="form-group row">
-                <h5 class="col-12">Name</h5>
-                <span class="col-8 col-lg-4">
-                    {% with form.first_name as field %}
-                        {% include "cv/forms/_form_field.html" %}
-                    {% endwith %}
-                </span>
-                <span class="col-4 col-lg-2">
-                    {% with form.middle_name as field %}
-                        {% include "cv/forms/_form_field.html" %}
-                    {% endwith %}
-                </span>
-                <span class="col-8 col-lg-5">
-                    {% with form.last_name as field %}
-                        {% include "cv/forms/_form_field.html" %}
-                    {% endwith %}
-                </span>
-                <span class="col-4 col-lg-1">
-                    {% with form.suffix as field %}
-                        {% include "cv/forms/_form_field.html" %}
-                    {% endwith %}
-                </span>
-            </div>
+{% block other_information %}
             <div class="form-group row">
                 <h5 class="col-12">Advising Information</h5>
                 <span class="col-12 col-lg-3">
@@ -67,7 +39,5 @@
                     {% endwith %}
                 </span>
             </div>
-
-
 {% endblock %}
 

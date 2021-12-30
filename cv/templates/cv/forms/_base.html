@@ -5,7 +5,13 @@
 <h2 class="display-4">{{method}} {{model_verbose_name|title}}</h2>    
 <form method="POST" id="{{model}}-form" class="post-form small" action="{{action_url}}">{% csrf_token %}
     <span class="invalid-feedback">{{form.non_field_errors}}</span>
-
+    {% if form.display %}
+        <div class="form-group row">
+            <span class="col-3 align-items-center pt-4">
+                Display?: {{form.display}}
+            </span>
+        </div>
+    {% endif %}
     {% block formcontent %}
         <div class="form-group row form-row">
             {% for field in form %}
@@ -30,3 +36,11 @@
 </form>
 </div>
 {% endblock %}
+
+{% block endscripts %}
+{{ block.super }}
+                <script>
+                    $(document).on('keyup', '.slugify > input', function(event){slugify(this)});
+                </script>
+
+{% endblock endscripts %}

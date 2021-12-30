@@ -1,95 +1,30 @@
-{% extends 'cv/forms/_base.html' %}
+{% extends 'cv/forms/_base_work.html' %}
 
 {% load widget_tweaks %}
 
-{% block formcontent %}
-    <div class="form-group row align-items-start ">
-
-        {% include 'cv/forms/_title_group.html' %}
-
-        <div class="col-12 col-lg-6 form-row">
-            <span class="col-12">
-                {% with form.abstract as field %}
-                    {% include "cv/forms/_form_field.html" %}
-                {% endwith %}
-                <span class="form-text text-muted">Use <a href="https://daringfireball.net/projects/markdown/syntax" alt="Markdown syntax">Markdown syntax</a>: e.g., **<b>bold</b>**, *<i>italics</i>*, `<code>code</code>`, [link text]&lt;url&gt;</span>
-            </span>
-        </div>
-    </div>
+{% block formset %}
     <div class="form-group row">
-         <div class="col-12 row mt-3">
-            <h5 class="col-12 form-title">Presentations</h5>
-            <div class="col-12 row">
-                {{presentation_formset.management_form}}
-                {{ presentation_formset.non_form_errors }}
-                {% for presentation_form in presentation_formset %}
-                    <span class="col-12 d-flex flex-row flex-wrap ml-3 mr-3 mt-2 mb-2 author">
-                    {% for field in presentation_form.visible_fields %}
-                        <span class="d-flex flex-row col-12 col-lg-4">
-                            <label for="{{field.id_for_label}}" class="p-0  mt-0 align-self-center 
-                                {% if field.field.required %}font-weight-bold{% endif %}">
-                            {{field.label}}</label>{{field}}
-                            {% if field.errors %}
-                                <span class="invalid-feedback">{% for error in field.errors %}{{error}}{% endfor %}</span>
-                            {% endif %}
-                        </span>                       
-                        {% endfor %}
-                    {% for field in author_form.hidden_fields %}
-                        {{field}}
+        <h5 class="col-12 form-title">Presentations</h5>
+        <div class="col-12">
+            {{presentation_formset.management_form}}
+            {{ presentation_formset.non_form_errors }}
+            {% for presentation_form in presentation_formset %}
+                <span class="col-12 d-flex flex-row flex-wrap ml-3 mr-3 mt-2 mb-2 author">
+                {% for field in presentation_form.visible_fields %}
+                    <span class="d-flex flex-row col-12 col-lg-4">
+                        <label for="{{field.id_for_label}}" class="p-0  mt-0 align-self-center 
+                            {% if field.field.required %}font-weight-bold{% endif %}">
+                        {{field.label}}</label>{{field}}
+                        {% if field.errors %}
+                            <span class="invalid-feedback">{% for error in field.errors %}{{error}}{% endfor %}</span>
+                        {% endif %}
+                    </span>                       
                     {% endfor %}
-                    </span>
+                {% for field in author_form.hidden_fields %}
+                    {{field}}
                 {% endfor %}
-            </div>
-        </div>
-    </div>
-
-    <!-- DISCIPLINARY INFORMATION -->
-    <div class="form-group row">
-        <h5 class="col-12 form-title">Disciplinary information</h5>
-        <div class="col-12 col-lg-6 form-row">
-            <span class="col-12">
-                {% with form.primary_discipline as field %}
-                    {% include "cv/forms/_form_field.html" %}
-                {% endwith %}
-            </span>
-        </div>
-        <div class="col-12 col-lg-6 form-row">
-            <span class="col-12">
-                {% with form.other_disciplines as field %}
-                    {% include "cv/forms/_form_field.html" %}
-                {% endwith %}
-            </span>
-        </div>
-    </div>
-
-    <!-- GRANT INFORMATION -->
-    <div class="form-group row">
-        <h5 class="col-12 form-title">Grant information</h5>
-        <div class="col-12 col-lg-6 form-row">
-            <span class="col-12">
-                {% with form.grants as field %}
-                    {% include "cv/forms/_form_field.html" %}
-                {% endwith %}
-            </span>
-        </div>
-        <div class="col-12 col-lg-6 form-row">
-            <span class="col-12">
-                {% with form.pmcid as field %}{% with noprinthelp=True %}
-                    {% include "cv/forms/_form_field.html" %}
-                {% endwith %}{% endwith %}
-            </span>
-            <span class="col-12">
-                {% with form.pmid as field %}{% with noprinthelp=True %}
-                    {% include "cv/forms/_form_field.html" %}
-                {% endwith %}{% endwith %}
-            </span>
-            {% if form.pmid or form.pmcid %}
-            <span class="col-12">
-                <span class="form-text text-muted">
-                    For information on the above see <a href="https://publicaccess.nih.gov/include-pmcid-citations.htm#Difference" title="The Difference Between a PMCID and a PMID">explanation from NIH</a>
                 </span>
-            </span>
-            {% endif %}
+            {% endfor %}
         </div>
     </div>
-{% endblock formcontent %}
+{% endblock formset %}

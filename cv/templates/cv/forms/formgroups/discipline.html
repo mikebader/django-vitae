@@ -1,0 +1,19 @@
+{% load widget_tweaks %}
+
+    <div class="form-group row">
+        <h5 class="col-12 form-title">Disciplinary information</h5>
+        <div class="col-12 col-lg-6 form-row">
+            <span class="col-12">
+                {% with form.primary_discipline as field %}
+                    {% include "cv/forms/_form_field.html" %}
+                {% endwith %}
+            </span>
+        </div>
+        <div class="col-12 col-lg-6 form-row">
+            <span class="col-12">
+                {% with form.other_disciplines as field %}
+                    {% include "cv/forms/_form_field.html" %}
+                {% endwith %}
+            </span>
+        </div>
+    </div>

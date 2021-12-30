@@ -1,0 +1,25 @@
+{% extends 'cv/forms/_base.html' %}
+
+{% block formcontent %}
+    <div class="form-group row align-items-start ">
+        {% include 'cv/forms/formgroups/title.html' %}
+
+        {% block work_details %}{% endblock work_details%}
+    </div>
+    <div class="form-group row align-items-start ">
+        {% include 'cv/forms/formgroups/abstract.html' %}
+
+        {% block work_description %}{% endblock work_description %}
+    </div>
+
+    {% block formset %}{% endblock formset %}
+
+    {% block discipline %}
+        {% include 'cv/forms/formgroups/discipline.html' %}
+    {% endblock discipline %}
+
+    {% block grant %}
+        {% include 'cv/forms/formgroups/grant.html' %}
+    {% endblock grant %}
+
+{% endblock formcontent %}

@@ -1,30 +1,9 @@
-{% extends 'cv/forms/_base.html' %}
+{% extends 'cv/forms/_base_work.html' %}
 
 {% load widget_tweaks %}
 {% load static %}
 
-{% block formcontent %}
-    <div class="form-group row align-items-start ">
-        <div class="col-12 col-lg-6 form-row">
-            <span class="col-12">
-                {% with form.title as field %}
-                    {% include "cv/forms/_form_field.html" %}
-                {% endwith %}
-            </span>
-            <span class="col-12">
-                {% with form.short_title as field %}
-                    {% include "cv/forms/_form_field.html" %}
-                {% endwith %}
-            </span>
-            <span class="col-12">
-                {% with form.slug as field %}
-                    {% include "cv/forms/_form_field.html" %}
-                {% endwith %}
-            </span>
-            <span class="col-6 align-items-center">
-                Display: {{form.display}}
-            </span>
-        </div>
+{% block work_details %}
         <div class="col-12 col-lg-6 form-row">
             <span class="col-12">
                 {% with form.role as field %}
@@ -50,18 +29,10 @@
                 Is currently funded: {{form.is_current}}
             </span>
         </div>
+{% endblock work_details %}
 
-        <!-- ABSTRACT -->
-        <div class="col-12 col-lg-6 mt-3 form-row">
-            <h5 class="col-12">Abstract</h5>
-            <span class="col-12">
-                {% with form.abstract as field %}
-                    {% include "cv/forms/_form_field.html" %}
-                {% endwith %}
-                <span class="form-text text-muted">Use <a href="https://daringfireball.net/projects/markdown/syntax" alt="Markdown syntax">Markdown syntax</a>: e.g., **<b>bold</b>**, *<i>italics</i>*, `<code>code</code>`, [link text]&lt;url&gt;</span>
-            </span>
-        </div>
 
+{% block work_description %}
         <!-- FUNDING INFORMATION -->
         <div class="col-12 col-lg-6 mt-3 form-row align-content-start">
             <h5 class="col-12">Funding Information</h5>
@@ -98,8 +69,9 @@
                 </span>
             </span>
         </div>
+{% endblock work_description %}
 
-
+{% block formset %}
         <!-- COLLABORATION INFORMATION -->
          <div class="col-12 col-lg-12 mt-3 form-row align-content-start">
             <h5 class="col-12">Collaborators</h5>
@@ -133,27 +105,7 @@
                 </span>
                 {% endfor %}
             </div>
+        </div>
+{% endblock formset %}
 
-            <!-- DISCIPLINARY INFORMATION -->
-            <div class="col-12 col-lg-12 mt-3 form-row align-content-start">
-                <h5 class="col-12 form-title">Disciplinary information</h5>
-                <div class="col-12 col-lg-6 form-row">
-                    <span class="col-12">
-                        {% with form.primary_discipline as field %}
-                            {% include "cv/forms/_form_field.html" %}
-                        {% endwith %}
-                    </span>
-                </div>
-                <div class="col-12 col-lg-6 form-row">
-                    <span class="col-12">
-                        {% with form.other_disciplines as field %}
-                            {% include "cv/forms/_form_field.html" %}
-                        {% endwith %}
-                    </span>
-                </div>
-            </div>
-
-    </div>
-    </form>
-</div>
-{% endblock formcontent %}
+{% block grant %}{% endblock grant %}

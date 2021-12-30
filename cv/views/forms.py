@@ -60,7 +60,7 @@ fieldsets = {
                 'graduation_date', 'first_position', 'current_position',
                 'display'],
     'course': ['title', 'slug', 'short_description', 'full_description', 
-               'student_level'],
+               'student_level', 'display'],
     'collaborator': ['first_name', 'middle_initial', 'last_name', 'suffix',
                      'institution', 'website', 'email', 'alternate_email']
 }

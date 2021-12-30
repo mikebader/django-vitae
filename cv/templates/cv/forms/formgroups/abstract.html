@@ -1,0 +1,11 @@
+{% load widget_tweaks %}
+
+        <div class="col-12 col-lg-6 mt-3 form-row">
+            <h5 class="col-12 form-title">Abstract</h5>
+            <span class="col-12">
+                {% with form.abstract as field %}
+                    {% include "cv/forms/_form_field.html" %}
+                {% endwith %}
+                <span class="form-text text-muted">Use <a href="https://daringfireball.net/projects/markdown/syntax" alt="Markdown syntax">Markdown syntax</a>: e.g., **<b>bold</b>**, *<i>italics</i>*, `<code>code</code>`, [link text]&lt;url&gt;</span>
+            </span>
+        </div>

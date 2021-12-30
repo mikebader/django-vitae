@@ -5,7 +5,7 @@
 {% block formcontent %}
     <div class="form-group row align-items-start">
 
-        {% include 'cv/forms/_title_group.html' %}
+        {% include 'cv/forms/formgroups/title.html' %}
         
         <div class="col-12 col-lg-6 form-row">
             <span class="col-12 col-lg-7">
@@ -32,15 +32,8 @@
     </div>
     <div class="form-group row">
         <!-- ABSTRACT -->
-        <div class="col-12 col-lg-6 mt-3 form-row">
-            <h5 class="col-12 form-title">Abstract</h5>
-            <span class="col-12">
-                {% with form.abstract as field %}
-                    {% include "cv/forms/_form_field.html" %}
-                {% endwith %}
-                <span class="form-text text-muted">Use <a href="https://daringfireball.net/projects/markdown/syntax" alt="Markdown syntax">Markdown syntax</a>: e.g., **<b>bold</b>**, *<i>italics</i>*, `<code>code</code>`, [link text]&lt;url&gt;</span>
-            </span>
-        </div>
+        {% include 'cv/forms/formgroups/abstract.html' %}
+        
         <!-- CITATION INFORMATION -->
         <div class="col-12 col-lg-6 mt-3 form-row align-content-start">
             <h5 class="col-12 form-title">Citation Information</h5>
@@ -48,6 +41,7 @@
             {% endblock %}
         </div>
     </div>
+
     <!-- AUTHORSHIP INFORMATION -->
     <div class="form-group row">
          <div class="col-12 row mt-3">
@@ -95,61 +89,9 @@
     {% endblock %}
 
     <!-- DISCIPLINARY INFORMATION -->
-    <div class="form-group row">
-        <h5 class="col-12 form-title">Disciplinary information</h5>
-        <div class="col-12 col-lg-6 form-row">
-            <span class="col-12">
-                {% with form.primary_discipline as field %}
-                    {% include "cv/forms/_form_field.html" %}
-                {% endwith %}
-            </span>
-        </div>
-        <div class="col-12 col-lg-6 form-row">
-            <span class="col-12">
-                {% with form.other_disciplines as field %}
-                    {% include "cv/forms/_form_field.html" %}
-                {% endwith %}
-            </span>
-        </div>
-    </div>
+    {% include 'cv/forms/formgroups/discipline.html' %}
 
     <!-- GRANT INFORMATION -->
-    <div class="form-group row">
-        <h5 class="col-12 form-title">Grant information</h5>
-        <div class="col-12 col-lg-6 form-row">
-            <span class="col-12">
-                {% with form.grants as field %}
-                    {% include "cv/forms/_form_field.html" %}
-                {% endwith %}
-            </span>
-        </div>
-        <div class="col-12 col-lg-6 form-row">
-            <span class="col-12">
-                {% with form.pmcid as field %}{% with noprinthelp=True %}
-                    {% include "cv/forms/_form_field.html" %}
-                {% endwith %}{% endwith %}
-            </span>
-            <span class="col-12">
-                {% with form.pmid as field %}{% with noprinthelp=True %}
-                    {% include "cv/forms/_form_field.html" %}
-                {% endwith %}{% endwith %}
-            </span>
-            {% if form.pmid or form.pmcid %}
-            <span class="col-12">
-                <span class="form-text text-muted">
-                    For information on the above see <a href="https://publicaccess.nih.gov/include-pmcid-citations.htm#Difference" title="The Difference Between a PMCID and a PMID">explanation from NIH</a>
-                </span>
-            </span>
-            {% endif %}
-        </div>
-    </div>
+    {% include 'cv/forms/formgroups/grant.html' %}
 
 {% endblock formcontent %}
-
-{% block endscripts %}
-{{ block.super }}
-                <script>
-                    $(document).on('keyup', '.slugify > input', function(event){slugify(this)});
-                </script>
-
-{% endblock endscripts %}

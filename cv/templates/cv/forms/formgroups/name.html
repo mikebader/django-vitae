@@ -1,0 +1,32 @@
+{% load widget_tweaks %}
+
+            <div class="form-group row">
+                <h5 class="col-12">Name</h5>
+                <span class="col-8 col-lg-4">
+                    {% with form.first_name as field %}
+                        {% include "cv/forms/_form_field.html" %}
+                    {% endwith %}
+                </span>
+                <span class="col-4 col-lg-2">
+                    {% if form.middle_initial %}
+                        {% with form.middle_initial as field %}
+                            {% include "cv/forms/_form_field.html" %}
+                        {% endwith %}
+                    {% else %}
+                        {% with form.middle_name as field %}
+                            {% include "cv/forms/_form_field.html" %}
+                        {% endwith %}
+                    {% endif %}
+                </span>
+                <span class="col-8 col-lg-5">
+                    {% with form.last_name as field %}
+                        {% include "cv/forms/_form_field.html" %}
+                    {% endwith %}
+                </span>
+                <span class="col-4 col-lg-1">
+                    {% with form.suffix as field %}
+                        {% include "cv/forms/_form_field.html" %}
+                    {% endwith %}
+                </span>
+            </div>
+
