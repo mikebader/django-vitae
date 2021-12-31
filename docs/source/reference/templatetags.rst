@@ -1,7 +1,5 @@
 :mod:`cv.templatetags`
 ----------------------
 
-``cvnew``
-=========
-.. automodule:: cv.templatetags.cvnew
+.. automodule:: cv.templatetags.cv
    :members:
