@@ -2,19 +2,21 @@
 
 {% for award in object_list %}
 {% spaceless %}
-    <li id="award-{{award.id}}">
-        <div class="noneditable row">
-            <span class="cv-entry-date col-2 col-sm-1">{{award.date|date:"Y"}} </span> 
-            <span class="cv-entry-text col-9 col-sm-10">
-                <em class="cv-entry-award-name">{{award.name}}</em>, {{award.organization}}
-                {% if award.description %}
-                    <span class="cv-entry-award-extra hide">{{award.description}}</span>
-                {% endif %}
+    <ul class="cv-entry">
+        <li id="award-{{award.id}}">
+            <div class="noneditable row">
+                <span class="cv-entry-date col-2 col-sm-1">{{award.date|date:"Y"}} </span> 
+                <span class="cv-entry-text col-9 col-sm-10">
+                    <em class="cv-entry-award-name">{{award.name}}</em>, {{award.organization}}
+                    {% if award.description %}
+                        <span class="cv-entry-award-extra hide">{{award.description}}</span>
+                    {% endif %}
 
-            {% edit_item award %}
+                {% edit_item award %}
 
-            </span>
-        </div>
-    </li>
+                </span>
+            </div>
+        </li>
+    </ul>
     {% endspaceless %}
 {% endfor %}

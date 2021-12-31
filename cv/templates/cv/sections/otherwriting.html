@@ -1,16 +1,18 @@
 {% load cvnew %}
 
-{% for piece in otherwriting_list %}
+{% for piece in object_list %}
 {% spaceless %}
-	<li id="otherwriting-{{piece.pk}}">
-		<div class="noneditable row">
-			<span class="cv-entry-date col-2 col-sm-1">{{piece.date|date:"Y"}}
-			</span>
-			<span class="cv-entry-text col-9 col-sm-10">{% if piece.url %}<a href="{{piece.url}}">{{piece.title}}</a>{% else %}{{piece.title}}{% endif %}<cite>. {{piece.venue}}</cite>{% if piece.pages %}, {{piece.pages}}{% endif %}{% if piece.date %}. {{piece.date|date:"F j"}}{% endif %}.
-				{% edit_item piece %}
-			</span>
-		</div>
-		<div class="editable"></div>
-	</li>
+    <ul class="cv-entry">
+		<li id="otherwriting-{{piece.pk}}">
+			<div class="noneditable row">
+				<span class="cv-entry-date col-2 col-sm-1">{{piece.date|date:"Y"}}
+				</span>
+				<span class="cv-entry-text col-9 col-sm-10">{% if piece.url %}<a href="{{piece.url}}">{{piece.title}}</a>{% else %}{{piece.title}}{% endif %}<cite>. {{piece.venue}}</cite>{% if piece.pages %}, {{piece.pages}}{% endif %}{% if piece.date %}. {{piece.date|date:"F j"}}{% endif %}.
+					{% edit_item piece %}
+				</span>
+			</div>
+			<div class="editable"></div>
+		</li>
+	</ul>
 {% endspaceless %}
 {% endfor %}
