@@ -19,6 +19,6 @@ from .service import Service, JournalService
 from .teaching import Course, CourseOffering
 
 from .works import Grant, GrantCollaboration, \
-    Talk, Presentation, \
+    Talk, TalkAuthorship, Presentation, \
     Dataset, DatasetAuthorship, \
     OtherWriting

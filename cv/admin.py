@@ -8,7 +8,7 @@ from .models import Collaborator, CVFile, Journal, Discipline, Award, \
 					Chapter, ChapterAuthorship, ChapterEditorship, \
 					Book, BookAuthorship, BookEdition, \
 					Report, ReportAuthorship, \
-					Talk, Presentation, OtherWriting, \
+					Talk, TalkAuthorship, Presentation, OtherWriting, \
 					Service, JournalService, Student, \
 					Course, CourseOffering 
 					# MediaMention, 
@@ -241,6 +241,10 @@ class PresentationInline(admin.TabularInline):
 	model = Presentation
 	extra = 2
 
+class TalkAuthorshipInline(admin.TabularInline):
+	model = TalkAuthorship
+	extra = 1
+
 class TalkAdmin(admin.ModelAdmin):
 	fieldsets = (
 		(None, {'fields':(('title','display'),('short_title','slug'))}),
@@ -256,7 +260,7 @@ class TalkAdmin(admin.ModelAdmin):
 	prepopulated_fields = {'slug':['short_title']}
 	list_display = ('title',)
 	date_hierarchy = 'latest_presentation_date'
-	inlines = [PresentationInline, CVFileInline]
+	inlines = [TalkAuthorshipInline, PresentationInline, CVFileInline]
 	filter_horizontal = ['collaborator']
 
 class PresentationAdmin(admin.ModelAdmin):

@@ -140,6 +140,17 @@ class Talk(VitaeModel):
     objects = models.Manager()
 
 
+class TalkAuthorship(CollaborationModel, StudentCollaborationModel):
+    """Store object relating collaborators to article."""
+
+    talk = models.ForeignKey(
+        Talk, related_name="authorship", on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['talk', 'display_order']
+        unique_together = ('talk', 'display_order')
+
+
 class Presentation(models.Model):
     """Create an instance in which a talk was given.
 
