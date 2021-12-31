@@ -55,12 +55,12 @@ fieldsets = {
              'primary_discipline', 'other_disciplines'],
     'service': ['role', 'group', 'organization', 'type', 'start_date',
                 'end_date', 'description', 'display'],
-    'student': ['first_name', 'last_name', 'middle_name', 'student_level',
-                'role', 'thesis_title', 'is_current_student',
-                'graduation_date', 'first_position', 'current_position',
-                'display'],
-    'course': ['title', 'slug', 'short_description', 'full_description', 
-               'student_level', 'display'],
+    'student': ['first_name', 'last_name', 'middle_initial',
+                'suffix', 'student_level', 'role', 'thesis_title',
+                'is_current_student', 'graduation_date', 'first_position',
+                'current_position', 'display'],
+    'course': ['title', 'short_title', 'slug', 'short_description',
+               'full_description', 'student_level', 'display'],
     'collaborator': ['first_name', 'middle_initial', 'last_name', 'suffix',
                      'institution', 'website', 'email', 'alternate_email']
 }
