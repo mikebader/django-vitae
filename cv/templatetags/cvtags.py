@@ -83,7 +83,7 @@ def print_collaborators(collaborators, sep=', ', two_sep=' and ',
         sep.join(collaborators[:-1]), final_sep, collaborators[-1])
 
 
-@register.filter
+@register.simple_tag()
 def print_authors(obj, **kwargs):
     """Creates a formatted string of an object's authors."""
     if hasattr(obj, 'authorship'):
@@ -176,12 +176,24 @@ def write_entry(instance):
 
 
 @register.inclusion_tag(
-    'cv/_publication_entries.html', takes_context=True)
-def publication_entries(context, publist, forthcoming='forth.'):
-    """Applies template formatting to publication models."""
-    model_name = publist[0]._meta.model_name
+    'cv/_entries_publication.html', takes_context=True)
+def publication_entries(context, pubqs, forthcoming='forth.'):
+    """Applies template formatting to publication models.
+
+    :param pubqs: QuerySet containing publication instances
+    :type pubqs: :class:`~django.db.models.query.QuerySet`
+    :param forthcoming: String instructing how to reference forthcoming
+                        publications
+    :type forthcoming: str, optional
+
+    Takes a :class:`QuerySet` of publications and returns formatted list of
+    publications based on Constructs publication based on template stored in
+    ``cv/_entries_publication.html``.
+
+    """
+    model_name = pubqs[0]._meta.model_name
     publications = list()
-    for pub in publist:
+    for pub in pubqs:
         parts = CSLCitation(pub).entry_parts()
         year = parts[0].year if parts[0] else ''
         if pub.get_status_display() == "Forthcoming":
