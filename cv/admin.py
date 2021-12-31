@@ -188,7 +188,7 @@ class BookAdmin(admin.ModelAdmin):
 		(None, {'fields':(
 			('title','display','status','pub_date'),('short_title','slug')
 			)}),
-		('Summary', {'fields':('summary','url')}),
+		('Summary', {'fields':('abstract','url')}),
 		('Publisher Information', {'fields':(
 			('publisher','place'),('volume','num_pages'),
 			('isbn'),('series','series_number')
