@@ -7,9 +7,9 @@ from tests.cvtests import VitaePublicationTestCase, AuthorshipTestCase
 
 from cv.models import Article, ArticleAuthorship, Journal
 from cv.settings import PUBLICATION_STATUS
-import cv.templatetags as cvtags
+import cv.templatetags as cv
 
-@attr('cvtags')
+@attr('cv')
 class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
 
     @classmethod
@@ -76,7 +76,7 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
             'user': AnonymousUser()
         })
         template = Template(
-            '{% load cvtags %}\n'
+            '{% load cv %}\n'
             '{% publication_entries articles %}')
         rendered_template = template.render(context)
         html_test_text = (
@@ -94,7 +94,7 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
         user = User.objects.create_user(
             'testuser', 'test@example.com', 's3krit')
         template = Template(
-            '{% load cvtags %}\n'
+            '{% load cv %}\n'
             '{% publication_entries articles %}')
         context = Context({
             'articles': Article.displayable.published(),
@@ -111,7 +111,7 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
         user = User.objects.create_user(
             'testuser', 'test@example.com', 's3krit')
         template = Template(
-            '{% load cvtags %}'
+            '{% load cv %}'
             '{% add_item "article" %}'
         )
         context = Context({'user': user})
@@ -126,7 +126,7 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
     def test_publication_add_not_authorized(self):
         user = AnonymousUser()
         template = Template(
-            '{% load cvtags %}'
+            '{% load cv %}'
             '{% add_item "article" %}'
         )
         context = Context({'user': user})
@@ -137,7 +137,7 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
         """Tests print_authors filter provides author list with formats."""
         user = AnonymousUser()
         template = Template(
-            '{% load cvtags %}'
+            '{% load cv %}'
             '{{article|print_authors}}'
         )
         context = Context({
@@ -154,7 +154,7 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
         """Tests print_authors filter provides author list with formats."""
         user = AnonymousUser()
         template = Template(
-            '{% load cvtags %}'
+            '{% load cv %}'
             '{{article|print_authors}}'
         )
         context = Context({
@@ -172,7 +172,7 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
         """Tests print_authors filter provides author list with formats."""
         user = AnonymousUser()
         template = Template(
-            '{% load cvtags %}'
+            '{% load cv %}'
             '{{article|print_authors}}'
         )
         context = Context({
@@ -191,7 +191,7 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
         # https://stackoverflow.com/a/55056123/12586249
         user = AnonymousUser()
         template = Template(
-            '{% load cvtags %}'
+            '{% load cv %}'
             '{{article|print_authors:\' & \'}}'
         )
         context = Context({
