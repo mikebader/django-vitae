@@ -1,48 +1,59 @@
-{% extends "cv/skeleton.html" %}
+{% extends 'cv/skeleton.html' %}
 
-{% block centerbar %}
+{% load cv %}
 
 {% block contact %}
-	{% include 'cv/contact.html' %}
-{% endblock contact %}
+{% include 'cv/contact.html' %}
+{% endblock %}
 
-{% block centerbar-content %}
+{% block awards %}
+    {% section_list 'award' award_list %}
+{% endblock %}
 
-	{% block degrees %}{% endblock %}
+{% block articles %}
+    {% section_list 'article' article_list %}
+{% endblock %}
 
-	{% block positions %}{% endblock %}
+{% block books %}
+    {% section_list 'book' book_list %}
+{% endblock %}
 
-	{% block awards %}{% endblock %}
+{% block chapters %}
+    {% publication_list 'chapter' chapter_list %}
+{% endblock %}
 
-	{% block books %}{% endblock %}
+{% block courses %}
+    {% section_list 'course' course_list 'Teaching' %}
+{% endblock %}
 
-	{% block articles %}{% endblock %}
+{% block degrees %}
+    {% section_list 'degree' degree_list %}
+{% endblock %}
 
-	{% block chapters %}{% endblock %}
+{% block grants %}
+    {% section_list 'grant' grant_list %}
+{% endblock %}
 
-	{% block reports %}{% endblock %}
+{% block otherwriting %}
+    {% section_list 'otherwriting' otherwriting_list 'Essays, op-eds, and other writing' %}
+{% endblock %}
 
-	{% block grants %}{% endblock %}
+{% block positions %}
+    {% section_list 'position' position_list 'Employment' %}
+{% endblock %}
 
-	{% block otherwriting %}{% endblock %}
+{% block reports %}
+    {% section_list 'report' report_list %}
+{% endblock %}
 
-	{% block talks %}{% endblock %}
+{% block service %}
+    {% section_list 'service' service_list %}
+{% endblock %}
 
-	{% block students %}{% endblock %}
+{% block students %}
+    {% section_list 'student' student_list %}
+{% endblock %}
 
-	{% block courses %}{% endblock %}
-
-	{% block service %}{% endblock %}
-
-{% endblock centerbar-content %}
-
-
-<div id="details" class="col-xs-12 details">
-{% block details %}{% endblock %}
-</div>
-
-<div id="next-previous" class="col-xs-12 clear-fix next-previous">
-{% block next-previous %}{% endblock %}
-</div> 
-
-{% endblock centerbar %}
+{% block talks %}
+    {% section_list 'talk' talk_list %}
+{% endblock %}

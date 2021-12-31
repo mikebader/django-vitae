@@ -40,7 +40,18 @@
     <div class="container">
 {% block centerbar %}
 {% endblock %}
+
+{% block nav %}
+        <div id="details" class="col-xs-12 details">
+        {% block details %}{% endblock %}
+        </div>
+
+        <div id="next-previous" class="col-xs-12 clear-fix next-previous">
+        {% block next-previous %}{% endblock %}
+        </div> 
+{% endblock nav %}
     </div>
+
 {% block endscripts %}
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript">
