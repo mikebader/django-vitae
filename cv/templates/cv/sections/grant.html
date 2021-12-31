@@ -1,23 +1,24 @@
-{% load cvnew %}
+{% load cvtags %}
 
-{% if object_list.total_grants or user.is_authenticated %}
-{% with object_list as grants %}
-    {% if grants.internal_grants %}
+{% if grant_list.total_grants or user.is_authenticated %}
+    <h2>Grants</h2>
+
+    {% if grant_list.internal_grants %}
         <h3>Internal</h3>
         <ul class="cv-entry">
-        {% with grants.internal_grants as grants %}
+        {% with grant_list.internal_grants as grants %}
             {% include 'cv/_entries_grant.html' %}
         {% endwith %}
         </ul>
     {% endif %} 
 
-    {% if grants.external_grants %}
+    {% if grant_list.external_grants %}
         <h3>External</h3>
         <ul class="cv-entry">
-        {% with grants.external_grants as grants %}
+        {% with grant_list.external_grants as grants %}
             {% include 'cv/_entries_grant.html' %}
         {% endwith %}
     {% endif %} 
         </ul>
-{% endwith %}
+
 {% endif %}

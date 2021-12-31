@@ -1,0 +1,15 @@
+{% extends "cv/lists/_cv_lists_base.html" %}
+
+{% block title %}
+{% if cv_personal_info.name %}{{cv_personal_info.name}}--{% endif %}Talks--Django Vitae
+{% endblock %}
+
+{% block centerbar-content %}
+{% include "cv/sections/talks.html" %}
+{% endblock centerbar-content %}
+
+{% block next-previous %}
+{% with "talks" as section_name %}
+{{block.super}}
+{% endwith %}
+{% endblock next-previous %}

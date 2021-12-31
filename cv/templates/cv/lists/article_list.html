@@ -1,0 +1,29 @@
+{% extends "cv/lists/_cv_lists_base.html" %}
+
+{% block title %}
+{% if cv_personal_info.name %}{{cv_personal_info.name}}--{% endif %}Articles--Django Vitae
+{% endblock %}
+
+{% block centerbar-content %}
+
+{% with object_list.total_articles as total_articles %}
+{% with object_list.article_published_list as article_published_list %}
+{% with object_list.article_revise_list as article_revise_list %}
+{% with object_list.article_inprep_list as article_inprep_list %}
+
+{% include "cv/sections/articles.html" %}
+
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
+
+
+{% endblock centerbar-content %}
+
+{% block next-previous %}
+{% with "articles" as section_name %}
+{{block.super}}
+{% endwith %}
+{% endblock next-previous %}
+

@@ -2,8 +2,11 @@
 
 {% if object_list or user.is_authenticated %} 
     <h2>{{section_name|title}}</h2>
+    <ul class="cv-entry">
 
         {% include section_template %}
+
+    </ul>
 
     {% add_item model_name %}
 

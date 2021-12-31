@@ -1,0 +1,28 @@
+{% extends "cv/lists/_cv_lists_base.html" %}
+
+{% block title %}
+{% if cv_personal_info.name %}{{cv_personal_info.name}}--{% endif %}Reports--Django Vitae
+{% endblock %}
+
+{% block centerbar-content %}
+
+{% with object_list.total_reports as total_reports %}
+{% with object_list.report_published_list as report_published_list %}
+{% with object_list.report_revise_list as report_revise_list %}
+{% with object_list.report_inprep_list as report_inprep_list %}
+
+{% include "cv/sections/reports.html" %}
+
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
+
+
+{% endblock centerbar-content %}
+
+{% block next-previous %}
+{% with "reports" as section_name %}
+{{block.super}}
+{% endwith %}
+{% endblock next-previous %}

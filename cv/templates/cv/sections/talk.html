@@ -2,18 +2,16 @@
 
 {% for talk in object_list %}
 {% spaceless %}
-    <ul class="cv-entry">
-        <li id="talk-{{talk.pk}}">
-            <div class="noneditable row">
-            <span class="cv-entry-text col-11">&#8220;{{talk.title}}.&#8221;<a href="{{talk.get_absolute_url}}" title="Details about {{talk.short_title}}"><span class="pl-4 fa fa-chevron-circle-right"></span></a>{% edit_item talk %}</span> 
-            <ul class="cv-sublist col-11">
-                    {% for presentation in talk.presentations.all %}
-                    <li>{{presentation.event}} ({{presentation.presentation_date|date:"M Y"}}){% if presentation.get_type_display == "Invited" %}*{% endif %}{% if not forloop.last %}, {% endif %}
-                    </li>
-                    {% endfor %}
-            </ul>
-        </div>
-        </li>
-    </ul>
+    <li id="talk-{{talk.pk}}">
+        <div class="noneditable row">
+        <span class="cv-entry-text col-11">&#8220;{{talk.title}}.&#8221;<a href="{{talk.get_absolute_url}}" title="Details about {{talk.short_title}}"><span class="pl-4 fa fa-chevron-circle-right"></span></a></span> 
+        <ul class="cv-sublist col-11">
+                {% for presentation in talk.presentations.all %}
+                <li>{{presentation.event}} ({{presentation.presentation_date|date:"M Y"}}){% if presentation.get_type_display == "Invited" %}*{% endif %}{% if not forloop.last %}, {% endif %}
+                </li>
+                {% endfor %}
+        </ul>
+    </div>
+    </li>
 {% endspaceless %}
 {% endfor %}

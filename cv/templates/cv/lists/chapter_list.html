@@ -1,0 +1,28 @@
+{% extends "cv/lists/_cv_lists_base.html" %}
+
+{% block title %}
+{% if cv_personal_info.name %}{{cv_personal_info.name}}--{% endif %}Chapters--Django Vitae
+{% endblock %}
+
+{% block centerbar-content %}
+
+{% with object_list.total_chapters as total_chapters %}
+{% with object_list.chapter_published_list as chapter_published_list %}
+{% with object_list.chapter_revise_list as chapter_revise_list %}
+{% with object_list.chapter_inprep_list as chapter_inprep_list %}
+
+{% include "cv/sections/chapters.html" %}
+
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
+
+
+{% endblock centerbar-content %}
+
+{% block next-previous %}
+{% with "chapters" as section_name %}
+{{block.super}}
+{% endwith %}
+{% endblock next-previous %}

@@ -2,23 +2,21 @@
 
 {% for degree in object_list %}
 {% spaceless %}
-    <ul class="cv-entry">
-        <li id="degree-{{degree.pk}}">
-            <div class="noneditable row">
-                <span class="cv-entry-date col-2 col-sm-1">{{degree.date_earned|date:"Y"}} </span>
-                <span class="cv-entry-text col-9 col-sm-10">
-                    {{degree.degree}}, 
-                    {% if degree.major %}<em class="cv-entry-degree-major">{{degree.major}}</em>, {% endif %}
-                    {{degree.institution}}
-                    {% if degree.city %}, {{degree.city}}{% endif %}
-                    {% if degree.state %}, {{degree.state}}{% endif %}
-                    {% if degree.country %}, {{degree.country}}{% endif %}
+    <li id="degree-{{degree.pk}}">
+        <div class="noneditable row">
+            <span class="cv-entry-date col-2 col-sm-1">{{degree.date_earned|date:"Y"}} </span>
+            <span class="cv-entry-text col-9 col-sm-10">
+                {{degree.degree}}, 
+                {% if degree.major %}<em class="cv-entry-degree-major">{{degree.major}}</em>, {% endif %}
+                {{degree.institution}}
+                {% if degree.city %}, {{degree.city}}{% endif %}
+                {% if degree.state %}, {{degree.state}}{% endif %}
+                {% if degree.country %}, {{degree.country}}{% endif %}
 
-                    {% edit_item degree %}
+                {% edit_item degree %}
 
-                </span>
-            </div>
-        </li>
-    </ul>
+            </span>
+        </div>
+    </li>
 {% endspaceless %}
 {% endfor %}

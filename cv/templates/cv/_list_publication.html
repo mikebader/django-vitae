@@ -1,6 +1,7 @@
 {% load cvnew %} 
 
 {% if object_list.total or user.is_authenticated %}
+	<h2>{{model_name|title}}{{object_list.total|pluralize}}</h2> 
 	{% if object_list.published %} 
 		{% if object_list.revise or object_list.inprep %}
     	<h3>Published</h3>
@@ -17,5 +18,7 @@
 	    <h3>In Preparation</h3>
 	    {% publication_entries object_list.inprep %}
 	{% endif %}
+
+{% add_item model_name %}
 
 {% endif %}
