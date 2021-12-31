@@ -104,6 +104,7 @@ Documentation Contents
    :maxdepth: 3
    :name: fronttoc
    
+   about
    getting_started
    views/index
    topics/index
