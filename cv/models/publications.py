@@ -8,8 +8,9 @@ from cv.utils import check_isbn
 
 from markdown import markdown
 
-from .base import DisplayableModel, VitaePublicationModel, Journal, \
-    Collaborator, CollaborationModel, StudentCollaborationModel
+from .base import DisplayableModel, VitaePublicationModel, Journal
+from .people import Collaborator
+from .collaborations import CollaborationModel, StudentCollaborationModel
 from .works import Grant, Talk
 
 

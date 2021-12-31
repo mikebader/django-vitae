@@ -3,8 +3,9 @@ from django.db.models.functions import datetime
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from .base import (VitaeModel, Collaborator, CollaborationModel,
-                   StudentCollaborationModel)
+from .base import VitaeModel
+from .people import Collaborator
+from .collaborations import CollaborationModel, StudentCollaborationModel
 from .managers import GrantManager
 
 from markdown import markdown

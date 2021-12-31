@@ -1,37 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from .base import (DisplayableModel)
+from .base import DisplayableModel
 
 from cv.settings import STUDENT_LEVELS_CHOICES, TERMS_CHOICES
 
 from markdown import markdown
-
-
-class Student(DisplayableModel):
-
-    """Add object to represent students that have been advised."""
-
-    first_name = models.CharField(max_length=200, null=True)
-    last_name = models.CharField(max_length=200, null=True)
-    middle_name = models.CharField(max_length=200, null=True, blank=True)
-    student_level = models.IntegerField(
-        choices=STUDENT_LEVELS_CHOICES, null=True, blank=True
-    )
-    role = models.CharField(max_length=200, null=True)
-    thesis_title = models.CharField(max_length=200, null=True, blank=True)
-    is_current_student = models.BooleanField(default=True)
-    graduation_date = models.DateField(null=True, blank=True)
-    first_position = models.CharField(max_length=200, null=True, blank=True)
-    current_position = models.CharField(max_length=200, null=True, blank=True)
-
-    class Meta:
-        ordering = ['student_level', 'graduation_date']
-
-    def __str__(self):
-        return '%s, %s' % (self.last_name, self.first_name)
-
-    objects = models.Manager()
 
 
 class Course(DisplayableModel):
@@ -39,8 +13,8 @@ class Course(DisplayableModel):
 
     title = models.CharField(_('title'), max_length=150)
     slug = models.SlugField(_('slug'), blank=True)
-    short_description = models.TextField(_('short description'), blank=True)
-    full_description = models.TextField(_('full description'), blank=True)
+    short_description = models.TextField(_('Short description'), blank=True)
+    full_description = models.TextField(_('Full description'), blank=True)
     student_level = models.IntegerField(
         choices=STUDENT_LEVELS_CHOICES, null=True, blank=True)
 

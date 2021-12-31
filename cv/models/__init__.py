@@ -1,10 +1,13 @@
 from .base import VitaeModel, VitaePublicationModel, DisplayableModel, \
-    Collaborator, CollaborationModel, StudentCollaborationModel, \
     Discipline, Journal, PublicationLookupException
 
 from .achievements import Award, Degree, Position
 
+from .collaborations import CollaborationModel, StudentCollaborationModel
+
 from .files import CVFile
+
+from .people import Collaborator, Student
 
 from .publications import Article, ArticleAuthorship, \
     Book, BookAuthorship, BookEdition, \
@@ -13,7 +16,7 @@ from .publications import Article, ArticleAuthorship, \
 
 from .service import Service, JournalService
 
-from .teaching import Student, Course, CourseOffering
+from .teaching import Course, CourseOffering
 
 from .works import Grant, GrantCollaboration, \
     Talk, Presentation, \
