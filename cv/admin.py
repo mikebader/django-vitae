@@ -330,11 +330,12 @@ class CourseOfferingInline(admin.TabularInline):
 class CourseAdmin(admin.ModelAdmin):
 	fieldsets = (
 		('Course Information', {'fields':(
-			'title', 'slug', 'student_level')}),
+			'title', 'short_title', 'slug', 'student_level')}),
 		('Description', {'fields':(
 			('short_description'),
 			('full_description'))})
 		)
+	prepopulated_fields = {'slug':['short_title']}
 	list_display = ('title', 'student_level')
 	list_filter = ('student_level',)
 	inlines = [CourseOfferingInline]

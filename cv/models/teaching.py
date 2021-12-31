@@ -11,8 +11,12 @@ from markdown import markdown
 class Course(DisplayableModel):
     """Instance of a class or course prepared."""
 
-    title = models.CharField(_('title'), max_length=150)
-    slug = models.SlugField(_('slug'), blank=True)
+    title = models.CharField(_('Title'), max_length=150)
+    short_title = models.CharField(max_length=80)
+    slug = models.SlugField(
+        unique=True, help_text=_('Automatically built from short title'),
+        null=True, default=None)
+    slug = models.SlugField(_('Slug'), unique=True)
     short_description = models.TextField(_('Short description'), blank=True)
     full_description = models.TextField(_('Full description'), blank=True)
     student_level = models.IntegerField(
@@ -22,7 +26,7 @@ class Course(DisplayableModel):
     short_description_html = models.TextField(editable=False)
     description_html = models.TextField(editable=False)
 
-    last_offered = models.DateField(_('last offered'), null=True, blank=True)
+    last_offered = models.DateField(_('Last offered'), null=True, blank=True)
     # is_current_offering = models.BooleanField(
     #     _('is current offering?'), default=False)
 
@@ -53,17 +57,17 @@ class CourseOffering(models.Model):
     """Instance of a term when a course was taught."""
 
     course = models.ForeignKey(
-        Course, on_delete=models.CASCADE, verbose_name=_('course'),
+        Course, on_delete=models.CASCADE, verbose_name=_('Course'),
         related_name='offerings')
-    term = models.IntegerField(_('term'), choices=TERMS_CHOICES)
-    start_date = models.DateField(_('start date'), blank=True)
-    end_date = models.DateField(_('end date'), blank=True)
+    term = models.IntegerField(_('Term'), choices=TERMS_CHOICES)
+    start_date = models.DateField(_('Start date'), blank=True)
+    end_date = models.DateField(_('End date'), blank=True)
     institution = models.CharField(
-        _('institution'), max_length=100, blank=True)
+        _('Institution'), max_length=100, blank=True)
     course_number = models.CharField(
-        _('course number'), max_length=50, blank=True)
+        _('Course number'), max_length=50, blank=True)
     is_current_offering = models.BooleanField(
-        _('is current offering?'), default=False)
+        _('Is current offering?'), default=False)
 
     def __str__(self):
         return u"%s (%s %s)" % (
