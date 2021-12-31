@@ -2,8 +2,9 @@
 {% load cv %}
 {% load static %}
 
+{% block centerbar %}
+    {% block contact %}{{block.super}}{% endblock contact %}
 
-{% block centerbar-content %}
     <h2 class="col-12">
         {% block maintitle %}{{object.title}}{% endblock %}
         {% if user.is_authenticated %}
@@ -21,8 +22,6 @@
             </div>
         {% endif %}
     {% endblock abstract %}
-
-{% endblock %}
 
 {% block details %}
     {% block citation %}
@@ -84,4 +83,8 @@
     <a href="{% url 'cv:cv_list' %}#{{model_name}}-{{object.slug}}">&#xab;Go to CV</a>
 </div>
 {% endblock %}
+
+{% endblock centerbar %}
+
+
 
