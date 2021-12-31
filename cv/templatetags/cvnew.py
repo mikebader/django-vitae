@@ -6,8 +6,8 @@ from django.contrib.humanize.templatetags.humanize import intcomma
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
-from cv.utils import CSLCitation
 
+from cv.utils import CSLCitation
 
 register = template.Library()
 
@@ -79,7 +79,8 @@ def section_list(context, model_name, qs, section_name=None):
         ('user', context['user'])
     ])
 
-## Add/Edit Tags
+
+# Item tags
 @register.simple_tag(takes_context=True)
 def add_item(context, model_name):
     """Formatted link to form to add new instance of model.
@@ -104,15 +105,19 @@ def add_item(context, model_name):
         return t.render(context)
     return ''
 
+
 @register.simple_tag(takes_context=True)
-def edit_item(context, inst):
+def edit_item(context, inst, text_before='', text_after=''):
     user = context['user']
     if user.is_authenticated:
         model_name = inst._meta.verbose_name
         verbose_name = model_name
-        url = reverse('cv:cv_edit', kwargs={'model_name': model_name, 'pk': inst.pk})
+        url = reverse('cv:cv_edit',
+                      kwargs={'model_name': model_name, 'pk': inst.pk})
         t = get_template('cv/_item_edit.html')
         context = dict([
+            ('text_before', text_before),
+            ('text_after', text_after),
             ('model_name', model_name),
             ('verbose_name', verbose_name),
             ('url', url),
@@ -122,7 +127,41 @@ def edit_item(context, inst):
     return ''
 
 
-# Formatating tags
+@register.simple_tag()
+def cite_item(obj):
+    """Html-formatted citation of object.
+
+    :param obj: django-vitae object
+    """
+    return mark_safe(CSLCitation(obj).cite_html())
+
+
+@register.simple_tag()
+def cite_download(obj, fmt):
+    """Create formatted link to citation.
+
+    :param obj: A django-vitae object that contains a slug and citation
+                templates
+    :param fmt: String representing format, may be either 'ris' or 'bib'
+    :type fmt: str
+
+    Takes an object and format and returns a link to the citation formatted
+    using the template ``cv/_cite_download.html``.
+    """
+    cite_url = reverse('cv:citation', kwargs={
+        'model_name': type(obj).__name__.lower(),
+        'slug': obj.slug,
+        'format': fmt
+    })
+    t = get_template('cv/_cite_download.html')
+    return t.render(dict([
+        ('format', fmt,),
+        ('cite_url', cite_url),
+        ('object', obj)
+    ]))
+
+
+# Formatting tags
 @register.simple_tag()
 def print_collaborators(collaborators, sep=', ', two_sep=' and ',
                         last_sep=', and ', et_al_after=None, **kwargs):
@@ -138,6 +177,7 @@ def print_collaborators(collaborators, sep=', ', two_sep=' and ',
     final_sep = last_sep if len(collaborators) > 2 else two_sep
     return '{}{}{}'.format(
         sep.join(collaborators[:-1]), final_sep, collaborators[-1])
+
 
 # Filters
 @register.filter(needs_autoescape=False)

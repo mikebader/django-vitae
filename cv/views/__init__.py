@@ -82,11 +82,12 @@ class CVListView(generic.ListView, CVListMixin):
         """
         Returns the name template to use to display a list of model instances.
 
-        Currently returns ``cv/lists/<model_name>_list.html``.
+        Currently returns ``cv/lists/<model_name>.html``.
 
         Might add a generic template for vitae models in the future.
         """
-        return ['cv/lists/%s_list.html' % (self.model_name)]
+        return ['cv/lists/{}.html'.format(self.model_name),
+                'cv/lists/cv_list.html']
 
 
 DETAIL_VIEWS_AVAILABLE = [
@@ -103,9 +104,15 @@ class CVDetailView(generic.DetailView):
             raise Http404('Detailed information not '
                           'available for {0}s'.format(self.model_name))
         self.model = apps.get_model('cv', self.model_name)
-        self.context_object_name = (
-            '%s' % ''.join(self.model._meta.verbose_name))
+        self.context_object_name = '{}'.format(
+            self.model._meta.verbose_name)
         return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(CVDetailView, self).get_context_data(**kwargs)
+        context['model_name'] = type(context['object']).__name__.lower()
+        context['model_name_plural'] = self.model._meta.verbose_name_plural
+        return context
 
     def get_template_names(self):
         """
@@ -115,7 +122,8 @@ class CVDetailView(generic.DetailView):
 
         Might add a generic template for vitae models in the future.
         """
-        return ['cv/details/%s_detail.html' % (self.model_name)]
+        return ['cv/details/{}.html'.format(self.model_name),
+                'cv/details/cv_detail.html']
 
 
 def citation_view(request, model_name, slug, format):
