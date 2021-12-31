@@ -1,79 +1,87 @@
 {% extends "cv/base.html" %}
-{% load cvtags %}
+{% load cvnew %}
 {% load static %}
 
 
-
-
-
 {% block centerbar-content %}
-<h1 class="col-12 col-sm-10">{% block maintitle %}{{object.title}}{% endblock %}</h1>
-{% block abstract %}
-<h2 class="col-12 col-sm-10 abstract-name">{% block abstract_name %}Abstract{% endblock abstract_name %}</h2>
-<div id="abstract" class="col-xs-12 col-sm-10 abstract">
-{{object.abstract_html|safe}}
-</div>
-{% endblock abstract %}
-{% endblock %}
+    <h2 class="col-12">
+        {% block maintitle %}{{object.title}}{% endblock %}
+        {% if user.is_authenticated %}
+            {% edit_item object %}
+        {% endif %}
+    </h2>
 
-{% block next-previous %}
-<a href="{% block object-list-url %}{% endblock %}#{{section_name}}-{{object.slug}}">&#xab;back to {{section_name}}{% block plural-suffix %}s{% endblock %}</a><br />
-<a href="{% url 'cv:cv_list' %}#{{section_name}}-{{object.slug}}">&#xab;back to CV</a>
+    {% block abstract %}
+        {% if object.abstract %}
+            <div class="col-12 col-sm-10">
+                <h3 class="mt-4 abstract-name">{% block abstract_name %}Abstract{% endblock abstract_name %}</h3>
+                <div id="abstract" class="abstract">
+                {{object.abstract_html|safe}}
+                </div>
+            </div>
+        {% endif %}
+    {% endblock abstract %}
+
 {% endblock %}
 
 {% block details %}
-{% block citation %}
-<h2 class="col-12 col-sm-10">Citation</h2>
-<div class="col-12 col-sm-10 citation">
-	{% block formatted-citation %}{% endblock %}
-</div>
+    {% block citation %}
+        <div class="col-12 citation">
+            {% block formatted_citation %}<strong>Citation.</strong> {% cite_item object %}{% endblock %}
+        </div>
+        <div class="btn-group col-12 col-sm-10 mt-2 citation-links">
+            {% block url %}
+            {% if object.url %}
+                <a class="btn btn-outline-primary btn-sm text-primary" role="button" href="{{object.url}}" title="Go to {{model_name}} website"><i class="fas fa-external-link-alt"></i> {% block type_and_location %}Go to {{model_name}} website{% endblock type_and_location %}</a>
+            {% endif %}
+            {% endblock %}
+            {% cite_download object 'ris' %}
+            {% cite_download object 'bib' %}
+        </div>
+    {% endblock citation %}
 
-{% block url %}
-{% if object.url %}
-<p>
-&nbsp;<a href="{{object.url}}" title="Go to  {{object.short_title}} on journal website"><span class="fa fa-external-link" aria-hidden="true"></span> Link to {% block object_type_and_location %}{% endblock %}</a>
-</p>
-{% endif %}
-{% endblock %}
-<div class="col-12 col-sm-10 citation-links">
-	<a class="btn btn-secondary btn-sm" role="button" href="{% block object-citation-url-ris %}{% endblock %}" title="Download {{object.short_title}} in Reference Manager format"><span class='fa fa-paperclip ' aria-hidden="true"></span> Cite with Reference Manager</a>
-	<a class="btn btn-secondary btn-sm" role="button" href="{% block object-citation-url-bib %}{% endblock %}" title="Download {{object.short_title}} in BibTeX format"><span class='fa fa-paperclip' aria-hidden="true"></span> Cite with BibTeX</a>
-</div>
-{% endblock citation %}
+    {% block files %}
+        {% if object.files.all or user.is_authenticated %}
+            <div class="col-12 col-sm-10 files">
+                <h3 class="mt-4">Files</h3>
+                {% with object.files.all as files %}
+                    <ul>
+                        {% if files %}
+                            {% for file in files %}
+                                <li class="details">
+                                    <a class="btn btn-secondary btn-sm" role="button" href="{{file.file.url}}"><span class='fa fa-download' aria-hidden="true"></span> Download {{file.get_type_display|lower}}</a>
+                                </li>
+                            {% endfor %}    
+                            {% else %}
+                                <li>No files.</a></li>
+                        {% endif %}
+                    </ul>
+                {% endwith %}
+                </div>
+        {% endif %}
+    {% endblock files %}
 
+    {% block type-specific-info %}{% endblock %}
 
-{% block files %}
-<div class="col-12 col-sm-10 files">
-<h2>Files</h2>
-{% with object.files.all as files %}
-	<ul>
-{% if files %}
-	{% for file in files %}
-	<li class="details">
-		<a class="btn btn-secondary btn-sm" role="button" href="{{file.file.url}}"><span class='fa fa-download' aria-hidden="true"></span> Download {{file.get_type_display|lower}}</a>
-	</li>
-		{% endfor %}	
-	{% else %}
-	<li>No files</li>
-	{% endif %}
-	</ul>
-	{% endwith %}
-</div>
-{% endblock files %}
+    {% block media_mentions %}
+    {% with object.mediamention_set.all as mentions %}
+        {% if mentions %}
+        <h3 class="mt-4">Media Mentions</h3>
+            <ul>
+                {% for mention in mentions %}
+                    <li class="details">{{mention.title}}, <cite>{{mention.outlet}}</cite> ({{mention.date|date:"b d, Y"|title}}){% if mention.url %} <a class="media-mention" href="{{mention.url}}" title="View story on external site"><i class="fas fa-external-link-alt" aria-hidden="true"></i>{% endif %}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    {% endblock media_mentions %}
 
-{% block type-specific-info %}{% endblock %}
-
-{% block media_mentions %}
-{% with object.mediamention_set.all as mentions %}
-{% if mentions %}
-<h2>Media Mentions</h2>
-	<ul>
-{% for mention in mentions %}
-	<li class="details">{{mention.title}}, <cite>{{mention.outlet}}</cite> ({{mention.date|date:"b d, Y"|title}}){% if mention.url %} <a class="media-mention" href="{{mention.url}}" title="View story on external site"><span class="fa fa-external-link" aria-hidden="true"></span>{% endif %}</li>
-{% endfor %}
-	</ul>
-{% endif %}
-{% endwith %}
-{% endblock media_mentions %}
 {% endblock details %}
+
+{% block next-previous %}
+<div class="col-12 col-sm-10">
+    <a href="{% url 'cv:section_list' model_name=model_name %}">&#xab;Go to {{model_name_plural}}</a><br /><br />
+    <a href="{% url 'cv:cv_list' %}#{{model_name}}-{{object.slug}}">&#xab;Go to CV</a>
+</div>
+{% endblock %}
 

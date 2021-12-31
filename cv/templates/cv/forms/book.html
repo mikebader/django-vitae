@@ -31,8 +31,12 @@
                         {% include "cv/forms/_form_field.html" %}
                     {% endwith %}
                 </span>
+                <span class="col-12">
+                    {% with form.url as field %}
+                        {% include "cv/forms/_form_field.html" %}
+                    {% endwith %}
+                </span>
 {% endblock citation_information %}
-
 
 {% block edition_information %}
     <div class="form-group row">

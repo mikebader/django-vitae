@@ -156,8 +156,8 @@ class CSLCitation(object):
             'status': self.instance.get_status_display(),
             'title-short': self.instance.short_title,
         }
-        if self.instance.url:
-            fields['URL'] = self.instance.url
+        # if self.instance.url:
+        #     fields['URL'] = self.instance.url
         if model_name == 'article':
             if ((self.instance.pub_date or self.instance.submission_date) and
                self.instance.status >= INREVISION_RANGE.min):

@@ -1,1 +1,1 @@
-<a class="pl-4 {{model_name}}-edit cv-edit" href="{{url}}" title="Edit {{verbose_name}}"><i class="far fa-edit"></i></a>
+<a class="{{model_name}}-edit cv-edit" href="{{url}}" title="Edit {{verbose_name}}">{% if text_before %}{{text_before}}{% endif %}<i class="far fa-edit"></i>{% if text_after %}{{text_after}}{% endif %}</a>
