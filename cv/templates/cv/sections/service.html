@@ -1,8 +1,7 @@
 {% load cvnew %}
 
-{% if service_list.total_grants or user.is_authenticated %}
-    <h2>Service</h2>
-
+{% if object_list.total_grants or user.is_authenticated %}
+{% with object_list as service %}    
     {% if service.discipline %}
         <h3>Professional Service</h3>
         <ul class="cv-entry">
@@ -29,4 +28,5 @@
             {% endwith %}
         </ul>
     {% endif %}
+{% endwith %}
 {% endif %}

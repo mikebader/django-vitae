@@ -11,11 +11,11 @@
 {% endblock %}
 
 {% block articles %}
-    {% publication_list 'article' article_list %}
+    {% section_list 'article' article_list %}
 {% endblock %}
 
 {% block books %}
-    {% publication_list 'book' book_list %}
+    {% section_list 'book' book_list %}
 {% endblock %}
 
 {% block chapters %}
@@ -31,15 +31,15 @@
 {% endblock %}
 
 {% block grants %}
-    {% include 'cv/sections/grant.html' %}
+    {% section_list 'grant' grant_list %}
 {% endblock %}
 
 {% block otherwriting %}
-    {% section_list 'otherwriting' 'cv/sections/otherwriting.html' 'Essays, op-eds, and other writing' %}
+    {% section_list 'otherwriting' otherwriting_list 'Essays, op-eds, and other writing' %}
 {% endblock %}
 
 {% block positions %}
-    {% section_list 'position' 'cv/sections/position.html' 'Employment' %}
+    {% section_list 'position' position_list 'Employment' %}
 {% endblock %}
 
 {% block reports %}
@@ -47,11 +47,11 @@
 {% endblock %}
 
 {% block service %}
-    {% include 'cv/sections/service.html' %}
+    {% section_list 'service' service_list %}
 {% endblock %}
 
 {% block students %}
-    {% section_list 'student' talk_list %}
+    {% section_list 'student' student_list %}
 {% endblock %}
 
 {% block talks %}

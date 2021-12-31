@@ -70,7 +70,8 @@ def publication_list(context, model_name, qsdict):
 @register.inclusion_tag('cv/_list.html', takes_context=True)
 def section_list(context, model_name, qs, section_name=None):
     section_template = 'cv/sections/{}.html'.format(model_name)
-    section_name = model_name if section_name is None else section_name
+    plural_name = apps.get_model('cv', model_name)._meta.verbose_name_plural
+    section_name = section_name if section_name else plural_name
     return dict([
         ('model_name', model_name,),
         ('section_name', section_name),
@@ -78,6 +79,7 @@ def section_list(context, model_name, qs, section_name=None):
         ('section_template', section_template),
         ('user', context['user'])
     ])
+
 
 ## Add/Edit Tags
 @register.simple_tag(takes_context=True)

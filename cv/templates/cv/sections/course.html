@@ -2,18 +2,20 @@
 
 {% for course in object_list %}
 {% spaceless %}
-    <li id="course-{{course.pk}}">
-        <div class="noneditable row">
-            <span class="cv-entry-text col-11">
-                <em>{{course.title}}</em> 
-                {% if course.offerings.all or course.get_student_level_display %}({{course.get_student_level_display}}{% if course.offerings.all %}; 
-                    {% for offering in course.offerings.all %}{% if not forloop.first %}, {% endif %}{{offering.get_term_display}} {{offering.start_date|date:"Y"}}{% endfor %}{% endif %})
-                {% endif %}
+    <ul class="cv-entry">
+        <li id="course-{{course.pk}}">
+            <div class="noneditable row">
+                <span class="cv-entry-text col-11">
+                    <em>{{course.title}}</em> 
+                    {% if course.offerings.all or course.get_student_level_display %}({{course.get_student_level_display}}{% if course.offerings.all %}; 
+                        {% for offering in course.offerings.all %}{% if not forloop.first %}, {% endif %}{{offering.get_term_display}} {{offering.start_date|date:"Y"}}{% endfor %}{% endif %})
+                    {% endif %}
 
-                {% edit_item course %}
+                    {% edit_item course %}
 
-            </span>
-        </div>
-    </li>
+                </span>
+            </div>
+        </li>
+    </ul>
 {% endspaceless %}
 {% endfor %}
