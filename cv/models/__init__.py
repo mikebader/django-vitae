@@ -9,7 +9,7 @@ from .collaborations import \
     CollaborationModel, StudentCollaborationModel,\
     ArticleAuthorship, BookAuthorship, ReportAuthorship,\
     ChapterAuthorship, ChapterEditorship, \
-    GrantCollaboration, TalkAuthorship, DatasetAuthorship
+    GrantCollaboration, TalkCollaboration, DatasetCollaboration
 
 from .files import CVFile
 

@@ -1,16 +1,17 @@
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericTabularInline, GenericStackedInline
 
-from .models import Collaborator, CVFile, Journal, Discipline, Award, \
-					Position, Degree, \
-					Grant, GrantCollaboration, \
-					Article, ArticleAuthorship, \
-					Chapter, ChapterAuthorship, ChapterEditorship, \
-					Book, BookAuthorship, BookEdition, \
+from .models import Collaborator, CVFile, Journal, Discipline, Award,\
+					Position, Degree,\
+					Grant, GrantCollaboration,\
+					Article, ArticleAuthorship,\
+					Chapter, ChapterAuthorship, ChapterEditorship,\
+					Book, BookAuthorship, BookEdition,\
 					Report, ReportAuthorship, \
-					Talk, TalkAuthorship, Presentation, OtherWriting, \
-					Service, JournalService, Student, \
-					Course, CourseOffering 
+					Talk, TalkCollaboration, Presentation,\
+					OtherWriting, \
+					Service, JournalService, Student,\
+					Course, CourseOffering
 					# MediaMention, 
 
 ## Uncomment the following two lines if you would like to use the `researchprojects` app
@@ -241,15 +242,14 @@ class PresentationInline(admin.TabularInline):
 	model = Presentation
 	extra = 2
 
-class TalkAuthorshipInline(admin.TabularInline):
-	model = TalkAuthorship
+class TalkCollaborationInline(admin.TabularInline):
+	model = TalkCollaboration
 	extra = 1
 
 class TalkAdmin(admin.ModelAdmin):
 	fieldsets = (
-		(None, {'fields':(('title','display'),('short_title','slug'))}),
+		(None, {'fields':(('title','display'),('short_title'), ('slug'))}),
 		('Abstract', {'fields':('abstract',)}),
-		('Collaborators',{'fields':('collaborator',)}),
 		('Related CV Items', {'fields':('grants',)}),
 		('Disciplines', {
 			'fields':('primary_discipline','other_disciplines'),
@@ -260,8 +260,7 @@ class TalkAdmin(admin.ModelAdmin):
 	prepopulated_fields = {'slug':['short_title']}
 	list_display = ('title',)
 	date_hierarchy = 'latest_presentation_date'
-	inlines = [TalkAuthorshipInline, PresentationInline, CVFileInline]
-	filter_horizontal = ['collaborator']
+	inlines = [TalkCollaborationInline, PresentationInline, CVFileInline]
 
 class PresentationAdmin(admin.ModelAdmin):
 	fieldsets = (

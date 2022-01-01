@@ -133,22 +133,22 @@ class GrantCollaboration(CollaborationModel):
         return str(self.collaborator)
 
 
-class TalkAuthorship(CollaborationModel, StudentCollaborationModel):
+class TalkCollaboration(CollaborationModel, StudentCollaborationModel):
     """Store object relating collaborators to article."""
 
     talk = models.ForeignKey(
-        Talk, related_name="authorship", on_delete=models.CASCADE)
+        Talk, related_name="collaboration", on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['talk', 'display_order']
         unique_together = ('talk', 'display_order')
 
 
-class DatasetAuthorship(CollaborationModel, StudentCollaborationModel):
+class DatasetCollaboration(CollaborationModel, StudentCollaborationModel):
     """Store object relating creators of dataset to a dataset instance."""
 
     dataset = models.ForeignKey(
-        Dataset, related_name="authorship", on_delete=models.CASCADE)
+        Dataset, related_name="collaboration", on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['dataset', 'display_order']

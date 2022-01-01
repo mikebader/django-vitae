@@ -94,7 +94,8 @@ class Talk(VitaeModel):
     abstract = models.TextField(blank=True)
     # article_from_talk = models.OneToOneField(
     #   Article, null=True, blank=True,on_delete=models.CASCADE)
-    collaborator = models.ManyToManyField(Collaborator, blank=True)
+    collaborators = models.ManyToManyField(Collaborator, 
+        through="TalkCollaboration", related_name="talks")
     grants = models.ManyToManyField(Grant, blank=True)
 
     abstract_html = models.TextField(editable=False, blank=True)
@@ -213,8 +214,8 @@ class OtherWriting(VitaeModel):
 class Dataset(VitaeModel):
     """Stores instance representing a dataset."""
 
-    authors = models.ManyToManyField(
-        Collaborator, through='cv.DatasetAuthorship', related_name='datasets')
+    collaborators = models.ManyToManyField(
+        Collaborator, through='DatasetCollaboration', related_name='datasets')
     pub_date = models.DateField(
         _('Publication date'), blank=True, null=True)
     version_number = models.CharField(
