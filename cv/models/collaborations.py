@@ -4,6 +4,8 @@ from django.utils.translation import gettext_lazy as _
 from cv.settings import STUDENT_LEVELS_CHOICES
 
 from .people import Collaborator, Student
+from .publications import Article, Book, Chapter, Report
+from .works import Grant, Talk, Dataset
 
 
 class CollaborationModel(models.Model):
@@ -55,3 +57,99 @@ class StudentCollaborationModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+# Publications
+class ArticleAuthorship(CollaborationModel, StudentCollaborationModel):
+    """Store object relating collaborators to article."""
+
+    article = models.ForeignKey(
+        Article, related_name="authorship", on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['article', 'display_order']
+        unique_together = ('article', 'display_order')
+
+
+class BookAuthorship(CollaborationModel, StudentCollaborationModel):
+    """Store authorship object relating collaborators to book."""
+
+    book = models.ForeignKey(
+        Book, related_name="authorship", on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['book', 'display_order']
+        unique_together = ('book', 'display_order')
+
+
+class ChapterAuthorship(CollaborationModel, StudentCollaborationModel):
+    """Store object relating collaborators to article."""
+
+    chapter = models.ForeignKey(
+        Chapter, related_name="authorship", on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['display_order']
+        unique_together = (('chapter', 'display_order'))
+
+
+class ChapterEditorship(CollaborationModel):
+    """Store object relating editors to chapter."""
+
+    chapter = models.ForeignKey(
+        Chapter, related_name="editorship", on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['display_order']
+        unique_together = (('chapter', 'display_order'))
+
+
+class ReportAuthorship(CollaborationModel, StudentCollaborationModel):
+    """Store object relating collaborators to report."""
+
+    report = models.ForeignKey(
+        Report, related_name="authorship", on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['display_order']
+        unique_together = ('report', 'display_order')
+
+
+# Works
+class GrantCollaboration(CollaborationModel):
+    """Store object relating collaborators to grant."""
+
+    grant = models.ForeignKey(
+        Grant, related_name="collaboration", on_delete=models.PROTECT)
+    is_pi = models.BooleanField(
+        _('Is principal investigator?'), default=False)
+    role = models.CharField(
+        _('Role'), max_length=50, blank=True)
+
+    class Meta:
+        ordering = ['display_order']
+
+    def __str__(self):
+        return str(self.collaborator)
+
+
+class TalkAuthorship(CollaborationModel, StudentCollaborationModel):
+    """Store object relating collaborators to article."""
+
+    talk = models.ForeignKey(
+        Talk, related_name="authorship", on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['talk', 'display_order']
+        unique_together = ('talk', 'display_order')
+
+
+class DatasetAuthorship(CollaborationModel, StudentCollaborationModel):
+    """Store object relating creators of dataset to a dataset instance."""
+
+    dataset = models.ForeignKey(
+        Dataset, related_name="authorship", on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['dataset', 'display_order']
+        unique_together = ('dataset', 'display_order')

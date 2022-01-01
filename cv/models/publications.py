@@ -10,7 +10,7 @@ from markdown import markdown
 
 from .base import DisplayableModel, VitaePublicationModel, Journal
 from .people import Collaborator
-from .collaborations import CollaborationModel, StudentCollaborationModel
+# from .collaborations import CollaborationModel, StudentCollaborationModel
 from .works import Grant, Talk
 
 
@@ -58,17 +58,6 @@ class Article(VitaePublicationModel):
     objects = models.Manager()
 
 
-class ArticleAuthorship(CollaborationModel, StudentCollaborationModel):
-    """Store object relating collaborators to article."""
-
-    article = models.ForeignKey(
-        Article, related_name="authorship", on_delete=models.CASCADE)
-
-    class Meta:
-        ordering = ['article', 'display_order']
-        unique_together = ('article', 'display_order')
-
-
 class Book(VitaePublicationModel):
     """Store instance representing a book."""
 
@@ -99,17 +88,6 @@ class Book(VitaePublicationModel):
         return self.editions.all().order_by('-pub_date')
 
     objects = models.Manager()
-
-
-class BookAuthorship(CollaborationModel, StudentCollaborationModel):
-    """Store authorship object relating collaborators to book."""
-
-    book = models.ForeignKey(
-        Book, related_name="authorship", on_delete=models.CASCADE)
-
-    class Meta:
-        ordering = ['book', 'display_order']
-        unique_together = ('book', 'display_order')
 
 
 class BookEdition(DisplayableModel):
@@ -165,27 +143,6 @@ class Chapter(VitaePublicationModel):
 
     objects = models.Manager()
 
-class ChapterAuthorship(CollaborationModel, StudentCollaborationModel):
-    """Store object relating collaborators to article."""
-
-    chapter = models.ForeignKey(
-        Chapter, related_name="authorship", on_delete=models.CASCADE)
-
-    class Meta:
-        ordering = ['display_order']
-        unique_together = (('chapter', 'display_order'))
-
-
-class ChapterEditorship(CollaborationModel):
-    """Store object relating editors to chapter."""
-
-    chapter = models.ForeignKey(
-        Chapter, related_name="editorship", on_delete=models.CASCADE)
-
-    class Meta:
-        ordering = ['display_order']
-        unique_together = (('chapter', 'display_order'))
-
 
 class Report(VitaePublicationModel):
     """Store instance representing reports."""
@@ -209,14 +166,3 @@ class Report(VitaePublicationModel):
     #     return self.files.filter(is_primary__exact=True)
 
     objects = models.Manager()
-
-
-class ReportAuthorship(CollaborationModel, StudentCollaborationModel):
-    """Store object relating collaborators to report."""
-
-    report = models.ForeignKey(
-        Report, related_name="authorship", on_delete=models.CASCADE)
-
-    class Meta:
-        ordering = ['display_order']
-        unique_together = ('report', 'display_order')

@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from .base import VitaeModel
 from .people import Collaborator
-from .collaborations import CollaborationModel, StudentCollaborationModel
+# from .collaborations import CollaborationModel, StudentCollaborationModel
 from .managers import GrantManager
 
 from markdown import markdown
@@ -67,7 +67,7 @@ class Grant(VitaeModel):
     abstract_html = models.TextField(blank=True, null=True, editable=False)
 
     collaborators = models.ManyToManyField(
-        Collaborator, through='GrantCollaboration', related_name="grants")
+        Collaborator, through='cv.GrantCollaboration', related_name="grants")
 
     def get_pi(self):
         return self.collaborators.filter(grantcollaboration__is_pi=True)
@@ -86,23 +86,6 @@ class Grant(VitaeModel):
     displayable = GrantManager()
     # internal_grants = InternalGrantManager()
     # external_grants = ExternalGrantManager()
-
-
-class GrantCollaboration(CollaborationModel):
-    """Store object relating collaborators to grant."""
-
-    grant = models.ForeignKey(
-        Grant, related_name="collaboration", on_delete=models.PROTECT)
-    is_pi = models.BooleanField(
-        _('Is principal investigator?'), default=False)
-    role = models.CharField(
-        _('Role'), max_length=50, blank=True)
-
-    class Meta:
-        ordering = ['display_order']
-
-    def __str__(self):
-        return str(self.collaborator)
 
 
 class Talk(VitaeModel):
@@ -138,17 +121,6 @@ class Talk(VitaeModel):
         return self.presentations.all()[0]
 
     objects = models.Manager()
-
-
-class TalkAuthorship(CollaborationModel, StudentCollaborationModel):
-    """Store object relating collaborators to article."""
-
-    talk = models.ForeignKey(
-        Talk, related_name="authorship", on_delete=models.CASCADE)
-
-    class Meta:
-        ordering = ['talk', 'display_order']
-        unique_together = ('talk', 'display_order')
 
 
 class Presentation(models.Model):
@@ -242,7 +214,7 @@ class Dataset(VitaeModel):
     """Stores instance representing a dataset."""
 
     authors = models.ManyToManyField(
-        Collaborator, through='DatasetAuthorship', related_name='datasets')
+        Collaborator, through='cv.DatasetAuthorship', related_name='datasets')
     pub_date = models.DateField(
         _('Publication date'), blank=True, null=True)
     version_number = models.CharField(
@@ -280,14 +252,3 @@ class Dataset(VitaeModel):
         return '%s' % self.short_title
 
     objects = models.Manager()
-
-
-class DatasetAuthorship(CollaborationModel, StudentCollaborationModel):
-    """Store object relating creators of dataset to a dataset instance."""
-
-    dataset = models.ForeignKey(
-        Dataset, related_name="authorship", on_delete=models.CASCADE)
-
-    class Meta:
-        ordering = ['dataset', 'display_order']
-        unique_together = ('dataset', 'display_order')
