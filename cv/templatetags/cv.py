@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
-from cv.utils import CSLCitation
+from cv.utils import CSLCitation, construct_name
 
 register = template.Library()
 
@@ -169,7 +169,6 @@ def print_collaborators(collaborators, sep=', ', two_sep=' and ',
     """Creates a formatted string of a queryset of collaborators."""
     num = et_al_after if et_al_after else len(collaborators)
     collaborators = [construct_name(a, **kwargs) for a in collaborators[0:num]]
-    # print(authors)
     if len(collaborators) == 1:
         return collaborators[0]
     elif len(collaborators) == 0:   # Publication models need to check for
