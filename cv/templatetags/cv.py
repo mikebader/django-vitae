@@ -173,7 +173,7 @@ def print_collaborators(collaborators, sep=', ', two_sep=' and ',
         return collaborators[0]
     elif len(collaborators) == 0:   # Publication models need to check for
                                     # at least one author!!!
-        return []
+        return ''
     final_sep = last_sep if len(collaborators) > 2 else two_sep
     return '{}{}{}'.format(
         sep.join(collaborators[:-1]), final_sep, collaborators[-1])

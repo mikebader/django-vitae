@@ -5,11 +5,13 @@ from nose.plugins.attrib import attr
 
 from tests.cvtests import VitaePublicationTestCase, AuthorshipTestCase
 
-from cv.models import Article, ArticleAuthorship, Journal
+from cv.models import Article, ArticleAuthorship, Journal, Position
 from cv.settings import PUBLICATION_STATUS
-import cv.templatetags as cv
+from cv.utils import CSLCitation
 
-@attr('cv')
+import sys
+
+@attr('cv-template-tags')
 class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
 
     @classmethod
@@ -50,6 +52,28 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
             'status': PUBLICATION_STATUS['PUBLISHED_STATUS']
         }
 
+        a4 = {
+            'title': 'Forthcoming Article',
+            'short_title': 'Forthcoming',
+            'slug': 'forthcoming',
+            'journal': j3,
+            'status': PUBLICATION_STATUS['FORTHCOMING_STATUS']
+        }
+
+        a5 = {
+            'title': 'Article in Preparation',
+            'short_title': 'Inprep Article',
+            'slug': 'inprep-article',
+            'status': PUBLICATION_STATUS['INPREP_STATUS']
+        }
+
+        a6 = {
+            'title': 'Article in Revision',
+            'short_title': 'Revision Article',
+            'slug': 'revise-article',
+            'status': PUBLICATION_STATUS['REVISE_STATUS']
+        }
+
         cls.a = Article.objects.create(**a)
         auth = ArticleAuthorship(
             collaborator=cls.einstein, article=cls.a, display_order=1)
@@ -68,17 +92,23 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
                 collaborator=x, article=cls.a3,
                 display_order=i)
             auth.save()
+        cls.a4 = Article.objects.create(**a4)
+        cls.a5 = Article.objects.create(**a5)
+        cls.a6 = Article.objects.create(**a6)
+
+        cls.authuser = User.objects.create_user(
+            'testuser', 'test@example.com', 's3krit')
 
     def test_publication_entries(self):
-        """Test contents of publication_entries inclusion tag."""
+        t = Template("""
+            {% load cv %}
+            {% publication_entries articles %}
+        """)
         context = Context({
             'articles': Article.displayable.published(),
             'user': AnonymousUser()
         })
-        template = Template(
-            '{% load cv %}\n'
-            '{% publication_entries articles %}')
-        rendered_template = template.render(context)
+        rendered = t.render(context)
         html_test_text = (
             '<span class="citation">Einstein, A. On the Generalized '
             'Theory of Gravitation. '
@@ -86,118 +116,212 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
         )
 
         self.assertInHTML(
-            '<span class="cv-entry-date col-2 col-sm-1">1950&nbsp;</span>',
-            rendered_template)
-        self.assertInHTML(html_test_text, rendered_template)
+            '1950&nbsp;',
+            rendered)
+        self.assertInHTML(html_test_text, rendered)
 
-    def test_publication_entries_tag_authorized_user(self):
-        user = User.objects.create_user(
-            'testuser', 'test@example.com', 's3krit')
-        template = Template(
-            '{% load cv %}\n'
-            '{% publication_entries articles %}')
+        # With authorized user
         context = Context({
             'articles': Article.displayable.published(),
-            'user': user
+            'user': self.authuser
         })
-        rendered_template = template.render(context)
-        html_test_text = (
-            '<a class="ml-4 article-edit cv-edit" '
-            'href="/forms/article/1/edit/"><i class="far fa-edit"></i></a>'
-        )
-        self.assertInHTML(html_test_text, rendered_template)
+        rendered = t.render(context)
+        html_test_text = '/forms/article/1/edit/'
+        self.assertIn(html_test_text, rendered)
 
-    def test_publication_add_tag(self):
-        user = User.objects.create_user(
-            'testuser', 'test@example.com', 's3krit')
-        template = Template(
-            '{% load cv %}'
-            '{% add_item "article" %}'
-        )
-        context = Context({'user': user})
-        rendered_template = template.render(context)
-        html_test_text = (
-            '<a class="article-add cv-add" alt="Add new article" '
-            'href="/forms/article/add/"><i class="far fa-plus-square"></i>'
-            ' Add new article</a>'
-        )
-        self.assertInHTML(html_test_text, rendered_template)
-
-    def test_publication_add_not_authorized(self):
-        user = AnonymousUser()
-        template = Template(
-            '{% load cv %}'
-            '{% add_item "article" %}'
-        )
-        context = Context({'user': user})
-        rendered_template = template.render(context)
-        self.assertHTMLEqual('', rendered_template)
-
-    def test_print_authors_returns_formatted_text_one_author(self):
-        """Tests print_authors filter provides author list with formats."""
-        user = AnonymousUser()
-        template = Template(
-            '{% load cv %}'
-            '{{article|print_authors}}'
-        )
+        # With forthcoming article
         context = Context({
-            'article': self.a,
-            'user': user
+            'articles': Article.objects.filter(slug__exact='forthcoming'),
+            'user': AnonymousUser
         })
-        rendered_template = template.render(context)
+        rendered_template = t.render(context)
+        test_text = "forth.&nbsp;"
+        self.assertIn(test_text, rendered_template)
+
+    def test_publication_list(self):
+        t = Template("""
+            {% load cv %}
+            {% publication_list 'article' object_list %}
+        """)
+        context = Context({
+            'object_list': {
+                'published': Article.displayable.published(),
+                'revise': Article.displayable.revise(),
+                'inprep': Article.displayable.inprep()
+            },
+            'user': self.authuser
+        })
+        rendered = t.render(context)
+        self.assertInHTML('<h3>Published</h3>', rendered)
+        self.assertInHTML('<h3>Under Review</h3>', rendered)
+        self.assertInHTML('<h3>In Preparation</h3>', rendered)
+
+    def test_section_list(self):
+        t = Template("""
+            {% load cv %}
+            {% section_list 'article' object_list 'article heading' %}
+        """)
+        context = Context({
+            'object_list': {
+                'published': Article.displayable.published(),
+                'revise': Article.displayable.revise(),
+                'inprep': Article.displayable.inprep()
+            },
+            'user': self.authuser
+        })
+        rendered = t.render(context)
+        a = Article.objects.get(slug='gen-theory-gravitation')
+        self.assertInHTML('<h2>Article Heading</h2>', rendered)
+        self.assertIn(CSLCitation(a).entry_parts()[1], rendered)
+
+    def test_add_item(self):
+        t = Template("""
+            {% load cv %}
+            {% add_item "article" %}
+        """)
+
+        # Authorized user
+        context = Context({'user': self.authuser})
+        rendered = t.render(context)
+        html_test_text = '/forms/article/add/'
+        self.assertIn(html_test_text, rendered)
+
+        # Unauthorized user
+        context = Context({'user': AnonymousUser()})
+        rendered = t.render(context)
+        self.assertEqual('', rendered.strip())
+
+    def test_edit_item(self):
+        t = Template("""
+            {% load cv %}
+            {% edit_item object %}
+        """)
+
+        # Authorized user
+        context = Context({
+            'object': Article.displayable.get(slug='gen-theory-gravitation'),
+            'user': self.authuser
+        })
+        rendered = t.render(context)
+        self.assertInHTML("""
+            <a class="article-edit cv-edit" href="/forms/article/1/edit/"
+            title="Edit article">
+            <i class="far fa-edit"></i></a>
+        """, rendered)
+
+        # Unauthorized user
+        context = Context({
+            'object': Article.displayable.get(slug='gen-theory-gravitation'),
+            'user': AnonymousUser()
+        })
+        rendered = t.render(context)
+        self.assertHTMLEqual('', rendered.strip())
+
+    def test_print_collaborators(self):
+        t = Template("""
+            {% load cv %}
+            {% print_collaborators article.authorship.all sep="; " two_sep=" & " last_sep="; & " %}
+        """)
+
+        # Single collaborator
+        context = Context({
+            'article': self.a
+        })
+        rendered = t.render(context)
         html_test_text = ('Albert Einstein')
-        self.assertEqual(html_test_text, rendered_template,
-                         'Default print_authors with two authors '
+        self.assertEqual(html_test_text, rendered.strip(),
+                         'print_collaborators with one author '
                          'incorrectly formatted')
 
-    def test_print_authors_returns_formatted_text_two_authors(self):
-        """Tests print_authors filter provides author list with formats."""
-        user = AnonymousUser()
-        template = Template(
-            '{% load cv %}'
-            '{{article|print_authors}}'
-        )
+        # Two collaborators
         context = Context({
-            'article': self.a2,
-            'user': user
+            'article': self.a2
         })
-        rendered_template = template.render(context)
-        html_test_text = ('Albert Einstein and Jakob Laub')
-        self.assertEqual(html_test_text, rendered_template,
-                         'Default print_authors with two authors '
+        rendered = t.render(context)
+        html_test_text = ('Albert Einstein &amp; Jakob Laub')
+        self.assertEqual(html_test_text, rendered.strip(),
+                         'print_collaborators with two authors '
                          'incorrectly formatted')
 
-
-    def test_print_authors_returns_formatted_text_three_authors(self):
-        """Tests print_authors filter provides author list with formats."""
-        user = AnonymousUser()
-        template = Template(
-            '{% load cv %}'
-            '{{article|print_authors}}'
-        )
+        # Three collaborators
         context = Context({
-            'article': self.a3,
-            'user': user
+            'article': self.a3
         })
-        rendered_template = template.render(context)
-        html_test_text = ('Albert Einstein, Richard C. Tolman, and Boris Podolsky')
-        self.assertEqual(html_test_text, rendered_template,
-                         'Default print_authors with three authors '
+        rendered = t.render(context)
+        html_test_text = (
+            'Albert Einstein; Richard C. Tolman; &amp; Boris Podolsky'
+        )
+        self.assertEqual(html_test_text, rendered.strip(),
+                         'print_collaborators with three authors '
                          'incorrectly formatted')
 
-    def test_print_authors_arguments(self):
-        """Tests arguments on print_authors filter."""
-        # Need to fix to splice argument list, see here:
-        # https://stackoverflow.com/a/55056123/12586249
-        user = AnonymousUser()
-        template = Template(
-            '{% load cv %}'
-            '{{article|print_authors:\' & \'}}'
-        )
+        # Zero collaborators
         context = Context({
-            'article': self.a3,
-            'user': user
+            'article': self.a4
         })
-        rendered_template = template.render(context)
+        rendered = t.render(context)
+        self.assertEqual('', rendered.strip())
 
+    def test_cite_item(self):
+        t = Template("""
+            {% load cv %}
+            {% cite_item object %}
+        """)
+        context = Context({
+            'object': Article.objects.get(slug='gen-theory-gravitation')
+        })
+        rendered = t.render(context)
+        self.assertEqual(
+            ('Einstein, A.  (1950). On the Generalized Theory of Gravitation. '
+             '<i>Scientific American</i>, <i>182</i>(4), 13–17.'),
+            rendered.strip()
+        )
 
+    def test_cite_download(self):
+        t = Template("""
+            {% load cv %}
+            {% cite_download object 'ris' %}
+        """)
+        context = Context({
+            'object': Article.objects.get(slug='gen-theory-gravitation')
+        })
+        rendered = t.render(context)
+        self.assertIn('/article/gen-theory-gravitation/cite/ris', rendered)
+
+    def test_monetize(self):
+        t = Template("""
+            {% load cv %}
+            {{1000|monetize:"£"}}
+        """)
+        rendered = t.render(Context({}))
+        self.assertEqual('£1,000', rendered.strip())
+
+    def test_year_range(self):
+        position = Position.objects.create(**{
+            'title': 'Professor',
+            'institution': 'Institution',
+            'start_date': '2000-01-01'
+        })
+        t = Template("""
+            {% load cv %}
+            {{position|year_range}}
+        """)
+
+        # Start date only
+        context = Context({'position': position})
+        rendered = t.render(context)
+        self.assertEqual("2000–", rendered.strip())
+
+        # Start date and end date in same year
+        position.end_date = "2000-12-31"
+        position.save()
+        context = Context({'position': position})
+        rendered = t.render(context)
+        self.assertEqual("2000", rendered.strip())
+
+        # Start date and end date different years
+        position.end_date = "2001-12-31"
+        position.save()
+        context = Context({'position': position})
+        rendered = t.render(context)
+        self.assertEqual("2000–2001", rendered.strip())
