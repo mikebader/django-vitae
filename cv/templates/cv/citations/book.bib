@@ -1,6 +1,6 @@
-{% load cvtags %}
+{% load cv %}
 @book{bader_{{book.slug}}_{{book.pub_date.year}},
-  author    = { {{ book.authorship.all|print_authors_bib_format }} }, 
+  author = { {% print_collaborators book.authorship.all " and " " and " " and " %} },
   title     = { {{book.title}} },
   abstract  = { {{book.abstract}} },
   {% if book.editions %}{% with book.editions.all|first as edition %}{% if edition.publisher %}publisher = { {{edition.publisher}} },{% endif %}

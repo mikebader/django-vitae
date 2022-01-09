@@ -1,4 +1,4 @@
-{% load cvtags %}
+{% load cv %}
 {% with talk.get_latest_presentation as presentation %}
 @inproceedings{bader_{{presentation.presentation_date.year}},
 	address = { {{presentation.city}}, {{presentation.state}} },
@@ -6,7 +6,7 @@
 	booktitle = { {{presentation.event}} },
 	pages = {},
 	url = {http://{{site}}/{{talk.get_absolute_url}} },
-	author = { {{ talk.collaborator.all|print_authors_bib_format }} },
+	author = { {% print_collaborators talk.collaborator.all " and " " and " " and " %} },
 	month = {{presentation.presentation_date|date:"b"|lower}},
 	year = { {{presentation.presentation_date.year}} }
 }

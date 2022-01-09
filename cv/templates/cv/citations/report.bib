@@ -1,6 +1,6 @@
-{% load cvtags %}
+{% load cv %}
 @techreport{bader-{{report.slug}},
-	author = { {{ report.authorship.all|print_authors_bib_format }} },
+	author = { {% print_collaborators report.authorship.all " and " " and " " and " %} },
 	year = { {{report.pub_date.year}} },
 	month = {{report.pub_date|date:"b"}},
 	title = { {{report.title}} },

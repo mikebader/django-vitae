@@ -23,7 +23,7 @@
         {% endif %}
     {% endblock abstract %}
 
-{% block details %}
+
     {% block citation %}
         <div class="col-12 citation">
             {% block formatted_citation %}<strong>Citation.</strong> {% cite_item object %}{% endblock %}
@@ -75,7 +75,7 @@
     {% endwith %}
     {% endblock media_mentions %}
 
-{% endblock details %}
+{% endblock centerbar %}
 
 {% block next-previous %}
 <div class="col-12 col-sm-10">
@@ -83,8 +83,4 @@
     <a href="{% url 'cv:cv_list' %}#{{model_name}}-{{object.slug}}">&#xab;Go to CV</a>
 </div>
 {% endblock %}
-
-{% endblock centerbar %}
-
-
 
