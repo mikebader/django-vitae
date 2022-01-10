@@ -104,3 +104,16 @@ PUBLISHED_RANGE = MinMax(50, 90)
 
 CITE_CSL_STYLE = getattr(settings, 'CV_CITE_CSL_STYLE', 'apa')
 ENTRY_CSL_STYLE = getattr(settings, 'CV_ENTRY_CSL_STYLE', 'apa-no-date')
+
+DETAIL_VIEWS_AVAILABLE = getattr(
+    settings, 'DETAIL_VIEWS_AVAILABLE',
+    ['article', 'book', 'chapter', 'report', 'talk', 'dataset']
+)
+CITATION_VIEWS_AVAILABLE = getattr(
+    settings, 'CITATION_VIEWS_AVAILABLE', DETAIL_VIEWS_AVAILABLE
+)
+
+CITATION_DOWNLOAD_FORMATS = getattr(settings, 'CITATION_DOWNLOAD_FORMATS', {
+    'ris': 'application/x-research-info-systems',
+    'bib': 'application/x-bibtex',
+})

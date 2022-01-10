@@ -140,3 +140,33 @@ Default: ``[]`` (Empty list)
 
 A list of e-mails identifying contributors that should be highlighted in the CV. 
 
+.. setting:: CITATION_DOWNLOAD_FORMATS
+
+``CITATION_DOWNLOAD_FORMATS``
+-----------------------------
+
+Default:
+
+.. code-block:: python
+
+	{
+	'ris': 'application/x-research-info-systems',
+	'bib': 'application/x-bibtex'
+	}
+
+A dictionary containing the file formats available for download and their
+corresponding MIME types. 
+
+.. setting:: DETAIL_VIEWS_AVAILABLE
+
+``DETAIL_VIEWS_AVAILABLE``
+--------------------------
+
+Default::
+
+	['article', 'book', 'chapter', 'report', 'talk', 'dataset']
+
+A list of strings representing lowercase name models that should have a detail
+view available. If a model type is not included
+in :setting:`DETAIL_VIEWS_AVAILABLE`, :class:`cv.views.CVDetailView` will
+return an :class:`~django.http.Http404` response.

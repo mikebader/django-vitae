@@ -1,7 +1,6 @@
-:mod:`cv.views`
----------------
-
-Reference for :mod:`cv.views` generated from docstrings.
+=====
+Views
+=====
 
 .. automodule:: cv.views
    :members:

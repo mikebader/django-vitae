@@ -63,4 +63,4 @@ TEMPLATES = [
 MEDIA_ROOT = '/Users/bader/tmp/'
 MEDIA_URL = '/media/'
 
-
+STATIC_URL = 'static/'

@@ -11,7 +11,8 @@ from cv.utils import CSLCitation, construct_name
 
 register = template.Library()
 
-## List Inclusion Tags
+
+# List Inclusion Tags
 @register.inclusion_tag(
     'cv/_entries_publication.html', takes_context=True)
 def publication_entries(context, pubqs, forthcoming='forth.'):
@@ -152,23 +153,23 @@ def cite_download(obj, fmt):
     cite_url = reverse('cv:citation', kwargs={
         'model_name': type(obj).__name__.lower(),
         'slug': obj.slug,
-        'format': fmt
+        'fmt': fmt
     })
     t = get_template('cv/_cite_download.html')
     return t.render(dict([
-        ('format', fmt,),
+        ('fmt', fmt,),
         ('cite_url', cite_url),
         ('object', obj)
     ]))
 
 
-# Formatting tags
 @register.simple_tag()
 def print_collaborators(collaborators, sep=', ', two_sep=' and ',
-                        last_sep=', and ', et_al_after=None, **kwargs):
+                        last_sep=', and ', et_al_after=None):
     """Creates a formatted string of a queryset of collaborators."""
+
     num = et_al_after if et_al_after else len(collaborators)
-    collaborators = [construct_name(a, **kwargs) for a in collaborators[0:num]]
+    collaborators = [construct_name(a) for a in collaborators[0:num]]
     if len(collaborators) == 1:
         return collaborators[0]
     elif len(collaborators) == 0:   # Publication models need to check for
