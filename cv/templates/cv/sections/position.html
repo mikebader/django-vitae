@@ -2,19 +2,17 @@
 
 {% for position in object_list %}
 {% spaceless %}
-    <ul class="cv-entry">
-        <li id="position-{{position.pk}}">
-            <div class="noneditable row">
-                <span class="cv-entry-date col-2 col-sm-1">
+    <ul class="cv-entries cv-entries-position">
+        <li id="position-{{position.pk}}" class="cv-entry cv-entry-position row">
+                <span class="cv-entry-date cv-entry-date-position col-2 col-sm-1">
                     {{position|year_range}}
                 </span>
-                <span class="cv-entry-text col-9 col-sm-10">
-                    <em class="cv-entry-position-title">{{position.title}}</em>{% if position.project %}, {{position.project}},{% endif %}{% if position.department %}, {{position.department}}{% endif %}, {{position.institution}}
+                <span class="cv-entry-text cv-entry-text-position col-9 col-sm-10">
+                    <span class="cv-entry-position-title">{{position.title}}</span>{% if position.project %}, <span class="cv-entry-position-project">{{position.project}}</span>,{% endif %}{% if position.department %}, <span class="cv-entry-position-department">{{position.department}}</span>{% endif %}, <span class="cv-entry-position-institution">{{position.institution}}</span>
 
                 {% edit_item position %}
 
                 </span>
-            </div>
         </li>
     </ul>
 {% endspaceless %}

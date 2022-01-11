@@ -2,16 +2,14 @@
 
 {% for piece in object_list %}
 {% spaceless %}
-    <ul class="cv-entry">
-		<li id="otherwriting-{{piece.pk}}">
-			<div class="noneditable row">
-				<span class="cv-entry-date col-2 col-sm-1">{{piece.date|date:"Y"}}
-				</span>
-				<span class="cv-entry-text col-9 col-sm-10">{% if piece.url %}<a href="{{piece.url}}">{{piece.title}}</a>{% else %}{{piece.title}}{% endif %}<cite>. {{piece.venue}}</cite>{% if piece.pages %}, {{piece.pages}}{% endif %}{% if piece.date %}. {{piece.date|date:"F j"}}{% endif %}.
-					{% edit_item piece %}
-				</span>
-			</div>
-			<div class="editable"></div>
+    <ul class="cv-entries cv-entries-otherwriting">
+		<li id="otherwriting-{{piece.pk}}" class=" cv-entry cv-entry-otherwriting row">
+			<span class="cv-entry-date cv-entry-date-otherwriting col-2 col-sm-1">{{piece.date|date:"Y"}}
+			</span>
+			<span class="cv-entry-text cv-entry-text-ottherwriting col-9 col-sm-10">{% if piece.url %}<a href="{{piece.url}}" class="cv-entry-otherwriting-url">{{piece.title}}</a>{% else %}<span class="cv-entry-otherwriting-title">{{piece.title}}</span>{% endif %}<cite>. <span class="cv-entry-otherwriting-venue">{{piece.venue}}</span></cite>{% if piece.pages %}, <span class="cv-entry-otherwriting-pages">{{piece.pages}}</span>{% endif %}{% if piece.date %}. <span class="cv-entry-otherwriting-date">{{piece.date|date:"F j"}}</span>{% endif %}.
+			</span>
+
+			{% edit_item piece %}
 		</li>
 	</ul>
 {% endspaceless %}

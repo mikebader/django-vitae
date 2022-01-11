@@ -8,11 +8,11 @@
 
 {% block type-specific-info %}
 {%if book.editions.all|length > 1 %}
-<div class="col-12 col-sm-10 editions">
-    <h3>Other editions</h3>
+<div class="cv-detail-editions col-12 col-sm-10 editions">
+    <h3 class="cv-detail cv-detail-editions-header">Other editions</h3>
     <ul>
     {% for edition in book.editions.all|slice:"1:" %}
-        <li class="details"><em>{{edition.edition}} edition</em> ({{edition.pub_date|date:"Y"}}){% if edition.publisher %} {{edition.publisher}}.{% endif %}{% if edition.isbn %} ISBN: {{edition.isbn}}{% endif %}{% if edition.description %} {{edition.description}}{% endif %}</li>
+        <li class="cv-detail-edition-details"><span class="cv-detail-edition-edition">{{edition.edition}} edition</em> ({{edition.pub_date|date:"Y"}}){% if edition.publisher %} <span class="cv-detail-edition-publisher">{{edition.publisher}}</span>.{% endif %}{% if edition.isbn %} <span class="cv-detail-edition-isbn">ISBN: {{edition.isbn}}</span>{% endif %}{% if edition.description %} <span class="cv-detail-edition-description">{{edition.description}}</span>{% endif %}</li>
     {% endfor %}
     </ul>
 </div>

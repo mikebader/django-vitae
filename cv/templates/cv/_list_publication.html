@@ -1,20 +1,20 @@
 {% load cv %} 
 
 {% if object_list.total or user.is_authenticated %}
-	{% if object_list.published %} 
+	{% if object_list.published %}{% with 'published' as status %}
 		{% if object_list.revise or object_list.inprep %}
-    	<h3>Published</h3>
+	    	<h3 class="cv-subsection cv-subsection-{{model_name}} cv-published cv-published-{{model_name}}">Published</h3>
 		{% endif %}
 		{% publication_entries object_list.published %}
-		{% endif %} 
+	{% endwith %}{% endif %} 
 
 	{% if object_list.revise and user.is_authenticated %}
-	    <h3>Under Review</h3>
+	    <h3 class="cv-subsection cv-subsection-{{model_name}} cv-review cv-review-{{model_name}}">Under Review</h3>
 	    {% publication_entries object_list.revise %}
 	{% endif %}
 
 	{% if object_list.inprep %}
-	    <h3>In Preparation</h3>
+	    <h3 class="cv-subsection cv-subsection-{{model_name}} cv-inprep cv-inprep-{{model_name}}">In Preparation</h3>
 	    {% publication_entries object_list.inprep %}
 	{% endif %}
 

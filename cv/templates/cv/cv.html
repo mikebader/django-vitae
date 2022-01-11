@@ -1,34 +1,65 @@
-{% extends "cv/base.html" %}
+{% extends "cv/skeleton.html" %}
+
+{% load cv %}
 
 {% block centerbar %}
 
-    {% block contact %}{{block.super}}{% endblock contact %}
+    {% block contact %}
+        {% include 'cv/contact.html' %}
+    {% endblock %}
+
 
     <!-- CV SECTIONS -->
-    {% block degrees %}{{block.super}}{% endblock %}
+    {% block degrees %}
+        {% section_list 'degree' degree_list %}
+    {% endblock %}
 
-    {% block positions %}{{block.super}}{% endblock %}
+    {% block positions %}
+        {% section_list 'position' position_list 'Employment' %}
+    {% endblock %}
 
-    {% block awards %}{{block.super}}{% endblock %}
+    {% block awards %}
+        {% section_list 'award' award_list %}
+    {% endblock %}
 
-    {% block books %}{{block.super}}{% endblock %}
+    {% block books %}
+        {% section_list 'book' book_list %}
+    {% endblock %}
 
-    {% block articles %}{{block.super}}{% endblock %}
+    {% block articles %}
+        {% section_list 'article' article_list %}
+    {% endblock %}
 
-    {% block chapters %}{{block.super}}{% endblock %}
+    {% block chapters %}
+        {% publication_list 'chapter' chapter_list %}
+    {% endblock %}
 
-    {% block reports %}{{block.super}}{% endblock %}
+    {% block reports %}
+        {% section_list 'report' report_list %}
+    {% endblock %}
 
-    {% block grants %}{{block.super}}{% endblock %}
+    {% block grants %}
+        {% section_list 'grant' grant_list %}
+    {% endblock %}
 
-    {% block otherwriting %}{{block.super}}{% endblock %}
+    {% block otherwriting %}
+        {% section_list 'otherwriting' otherwriting_list 'Essays, op-eds, and other writing' %}
+    {% endblock %}
 
-    {% block talks %}{{block.super}}{% endblock %}
+    {% block talks %}
+        {% section_list 'talk' talk_list %}
+    {% endblock %}
 
-    {% block students %}{{block.super}}{% endblock %}
+    {% block students %}
+        {% section_list 'student' student_list %}
+    {% endblock %}
 
-    {% block courses %}{{block.super}}{% endblock %}
+    {% block courses %}
+        {% section_list 'course' course_list 'Teaching' %}
+    {% endblock %}
 
-    {% block service %}{{block.super}}{% endblock %}
+    {% block service %}
+        {% section_list 'service' service_list %}
+    {% endblock %}
 
 {% endblock centerbar %}

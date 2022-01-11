@@ -2,15 +2,12 @@
 
 {% for service in services %}
 {% spaceless %}
-    <li id="service-{{service.pk}}">
-        <div class="noneditable row">
-            <span class="cv-entry-date col-2 col-sm-1">{{service|year_range:"-"}}</span>
-            <span class="cv-entry-text col-9 col-sm-10"><em>{{service.role}}</em>, {% if service.group %}{{service.group}}, {% endif %}{{service.organization}}.
+    <li id="service-{{service.pk}}" class="cv-entry cv-entry-service row">
+        <span class="cv-entry-date col-2 col-sm-1">{{service|year_range:"-"}}</span>
+        <span class="cv-entry-text col-9 col-sm-10"><span class="cv-entry-text-service-role">{{service.role}}</span>, {% if service.group %}<span class="cv-entry-text-service-group">{{service.group}}</span>, {% endif %}<span class="cv-entry-text-service-organization">{{service.organization}}</span>.
 
-            {% edit_item service %}
-            </span>
-        </div>
-        <div class="editable"></div>
+        {% edit_item service %}
+        </span>
     </li>
 {% endspaceless %}
 {% endfor %}

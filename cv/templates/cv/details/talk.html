@@ -8,11 +8,11 @@
 
 {% block type-specific-info %}
 {% if talk.presentations.all %}
-<div class="col-12 col-sm-10 editions">
-	<h3>Presentations</h3>
-	<ul>
+<div class="cv-detail-presentations col-12 col-sm-10">
+	<h3 class="cv-detail cv-detail-presentations-header">Presentations</h3>
+	<ul">
 	{% for presentation in talk.presentations.all %}
-		<li class="details">{{presentation.presentation_date|date:"M Y"}} at {{presentation.event}}.</li>
+		<li class="cv-details-presentation-details"><span class="cv-details-presentation-date">{{presentation.presentation_date|date:"M Y"}}</span> at <span class="cv-details-presentation-event">{{presentation.event}}</span>.</li>
 	{% endfor %}
 	</ul>
 </div>

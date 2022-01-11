@@ -2,13 +2,11 @@
 
 {% for student in object_list %}
 {% spaceless %}
-    <ul class="cv-entry">
-        <li id="student-{{student.pk}}">
-            <div class="noneditable row">
-                <span class="cv-entry-text col-11">{{student.first_name}} {{student.last_name}} ({{student.role}}) {% if student.graduation_date %}Graduated {{student.graduation_date|date:"M Y"}}{% endif %}{% if student.current_position %}, currently {{student.current_position}}{% endif %}
-                {% edit_item student %}
+    <ul class="cv-entries cv-entries-student">
+        <li id="student-{{student.pk}}" class="cv-entry cv-entry-student row">
+            <span class="cv-entry-text cv-entry-text-student col-11"><span class="cv-entry-text-student-first-name">{{student.first_name}}</span>  <span class="cv-entry-text-student-last-name">{{student.last_name}}</span> (<span class="cv-entry-text-student-role">{{student.role}}</span>) {% if student.graduation_date %}<span class="cv-entry-text-student-graduated-title">Graduated</span> <span class="cv-entry-text-student-graduation-date">{{student.graduation_date|date:"M Y"}}</span>{% endif %}{% if student.current_position %}, <span class="cv-entry-text-student-current-position-title">currently</span> <span class="cv-entry-text-student-current-position">{{student.current_position}}</span>{% endif %}
+            {% edit_item student %}
                 </span> 
-            </div>
         </li>
     </ul>
 {% endspaceless %}

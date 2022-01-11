@@ -34,6 +34,7 @@ ul.cv-primary-positions, ul.cv-entry, ul.cv-sublist {
 ul.cv-primary-positions {
 	padding-left:0px;
 	}
+
 .cv-sublist li {
 	padding-left: 2rem;
 	display: inline;
@@ -43,7 +44,7 @@ li {
 	padding-top: 1rem;
 	}
 
-li.cv-primary-positions {
+li.cv-primary-position {
 	margin:0px; 
 	padding:0px;
 	font-size: 1.5rem;
@@ -82,4 +83,8 @@ ul.presentations > li:before {
 
 .invalid-feedback {
 	font-size:1rem;
+}
+
+.cv-contact {
+	font-size: 2rem;
 }

@@ -1,13 +1,19 @@
-{% extends "cv/base.html" %}
+{% extends "cv/cv.html" %}
 
 {% load cv %}
 
 {% block centerbar %}
+    
+    {% block contact %}{{block.super}}{% endblock contact %}
 
-    <h2>{{model_name_plural|title}}</h2>
+    <div id="cv-list-{{model_name}}" class="cv-list cv-list-{{model_name}}">
+ 
+        <h2 class="cv-list-heading cv-list-heading-{{model_name}}">{{model_name_plural|title}}</h2>
 
-    {% include section_template %}
+        {% include section_template %}
 
-    {% add_item model_name %}
+        {% add_item model_name %}
+
+    </div>
 
 {% endblock %}

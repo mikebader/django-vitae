@@ -1,20 +1,18 @@
 {% load cv %}
 
-<ul class="mt-0 cv-entry">
+<ul class="cv-entries cv-entries-{{model_name}} mt-0">
 {% for pub in publications %}
 	{% spaceless %}
 	{% with pub.publication as publication %}
-	<li id="{{model_name}}-{{publication.slug}}" class="">
-		<div class="noneditable row">
-		<span class="cv-entry-date col-2 col-sm-1">{{pub.date}}&nbsp;</span>
-		<span class="cv-entry-text col-9 col-sm-11">
-			<span class="citation">{{pub.entry}}</span>
-			<a href="{{publication.get_absolute_url}}" title="Details for {{publication.short_title}}"><span class='fa  fa-chevron-circle-right' aria-hidden="true"></span></a>
+	<li id="{{model_name}}-{{publication.slug}}" class="cv-entry cv-entry-{{model_name}} row">
+		<span class="cv-entry-date cv-entry-date-{{model_name}} col-2 col-sm-1">{{pub.date}}&nbsp;</span>
+		<span class="cv-entry-text cv-entry-text-{{model_name}} col-9 col-sm-11">
+			<span class="cv-entry-citation cv-entry-citation-{{model_name}}">{{pub.entry}}</span>
+			<a class="cv-entry-detail-link" href="{{publication.get_absolute_url}}" title="Details for {{publication.short_title}}"><span class="fa  fa-chevron-circle-right" aria-hidden="true"></span></a>
 		{% if user.is_authenticated %}
 			{% edit_item publication %}
 		{% endif %}
 		</span>
-	</div>
 	</li>
 	{% endwith %}
 	{% endspaceless %}

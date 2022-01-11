@@ -3,8 +3,8 @@
 {% if object_list.total_grants or user.is_authenticated %}
 {% with object_list as grants %}
     {% if grants.internal_grants %}
-        <h3>Internal</h3>
-        <ul class="cv-entry">
+        <h3 class="cv-subsection cv-subsection-grant cv-grant-internal">Internal</h3>   
+        <ul class="cv-entries cv-entries-grant">
         {% with grants.internal_grants as grants %}
             {% include 'cv/_entries_grant.html' %}
         {% endwith %}
@@ -12,8 +12,8 @@
     {% endif %} 
 
     {% if grants.external_grants %}
-        <h3>External</h3>
-        <ul class="cv-entry">
+        <h3 class="cv-subsection cv-subsection-grant cv-grant-external">External</h3>
+        <ul class="cv-entries cv-entries-grant">
         {% with grants.external_grants as grants %}
             {% include 'cv/_entries_grant.html' %}
         {% endwith %}
