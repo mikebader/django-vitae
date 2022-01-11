@@ -111,7 +111,8 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
         })
         rendered = t.render(context)
         html_test_text = (
-            '<span class="citation">Einstein, A. On the Generalized '
+            '<span class="cv-entry-citation cv-entry-citation-article">'
+            'Einstein, A. On the Generalized '
             'Theory of Gravitation. '
             '<i>Scientific American</i>, <i>182</i>(4), 13–17.</span>'
         )
@@ -153,9 +154,9 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
             'user': self.authuser
         })
         rendered = t.render(context)
-        self.assertInHTML('<h3>Published</h3>', rendered)
-        self.assertInHTML('<h3>Under Review</h3>', rendered)
-        self.assertInHTML('<h3>In Preparation</h3>', rendered)
+        self.assertInHTML('<h3 class="cv-subsection cv-subsection-article cv-published cv-published-article">Published</h3>', rendered)
+        self.assertInHTML('<h3 class="cv-subsection cv-subsection-article cv-revise cv-revise-article">Under Review</h3>', rendered)
+        self.assertInHTML('<h3 class="cv-subsection cv-subsection-article cv-inprep cv-inprep-article">In Preparation</h3>', rendered)
 
     def test_section_list(self):
         t = Template("""
@@ -172,7 +173,10 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
         })
         rendered = t.render(context)
         a = Article.objects.get(slug='gen-theory-gravitation')
-        self.assertInHTML('<h2>Article Heading</h2>', rendered)
+        self.assertInHTML(
+            '<h2 id="article" class="cv-section-title">Article Heading</h2>',
+            rendered
+        )
         self.assertIn(CSLCitation(a).entry_parts()[1], rendered)
 
     def test_add_item(self):
@@ -205,7 +209,7 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
         })
         rendered = t.render(context)
         self.assertInHTML("""
-            <a class="article-edit cv-edit" href="/forms/article/1/edit/"
+            <a class="cv-edit cv-edit-article" href="/forms/article/1/edit/"
             title="Edit article">
             <i class="far fa-edit"></i></a>
         """, rendered)
