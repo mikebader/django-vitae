@@ -5,13 +5,14 @@ from nose.plugins.attrib import attr
 
 from tests.cvtests import VitaePublicationTestCase, AuthorshipTestCase
 
-from cv.models import Article, ArticleAuthorship, Journal, Position
+from cv.models import Article, ArticleAuthorship, Journal, Position, Chapter
 from cv.settings import PUBLICATION_STATUS
 from cv.utils import CSLCitation
+from cv.templatetags.cv import CSLMalformedCitationWarning
 
 import sys
 
-@attr('cv-template-tags')
+@attr('template-tags')
 class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
 
     @classmethod
@@ -276,6 +277,54 @@ class TemplateTagTestCase(VitaePublicationTestCase, AuthorshipTestCase):
              '<i>Scientific American</i>, <i>182</i>(4), 13–17.'),
             rendered.strip()
         )
+
+        # Incomplete citation
+        chapter = Chapter.objects.create(**{
+            'title': 'A Chapter with No Editor',
+            'short_title': 'Chapter No Editor',
+            'slug': 'chapter-no-editor',
+            'book_title': 'A Book of Chapters',
+            'status': PUBLICATION_STATUS['PUBLISHED_STATUS']
+            })
+        context = Context({'chapter': chapter})
+
+        # Default behavior (warn)
+        t = Template("""
+            {% load cv %}
+            {% cite_item chapter %}
+        """)
+        with self.assertWarns(CSLMalformedCitationWarning):
+            rendered = t.render(context)
+        self.assertEqual('', rendered.strip())
+
+        # verbose
+        t = Template("""
+            {% load cv %}
+            {% cite_item chapter 'verbose' %}
+        """)
+        with self.assertWarns(CSLMalformedCitationWarning) as w:
+            rendered = t.render(context)
+        self.assertIn('Citation not available.', rendered)
+
+        # raise
+        t = Template("""
+            {% load cv %}
+            {% cite_item chapter 'raise' %}
+        """)
+        with self.assertRaises(CSLCitation.CSLKeyError):
+            t.render(context)
+
+
+        # Bad cslerr parameter
+        t = Template("""
+            {% load cv %}
+            {% cite_item chapter 'silent' %}
+        """)
+        with self.assertRaises(ValueError) as e:
+            rendered = t.render(context)
+        self.assertIn('Bad cslerr', str(e.exception))
+
+
 
     def test_cite_download(self):
         t = Template("""

@@ -11,28 +11,13 @@ from cv.settings import INREVISION_RANGE, CITE_CSL_STYLE, ENTRY_CSL_STYLE
 
 import datetime
 import os
+import warnings
 from pathlib import Path
 
 
 class CSLError(Exception):
     """Base exception for CSL functions."""
     pass
-
-
-class CSLKeyError(CSLError):
-    """Exception to define missing key for CSL type.CSL
-
-    Attributes:
-        type -- citation type (e.g., article, chapter)
-        key -- dictionary key that cannot be left blank
-    """
-    def __init__(self, type, key):
-        msg = 'Cannot cite \'{0}\' when \'{1}\' is undefined'.format(
-            type, key)
-        self.message = msg
-
-    def __str__(self):
-        return self.message
 
 
 class CSLStyle:
@@ -103,6 +88,22 @@ class CSLCitation(object):
                 for instance
 
     """
+
+    class CSLKeyError(CSLError):
+        """Exception to define missing key for CSL type.CSL
+
+        Attributes:
+            type -- citation type (e.g., article, chapter)
+            key -- dictionary key that cannot be left blank
+        """
+        def __init__(self, type, key):
+            msg = 'Cannot cite \'{0}\' when \'{1}\' is undefined'.format(
+                type, key)
+            self.message = msg
+
+        def __str__(self):
+            return self.message
+
 
     def __init__(self, instance, **kwargs):
         self.instance = instance
@@ -198,7 +199,7 @@ class CSLCitation(object):
                 fields['type'] = 'manuscript'
         elif model_name == 'chapter':
             if len(self.instance.editorship.all()) < 1:
-                raise CSLKeyError('chapter', 'editorship')
+                raise self.CSLKeyError('chapter', 'editorship')
             if ((self.instance.pub_date or self.instance.submission_date) and
                self.instance.status >= INREVISION_RANGE.min):
                 fields.update({

@@ -2,7 +2,7 @@ from django.utils.translation import gettext_lazy as _
 
 from cv import settings
 
-from .cite import CSLError, CSLKeyError, CSLCitation, CSLStyle
+from .cite import CSLError, CSLCitation, CSLStyle
 
 import re
 

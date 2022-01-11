@@ -9,7 +9,7 @@ from cv.models import (Journal, Collaborator,
                        Chapter, ChapterAuthorship, ChapterEditorship,
                        Report, ReportAuthorship)
 from cv.settings import PUBLICATION_STATUS
-from cv.utils import check_isbn, CSLKeyError, CSLCitation, CSLStyle
+from cv.utils import check_isbn, CSLCitation, CSLStyle
 # from cv.utils.cite import retrieve_csl_style
 
 import os
@@ -233,7 +233,7 @@ class UtilsTestCase(VitaePublicationTestCase, AuthorshipTestCase):
         self.c.save()
         try:
             self.c.cite()
-        except CSLKeyError as e:
+        except CSLCitation.CSLKeyError as e:
             self.assertEqual(CSLKeyError, type(e))
             self.assertEqual(
                 'Cannot cite \'chapter\' when \'editorship\' is undefined',

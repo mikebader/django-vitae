@@ -9,7 +9,13 @@ from django.utils.safestring import mark_safe
 
 from cv.utils import CSLCitation, construct_name
 
+import warnings
+
 register = template.Library()
+
+
+class CSLMalformedCitationWarning(UserWarning):
+    pass
 
 
 # List Inclusion Tags
@@ -130,12 +136,46 @@ def edit_item(context, inst, text_before='', text_after=''):
 
 
 @register.simple_tag()
-def cite_item(obj):
-    """Html-formatted citation of object.
+def cite_item(obj, cslerr='warn'):
+    """HTML-formatted citation of object.
 
     :param obj: django-vitae object
+    :param cslerr: how :class:`~cv.utils.cite.CSLCitation.CSLKeyError` should
+                   be handled
+    :type cslerr: str, optional, default = 'warn',
+                  must be one of 'warn', 'verbose', 'raise'
+
+    Returns an HTML-formatted citation based on :setting:`CITE_CSL_STYLE`.
+
+    The ``cslerr`` parameter instructs the method how CSL formatting errors
+    should be handled:
+
+        ``'warn'``: (*default*) Returns empty string (``''``) and issue a
+        :class:`~cv.templatetags.cv.CSLMalformedCitationWarning`
+
+        ``'verbose'``: Renders ``cv/_cite_warning.html`` template including the
+        context variable ``cslerr`` that contains the error
+        message issued by the CSLKeyError exception, also issues
+        :class:`~cv.templatetags.cv.CSLMalformedCitationWarning`
+
+        ``'raise'``: Raise the CSLKeyError
     """
-    return mark_safe(CSLCitation(obj).cite_html())
+    if cslerr not in ['warn', 'verbose', 'raise']:
+        raise ValueError(
+            ("Bad cslerr value: '{}' (the value for cslerr parameter must be "
+             "one of 'warn', 'verbose', or 'raise')").format(cslerr)
+        )
+    try:
+        return mark_safe(CSLCitation(obj).cite_html())
+    except CSLCitation.CSLKeyError as e:
+        w = 'Citation information for {} is malformed: {}'.format(obj, e)
+        if cslerr != 'raise':
+            warnings.warn(w, CSLMalformedCitationWarning)
+            if cslerr == 'verbose':
+                c = {'cslerr': cslerr}
+                return get_template('cv/_cite_warning.html').render(c)
+            return ''
+        raise
 
 
 @register.simple_tag()
