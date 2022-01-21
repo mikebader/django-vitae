@@ -16,7 +16,7 @@
         {% block abstract %}
             {% if object.abstract %}
                 <div class="cv-detail-abstract col-12 col-sm-10">
-                    <h3 class="mt-4 cv-detail-abstract-name">{% block abstract_name %}Abstract{% endblock abstract_name %}</h3>
+                    <h3 class="mt-4 cv-detail-subheading cv-detail-abstract-name">{% block abstract_name %}Abstract{% endblock abstract_name %}</h3>
                     <div id="abstract" class="cv-detail-abstract-text">
                     {{object.abstract_html|safe}}
                     </div>
@@ -43,7 +43,7 @@
         {% block files %}
             {% if object.files.all or user.is_authenticated %}
                 <div class="cv-detail-files cv-detail-files-{{model_name}} col-12 col-sm-10 files">
-                    <h3 class="cv-detail cv-detail-files-header cv-detail-files-header-{{model_name}} mt-4">Files</h3>
+                    <h3 class="cv-detail cv-detail-subheading cv-detail-files-header cv-detail-files-header-{{model_name}} mt-4">Files</h3>
                     {% with object.files.all as files %}
                         <ul class="cv-detail-file-list cv-detail-file-list-{{model_name}}">
                             {% if files %}

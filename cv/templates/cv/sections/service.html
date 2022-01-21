@@ -3,7 +3,7 @@
 {% if object_list.total or user.is_authenticated %}
 {% with object_list as service %}    
     {% if service.discipline %}
-        <h3 class="cv-subsection cv-subsection-service cv-service-professional">Professional Service</h3>
+        <h3 class="cv-subsection-heading cv-subsection-heading-service cv-service-professional">Professional Service</h3>
         <ul class="cv-entries cv-entries-service cv-entries-service-professional">
             {% with service.discipline as services %}
                 {% include 'cv/_entries_service.html' %}
@@ -12,7 +12,7 @@
     {% endif %}
 
     {% if service.university %}
-        <h3 class="cv-subsection cv-subsection-service cv-service-university">University Service</h3>
+        <h3 class="cv-subsection-heading cv-subsection-heading-service cv-service-university">University Service</h3>
         <ul class="cv-entries cv-entries-service cv-entries-service-university">
             {% with service.university as services %}
                 {% include 'cv/_entries_service.html' %}
@@ -21,7 +21,7 @@
     {% endif %}
 
     {% if service.department %}
-        <h3 class="cv-subsection cv-subsection-service cv-service-department">Department Service</h3>
+        <h3 class="cv-subsection-heading cv-subsection-heading-service cv-service-department">Department Service</h3>
         <ul class="cv-entries cv-entries-service cv-entries-service-department">
             {% with service.department as services %}
                 {% include 'cv/_entries_service.html' %}
