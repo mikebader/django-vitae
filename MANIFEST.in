@@ -1,6 +1,7 @@
 include LICENSE
 include MANIFEST.in
 include README.rst
+recursive-include cv csl *
 graft docs
 graft cv/static
 graft cv/templates
