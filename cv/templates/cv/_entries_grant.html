@@ -2,7 +2,13 @@
 
 {% for grant in grants %}
     <li class="cv-entry cv-entry-grant row">
-        <span class="cv-entry-date cv-entry-date-date col-xs-2 col-sm-1">{% if grant.start_date and grant.end_date%}{{grant|year_range}}{% endif %}</span>
+        <span class="cv-entry-date cv-entry-date-date col-xs-2 col-sm-1">
+            {% if grant.end_date%}
+                {{grant|year_range}}
+            {% else %}
+                {{grant.start_date|date:"Y"}}&ndash;
+            {% endif %}
+        </span>
         <span class="cv-entry-text cv-entry-text-grant col-xs-9 col-sm-10"><span class="cv-entry-grant-title">{{grant.title}}. {% if grant.agency %}<span class="cv-entry-grant-agency">{{grant.agency}}</span>{% endif %}{% if grant.division %}, <span class="cv-entry-grant-division">{{grant.division}}</span>{% endif %} <span class="cv-entry-grant-amount monetized">({{grant.amount|monetize}})</span>. {% if grant.role %}<span class="cv-entry-grant-role"><em>{{grant.role}}</em></span>. {% endif %}{% if grant.get_pi %}{% print_collaborators grant.get_pi %} <span class="cv-entry-grant-pi"><span class="cv-entry-grant-pi-title">Principal Investigator{{grant.get_pi.count|pluralize}}</span></span>.{% endif %}</span>
 
         {% edit_item grant %}
