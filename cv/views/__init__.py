@@ -1,4 +1,5 @@
 from django.apps import apps
+from django.db.models import F
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import generic
@@ -90,6 +91,11 @@ class CVListMixin:
                 data_dict[context_key] = method()
             data_dict['total'] = self._sum_items(data_dict)
             return {list_name: data_dict}
+        if model_name == 'position':
+            # Can this be handled in model or with manager?
+            return {list_name: model.displayable.all().order_by(
+                F('end_date').desc(nulls_first=True)
+            )}
         return {list_name: model.displayable.all()}
 
 

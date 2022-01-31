@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from .base import DisplayableModel
-from .managers import PrimaryPositionManager
+from .managers import PositionManager, PrimaryPositionManager
 
 
 class Award(DisplayableModel):
@@ -106,5 +106,5 @@ class Position(DisplayableModel):
     def __str__(self):
         return '%s' % (self.title)
 
-    objects = models.Manager()
+    objects = PositionManager()
     primary_positions = PrimaryPositionManager()

@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import F
 from cv.settings import SERVICE_TYPES
 
 
@@ -31,7 +32,8 @@ class PublicationManager(DisplayManager):
         return self.filter(
             is_published__exact=True).filter(
             display__exact=True).order_by(
-            '-pub_date')
+                F('pub_date').desc(nulls_first=True)
+            )
 
     def revise(self):
         """Return queryset of articles in revision process."""
@@ -83,18 +85,34 @@ class ServiceManager(DisplayManager):
         return self.filter(
             type__in=[
                 SERVICE_TYPES['DEPARTMENT_SERVICE'],
-            ]).filter(display=True)
+            ]).filter(display=True).order_by(
+                F('end_date').desc(nulls_first=True)
+            )
 
     def university(self):
         return self.filter(
             type__in=[
                 SERVICE_TYPES['UNIVERSITY_SERVICE'],
                 SERVICE_TYPES['SCHOOL_SERVICE']
-            ]).filter(display=True)
+            ]).filter(display=True).order_by(
+                F('end_date').desc(nulls_first=True)
+            )
 
     def discipline(self):
         return self.filter(
-            type=SERVICE_TYPES['DISCIPLINE_SERVICE']).filter(display=True)
+            type=SERVICE_TYPES['DISCIPLINE_SERVICE']
+            ).filter(display=True).order_by(
+                F('end_date').desc(nulls_first=True)
+            )
+
+
+class PositionManager(models.Manager):
+    """Manager positions ordered by date."""
+
+    def get_queryset(self):
+        return super(PositionManager, self).get_queryset().order_by(
+            F('end_date').desc(nulls_first=True)
+        )
 
 
 class PrimaryPositionManager(models.Manager):
