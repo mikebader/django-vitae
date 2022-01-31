@@ -5,7 +5,11 @@
     <ul class="cv-entries cv-entries-position">
         <li id="position-{{position.pk}}" class="cv-entry cv-entry-position row">
                 <span class="cv-entry-date cv-entry-date-position col-2 col-sm-1">
-                    {{position|year_range}}
+                    {% if not position.current_position %}
+                        {{position|year_range}}
+                    {% else %}
+                        {{position.start_date|date:"Y"}}&mdash;
+                    {% endif %}
                 </span>
                 <span class="cv-entry-text cv-entry-text-position col-9 col-sm-10">
                     <span class="cv-entry-position-title">{{position.title}}</span>{% if position.project %}, <span class="cv-entry-position-project">{{position.project}}</span>,{% endif %}{% if position.department %}, <span class="cv-entry-position-department">{{position.department}}</span>{% endif %}, <span class="cv-entry-position-institution">{{position.institution}}</span>
