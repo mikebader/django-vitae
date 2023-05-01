@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models.functions import datetime
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from .base import (VitaeModel, Collaborator, CollaborationModel,
                    StudentCollaborationModel)
