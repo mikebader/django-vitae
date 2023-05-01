@@ -61,9 +61,14 @@ To test, you need to install the following packages:
 
 :: 
 
+    django
     pip install nose
     pip install django-nose
     pip install coverage
+    markdown
+    citeproc-py
+    citeproc-py-styles
+    django-widgets
 
 A test suite can be found in the ``tests/`` directory. With `Nose`_ and `Coverage`_ installed, you may run the tests with ``runtests.py``. From the ``django-vitae`` root directory: 
 
